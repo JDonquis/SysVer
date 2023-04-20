@@ -1,16 +1,10 @@
-import React from "react";
-import {createRoot} from "react-dom/client";
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import App from './App';
 
-export default function Codereact(){
-
-	return(
-
-		<>
-		<h1>Ready</h1>
-		</>
-		)
-}
-if(document.getElementById("codereact")){
-
-	createRoot(document.getElementById("codereact")).render(<Codereact/>);
-}
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
+  // <React.StrictMcd>
+    <App />
+  /* </React.StrictMcd<ode> */
+);
