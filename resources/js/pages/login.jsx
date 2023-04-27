@@ -1,8 +1,20 @@
 import React, { useEffect, useLayoutEffect, useState } from "react";
 import "../../css/pages/login.css";
 import circleLogo from "../../../public/circleLogo.png";
-export default function login() {
+import axios from '../../api/axios'
 
+export default function login() {
+    const [CI, setCI] = useState('')
+    const [password, setPassword] = useState('')
+
+    const handleLogin = async (e) => {
+        e.preventDefault()
+        try {
+            await axios.post('./login', {CI, password})
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
     useEffect(() => {
       
