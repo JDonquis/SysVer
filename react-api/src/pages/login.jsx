@@ -8,7 +8,6 @@ import axios from '../api/axios'
 export default function login() {
     const [ci, setCI] = useState('')
     const [password, setPassword] = useState('')
-    console.log(password)
 
 
     const handleLogin = async (e) => {
