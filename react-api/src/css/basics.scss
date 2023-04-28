@@ -1,0 +1,50 @@
+//fonts: ****************************************************
+@font-face {
+    font-family: "Manjari";
+    src: url("../assets/fonts/Manjari-Bold.ttf");
+    font-weight: 700;
+} 
+@font-face { 
+    font-family: "Manjari";
+    src: url("../assets/fonts/Manjari-Regular.ttf");
+    font-weight: 400; 
+} 
+//colors: ******************************************************
+$blue: #069DBF;
+$yellow: #D9831A;  
+$green: #027353; 
+$purple: #A64684;
+* { 
+    padding: 0;   
+    margin: 0;
+    box-sizing: border-box;
+    font-family: "Manjari", sans-serif ;
+}
+.blue {
+    color: #069DBF;
+}
+.yellow {
+    color: #D9831A;
+} 
+.purple { 
+    color:#A64684;
+}
+.green {
+    color: #027353;
+}
+
+.bg_blue {
+    background-color: #069DBF;
+}
+.bg_yellow {
+    background-color: #D9831A;
+}
+.bg_purple {
+    background-color:#A64684;
+}
+.bg_green {
+    background-color: #027353;
+}
+input[type=submit]{
+    border: none;
+}
