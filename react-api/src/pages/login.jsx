@@ -1,6 +1,8 @@
 import React, { useEffect, useLayoutEffect, useState } from "react";
 import "../css/pages/login.css";
 import circleLogo from "../assets/img/circleLogo.png";
+import 'bootstrap/dist/css/bootstrap.min.css'
+
 import axios from '../api/axios'
 
 export default function login() {
@@ -63,8 +65,14 @@ export default function login() {
             setBackSquaredX({transform: `translate(-${cursorX/ 150}px, -${cursorY/100}px)`})
         }
     }, [])
+    // useEffect(() => {
+    //   if ()
+    
+    
+    // }, [ci || password])
+    
     return (
-        <div className="container_login bg-blue ">
+        <div className="container_login bg-blue d-block d-md-grid">
             
             {/* squares for large screen */}
             <div className="container_squares d-none d-md-grid ">
@@ -87,8 +95,8 @@ export default function login() {
               <div className="sqr17" style={frontSquaredX}></div>
             </div>
 
-            {/* squares for phone screen */}
-            {/* <div className="container_squares d-none d-md-grid ">
+            {/* squares for phone screen */} 
+            <div className="container_squares d-grid d-md-none container_squares_cellphone">
               <div className="sqr1 sqrBack" style={backSquaredX}></div>
               <div className="sqr2" style={frontSquaredX}></div>
               <div className="sqr3 sqrBack" style={backSquaredX}></div>
@@ -97,16 +105,9 @@ export default function login() {
               <div className="sqr6 sqrBack" style={backSquaredX}></div>
               <div className="sqr7" style={frontSquaredX} ></div>
               <div className="sqr8 sqrBack" style={backSquaredX}></div>
-              <div className="sqr9" style={frontSquaredX} ></div>
-              <div className="sqr10" style={frontSquaredX} ></div>
-              <div className="sqr11" style={frontSquaredX} ></div>
-              <div className="sqr12 sqrBack" style={backSquaredX}></div>
-              <div className="sqr13 sqrBack" style={backSquaredX}></div>
-              <div className="sqr14" style={frontSquaredX} ></div>
-              <div className="sqr15" style={frontSquaredX} ></div>
-              <div className="sqr16" style={frontSquaredX} ></div>
-              <div className="sqr17" style={frontSquaredX}></div>
-            </div> */}
+            
+             
+            </div>
 
 
             <div className="card_form">
@@ -121,7 +122,7 @@ export default function login() {
 
                     <span>
                         <input
-                            type="number" 
+                            type="text" 
                             data-type="DNI"
                             id="DNI" 
                             name="DNI"
@@ -143,7 +144,7 @@ export default function login() {
                         
                     </span>
                 </div>
-                    <input type="submit" className="btn_submit active position-md-absolute" value="INICIAR &#x25B8;" />
+                    <input type="submit" className={`btn_submit disabled position-md-absolute ${ci.trim().length > 6 && password.trim().length > 1 ? 'active' : 'disabled'}` } value="INICIAR &#x25B8;" />
                 </form>
             </div>
         </div>

@@ -225,7 +225,11 @@ input[type=file]):focus,
 
 .card_form {
   position: relative;
-  padding-right: 56px !important;
+}
+@media (min-width: 720px) {
+  .card_form {
+    padding-right: 56px !important;
+  }
 }
 
 .btn_submit {
@@ -234,6 +238,7 @@ input[type=file]):focus,
   font-size: 26px;
   padding-right: 10px;
   width: 397px;
+  transition: color cubic-bezier(0.215, 0.61, 0.355, 1);
   height: 77px;
   right: 0;
   top: calc(50% - 38.5px + 126.5px);
@@ -244,7 +249,7 @@ input[type=file]):focus,
 }
 .btn_submit.active {
   color: #331628;
-  background: linear-gradient(270deg, #A64684 11.92%, #A64684 54.62%, #069DBF 101.65%);
+  background: linear-gradient(270deg, #a64684 11.92%, #a64684 54.62%, #069dbf 101.65%);
 }
 .btn_submit.active.active:hover {
   cursor: pointer;
@@ -262,11 +267,6 @@ input[type=file]):focus,
   border-radius: 3px;
   transition: all 0.6s ease-out;
 }
-@media (max-width: 600px) {
-  .container_squares > div {
-    display: none;
-  }
-}
 
 .sqrBack {
   filter: brightness(0.9);
@@ -278,13 +278,6 @@ input[type=file]):focus,
   left: 10px;
   top: 7px;
   background: #027353;
-}
-
-.shake {
-  animation: shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
-  transform: translate3d(0, 0, 0);
-  backface-visibility: hidden;
-  perspective: 1000px;
 }
 
 .sqr2 {
@@ -422,6 +415,63 @@ input[type=file]):focus,
   left: 806px;
   top: 570px;
   background: #a64684;
+}
+
+.container_squares_cellphone .sqr1 {
+  width: 75px;
+  height: 66px;
+  left: 6px;
+  top: 0px;
+  background: #027353;
+}
+.container_squares_cellphone .sqr2 {
+  width: 100px;
+  height: 48px;
+  left: -56px;
+  top: 87px;
+  background: #a64684;
+}
+.container_squares_cellphone .sqr3 {
+  width: 68px;
+  height: 59px;
+  left: -51px;
+  top: 156px;
+  background: #d9831a;
+}
+.container_squares_cellphone .sqr4 {
+  width: 56px;
+  height: 55px;
+  left: -26px;
+  top: 206px;
+  background: #027353;
+}
+.container_squares_cellphone .sqr5 {
+  width: 65px;
+  height: 43px;
+  left: -21px;
+  top: 427px;
+  background: #027353;
+}
+.container_squares_cellphone .sqr6 {
+  width: 65px;
+  height: 109px;
+  left: 35px;
+  top: 463px;
+  background: #027353;
+}
+.container_squares_cellphone .sqr7 {
+  width: 68px;
+  height: 59px;
+  left: -14px;
+  top: 518px;
+  background: #d9831a;
+}
+.container_squares_cellphone .sqr8 {
+  width: 208px;
+  height: 113px;
+  left: -99px;
+  top: 675px;
+  background: #d9831a;
 }
 
 @keyframes shake {

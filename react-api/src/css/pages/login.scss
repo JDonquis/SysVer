@@ -1,14 +1,14 @@
 @import "../basics.scss";
-@import "../components/forms.scss"; 
- 
-.container_login {      
-    overflow: hidden; 
-    position: relative;   
+@import "../components/forms.scss";
+
+.container_login {
+    overflow: hidden;
+    position: relative;
     display: grid;
-    grid-template-columns: 65% 35%; 
+    grid-template-columns: 65% 35%;
     height: 100vh;
     background: $blue;
-    @include card-form(100vh, 100%); 
+    @include card-form(100vh, 100%);
     .title_and_icon {
         display: flex !important;
         align-items: center;
@@ -18,72 +18,72 @@
     }
 }
 .icon {
-    max-width: 70px;    
+    max-width: 70px;
 }
 .card_form {
     position: relative;
-    padding-right: 56px !important; 
+    @media (min-width:720px) {
+        
+        padding-right: 56px !important;
+    }
 }
 .btn_submit {
     text-align: right;
     position: absolute;
-    font-size: 26px;  
+    font-size: 26px;
     padding-right: 10px;
-    width: 397px;  
-    height: 77px; 
+    width: 397px;
+    transition: color cubic-bezier(0.215, 0.610, 0.355, 1);
+    height: 77px;
     right: 0;
     top: calc(50% - 77px / 2 + 126.5px);
-    &.disabled { 
-        color: rgba(255, 255, 255, 0.664);
+    &.disabled {
+        color: rgba(255, 255, 255, 0.664); 
 
         background: linear-gradient(
-            270deg, 
+            270deg,
             #57adc0,
-            rgba(87, 173, 192, 0.208333), 
-            rgba(87, 173, 192, 0) 
-        );   
-
+            rgba(87, 173, 192, 0.208333),
+            rgba(87, 173, 192, 0)
+        );
     }
     &.active {
         color: #331628;
 
-        background: linear-gradient(270deg, #A64684 11.92%, #A64684 54.62%, #069DBF 101.65%);
+        background: linear-gradient(
+            270deg,
+            #a64684 11.92%,
+            #a64684 54.62%,
+            #069dbf 101.65%
+        );
         &.active:hover {
             cursor: pointer;
             color: rgba(255, 255, 255, 0.781);
-            transition: all .3s ease;
+            transition: all 0.3s ease;
         }
     }
 }
 
-.body_form { 
+.body_form {
     margin-top: 40px;
 }
 .container_squares > div {
     position: absolute;
-    @media (max-width: 600px) {
-        display: none;
-    }
+
     box-shadow: 1px 1px 28px 11px rgba(0, 0, 0, 0.25);
     border-radius: 3px;
-    transition: all .6s ease-out;
+    transition: all 0.6s ease-out;
 }
-.sqrBack{
-    filter: brightness(.9);
+.sqrBack {
+    filter: brightness(0.9);
 }
+
 .sqr1 {
     width: 227px;
     height: 214px;
     left: 10px;
     top: 7px;
     background: #027353;
-}
-.shake {
-    animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
-    transform: translate3d(0, 0, 0);
-    backface-visibility: hidden;
-    perspective: 1000px;
-
 }
 .sqr2 {
     width: 171px;
@@ -187,16 +187,16 @@
     width: 62px;
     height: 56px;
     left: 662px;
-    top: 539px; 
+    top: 539px;
 
     background: #d9831a;
 }
 .sqr14 {
-    width: 77px; 
+    width: 77px;
     height: 83px;
-    left: 128px; 
-    top: 191px;  
- 
+    left: 128px;
+    top: 191px;
+
     background: #d9831a;
 }
 .sqr15 {
@@ -223,20 +223,93 @@
 
     background: #a64684;
 }
+
+.container_squares_cellphone {
+    .sqr1 {
+        width: 75px;
+        height: 66px;
+        left: 6px;
+        top: 0px;
+
+        background: #027353;
+    }
+    .sqr2 {
+        width: 100px;
+        height: 48px;
+        left: -56px;
+        top: 87px;
+
+        background: #a64684;
+    }
+    .sqr3 {
+        width: 68px;
+        height: 59px;
+        left: -51px;
+        top: 156px;
+
+        background: #d9831a;
+    }
+    .sqr4 {
+        width: 56px;
+        height: 55px;
+        left: -26px;
+        top: 206px;
+
+        background: #027353;
+    }
+    .sqr5 {
+        width: 65px;
+        height: 43px;
+        left: -21px;
+        top: 427px;
+
+        background: #027353;
+    }
+    .sqr6 {
+        width: 65px;
+        height: 109px;
+        left: 35px;
+        top: 463px;
+
+        background: #027353;
+    }
+    .sqr7 {
+        width: 68px;
+        height: 59px;
+        left: -14px;
+        top: 518px;
+
+        background: #d9831a;
+    }
+    .sqr8 {
+        width: 208px;
+        height: 113px;
+        left: -99px;
+        top: 675px;
+
+        background: #d9831a;
+    }
+}
+
 @keyframes shake {
-    10%, 90% {
-      transform: translate3d(-1px, 0, 0);
+    10%,
+    90% {
+        transform: translate3d(-1px, 0, 0);
     }
-    
-    20%, 80% {
-      transform: translate3d(2px, 0, 0);
+
+    20%,
+    80% {
+        transform: translate3d(2px, 0, 0);
     }
-  
-    30%, 50%, 70% {
-      transform: translate3d(-4px, 0, 0);
+
+    30%,
+    50%,
+    70% {
+        transform: translate3d(-4px, 0, 0);
     }
-  
-    40%, 60% {
-      transform: translate3d(4px, 0, 0);
+
+    40%,
+    60% {
+        transform: translate3d(4px, 0, 0);
     }
-  }
+}
