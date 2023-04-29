@@ -11,6 +11,7 @@
 * {
   padding: 0;
   margin: 0;
+  margin-bottom: 0;
   box-sizing: border-box;
   font-family: "Manjari", sans-serif;
 }
@@ -49,4 +50,21 @@
 
 input[type=submit] {
   border: none;
+}
+
+ul.link_container {
+  list-style: none;
+}
+ul.link_container a {
+  text-decoration: none;
+}
+
+.dashboard_container {
+  display: flex;
+  gap: 20px;
+}
+.dashboard_container .main_dashboard {
+  flex: auto;
+  background: rgb(238, 238, 238);
+  padding: 20px;
 }/*# sourceMappingURL=basics.css.map */

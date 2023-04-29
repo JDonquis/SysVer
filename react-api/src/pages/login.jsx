@@ -2,13 +2,14 @@ import React, { useEffect, useLayoutEffect, useState } from "react";
 import "../css/pages/login.css";
 import circleLogo from "../assets/img/circleLogo.png";
 import 'bootstrap/dist/css/bootstrap.min.css'
+import {Link, useNavigate} from 'react-router-dom'
 
 import axios from '../api/axios'
 
 export default function login() {
     const [ci, setCI] = useState('')
     const [password, setPassword] = useState('')
-
+    const navigate = useNavigate()
 
     const handleLogin = async (e) => {
         e.preventDefault()
@@ -16,8 +17,11 @@ export default function login() {
             await axios.post('/login', {ci, password})
             setCI('')
             setPassword('')
+            navigate("/")
         } catch (error) {
-            console.log(error)
+            alert(error.response.data.message)
+            console.log(error.response.data)
+
         }
     }
 

@@ -1,0 +1,91 @@
+@import "../basics.scss";
+
+.left_nav {
+    height: 100vh;
+    background: rgba(6, 157, 191, 0.05);
+    width: 250px;
+    padding-top: 5px;
+    position: relative;
+    transition: all .3s ease-in-out;
+    color: $blue;
+    a.header {
+        display: flex;
+        align-items: center;
+        margin-block: 30px;
+        padding-left: 32px;
+        width: min-content;
+        text-decoration: none;
+        color: grey;
+        .logo {
+            max-width: 60px;
+            transition: .3s all ease-in;
+            margin-right: 13px;
+        }
+        .system_title {
+            margin-bottom: 0;
+            transition: opacity .5s ease;
+            font-size: 20px;
+        }
+        
+    }
+    .arrowIcon {
+        transition: all .2s ease;
+        position: absolute;
+        right: -5px;
+        font-size: 25px;
+        filter:drop-shadow(0px 2px 4px rgba(0, 0, 0, 0.25));
+        top: 9px;
+        color: $blue;
+        transform: rotate(180deg);
+        &:hover {
+            cursor: pointer;
+            font-size: 29px;
+        }
+    }
+    ul.link_container{
+        list-style: none;
+        a {
+            text-decoration: none;
+            display: flex;
+            padding:  5px 12px;
+            width: 100%;
+            color: $blue;
+            margin-bottom: 4px;
+            align-items: center;
+            &.active {
+                color: white;
+                background-color: $blue;
+                border-radius: 15px 0 0 15px;
+            }
+            svg {
+                margin-right: 14px;
+            }
+            span.text_link {
+                transform: translateY(1.7px);
+                transition: opacity .5s ease;
+
+            }
+        }
+        
+    }
+  
+}
+.left_nav.closed {
+    width: 60px; 
+    & > *, a.header {
+        padding-left: 10px;
+        transition: all .3s cubic-bezier(0.445, 0.05, 0.55, 0.95);
+    }
+    .text_link, .system_title {
+        opacity: 0;
+    }
+    a.header .logo {
+        max-width: 40px;
+        
+    }
+    .arrowIcon {
+        top: 8px;
+        right: -13px;
+        transform: rotate(0);
+    }
+}

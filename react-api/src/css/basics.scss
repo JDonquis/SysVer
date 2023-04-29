@@ -17,6 +17,7 @@ $purple: #A64684;
 * { 
     padding: 0;   
     margin: 0;
+    margin-bottom: 0;
     box-sizing: border-box;
     font-family: "Manjari", sans-serif ;
 }
@@ -47,4 +48,22 @@ $purple: #A64684;
 }
 input[type=submit]{
     border: none;
+}
+ul.link_container{
+    list-style: none;
+    a {
+        text-decoration: none;
+    }
+    
+}
+
+/// general dashboard
+.dashboard_container {
+    display: flex;
+    gap: 20px;
+    .main_dashboard {
+        flex: auto;
+        background: rgb(238, 238, 238);
+        padding: 20px;
+    }
 }
