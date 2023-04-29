@@ -17,7 +17,7 @@ export default function login() {
             await axios.post('/login', {ci, password})
             setCI('')
             setPassword('')
-            navigate("/")
+            navigate("/dashboard")
         } catch (error) {
             alert(error.response.data.message)
             console.log(error.response.data)
