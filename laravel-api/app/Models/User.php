@@ -26,15 +26,6 @@ class User extends Authenticatable
         'name',
         'last_name',
         'ci',
-        'birth_date',
-        'age',
-        'sex',
-        'blood_type_id',
-        'weight',
-        'height',
-        'address',
-        'phone_number',
-        'collaboration',
         'password',
     ];
 
@@ -48,20 +39,6 @@ class User extends Authenticatable
         'remember_token',
     ];
 
-      public function blood_types()
-      {
-        return $this->belongsTo(BloodType::class,'blood_type_id','id');
-      }
-
-      public function type_users()
-      {
-          return $this->belongsTo(TypeUser::class,'type_user_id','id');
-      }
-
-      public function areas()
-      {
-          return $this->belongsToMany(Area::class,'user_areas');
-      }
 
 
 

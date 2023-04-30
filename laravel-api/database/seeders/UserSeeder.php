@@ -17,7 +17,7 @@ class UserSeeder extends Seeder
     {
             $fields = [
 
-            ['code'=> 1111, 'type_user_id' => 2, 'name' => 'admin', 'last_name' => 'admin', 'ci' => '12345678', 'password' => Hash::make('12345678'), 'birth_date' => '2002-09-07', 'age' => 20, 'sex' => 'M', 'blood_type_id' => 1, 'weight' => 70, 'height' => 175, 'address' => 'Some Place', 'phone_number' => '00000000000', 'collaboration' => 'none'],
+            ['name' => 'Admin', 'last_name' => 'Admin', 'ci' => '12345678','password' => Hash::make('12345678')],
 
 
          ];   
@@ -25,3 +25,5 @@ class UserSeeder extends Seeder
          DB::table('users')->insert($fields);
     }
 }
+
+

@@ -1,9 +1,10 @@
 <?php
 
+use App\Http\Controllers\api\LoginController;
+use App\Http\Controllers\api\dashboard\ClientController;
+use App\Http\Controllers\api\dashboard\UsersController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\api\LoginController;
-use App\Http\Controllers\api\dashboard\UsersController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,6 +25,6 @@ Route::post('/login',[LoginController::class,'login']);
 
 Route::group(['prefix' => 'dashboard', 'middleware' => ['auth:sanctum']], function(){
 
-    Route::get('users',[UsersController::class,'index']);
+    Route::get('clients',[ClientController::class,'index']);
 
 });
