@@ -16,7 +16,7 @@ class UsersController extends Controller
      */
     public function index()
     {
-        $users = User::where('type_user_id',1)->with('blood_types')->get();
+        $users = User::where('type_user_id',1)->with('blood_types','areas')->get();
 
         return response(["users" => $users], Response::HTTP_OK);
     }

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Area;
 use App\Models\BloodType;
 use App\Models\TypeUser;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -55,6 +56,11 @@ class User extends Authenticatable
       public function type_users()
       {
           return $this->belongsTo(TypeUser::class,'type_user_id','id');
+      }
+
+      public function areas()
+      {
+          return $this->belongsToMany(Area::class,'user_areas');
       }
 
 
