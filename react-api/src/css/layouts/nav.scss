@@ -3,19 +3,23 @@
 .left_nav {
     height: 100vh;
     background: rgba(6, 157, 191, 0.05);
-    width: 250px;
+    min-width: 250px;
+    max-width: 250px; 
     padding-top: 5px;
     position: relative;
+    // overflow: hidden;
     transition: all .3s ease-in-out;
     color: $blue;
     a.header {
-        display: flex;
+        display: flex; 
         align-items: center;
         margin-block: 30px;
         padding-left: 32px;
         width: min-content;
         text-decoration: none;
         color: grey;
+        transition: all .3s cubic-bezier(0.445, 0.05, 0.55, 0.95);
+
         .logo {
             max-width: 60px;
             transition: .3s all ease-in;
@@ -24,6 +28,7 @@
         .system_title {
             margin-bottom: 0;
             transition: opacity .5s ease;
+            transition-delay: .3s;
             font-size: 20px;
         }
         
@@ -44,6 +49,8 @@
     }
     ul.link_container{
         list-style: none;
+        transition: all .3s cubic-bezier(0.445, 0.05, 0.55, 0.95);
+
         a {
             text-decoration: none;
             display: flex;
@@ -67,14 +74,14 @@
             }
         }
         
-    }
+    } 
   
 }
 .left_nav.closed {
-    width: 60px; 
-    & > *, a.header {
+    min-width: 60px; 
+    max-width: 60px; 
+    & .nav_into_container > *, a.header {
         padding-left: 10px;
-        transition: all .3s cubic-bezier(0.445, 0.05, 0.55, 0.95);
     }
     .text_link, .system_title {
         opacity: 0;

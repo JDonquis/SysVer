@@ -1,16 +1,24 @@
 import { Link, NavLink } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "../css/layouts/nav.css";
 import logoCircle_blue from "../assets/img/logoCircle_blue.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUsers, faClipboardUser, faCalendarDays, faPlay } from "@fortawesome/free-solid-svg-icons";
 
-export default function nav() {
+export default function nav(props) {
     const [menuStatus, setMenuStatus] = useState(true)
 
-
+    useEffect(() => {
+      
+        props.getNavStatus(menuStatus)
+    
+    }, [menuStatus])
+    
     return (
         <nav className={`left_nav ${menuStatus ? 'open' : 'closed'}`}>
+            <div className="w-100 h-100 overflow-hidden nav_into_container">
+
+           
             <Link className="header" to="/">
                     <img
                         src={logoCircle_blue}
@@ -42,6 +50,7 @@ export default function nav() {
                     </NavLink>
                 </li>
             </ul>
+            </div>
         </nav>
     );
 }

@@ -65,7 +65,7 @@ export default function login() {
             const cursorX = e.screenX
             const cursorY = e.screenY
             setFrontSquaredX({transform: `translate(${cursorX/ 100}px, ${cursorY/50}px)`})
-            setBackSquaredX({transform: `translate(-${cursorX/ 150}px, -${cursorY/100}px)`})
+            setBackSquaredX({transform: `translate(-${cursorX/ 100}px, -${cursorY/50}px)`})
         }
     }, [])
     // useEffect(() => {

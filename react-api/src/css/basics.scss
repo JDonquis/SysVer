@@ -55,10 +55,11 @@ ul.link_container{
         text-decoration: none;
     }
     
-}
+}  
 
 /// general dashboard
 .dashboard_container {
+    overflow: hidden;
     display: flex;
     gap: 20px;
     .main_dashboard {
@@ -66,4 +67,20 @@ ul.link_container{
         background: rgb(238, 238, 238);
         padding: 20px;
     }
+}
+
+.mainDashboard_container{
+    width: 100%; 
+    float: right;
+    &.small {
+
+        max-width: calc(100vw - 310px); 
+    }
+    &.large {
+        max-width: calc(100vw - 120px); 
+
+    }
+}
+th {
+    padding-left: 0 !important;
 }

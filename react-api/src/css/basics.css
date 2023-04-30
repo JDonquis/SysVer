@@ -60,6 +60,7 @@ ul.link_container a {
 }
 
 .dashboard_container {
+  overflow: hidden;
   display: flex;
   gap: 20px;
 }
@@ -67,4 +68,19 @@ ul.link_container a {
   flex: auto;
   background: rgb(238, 238, 238);
   padding: 20px;
+}
+
+.mainDashboard_container {
+  width: 100%;
+  float: right;
+}
+.mainDashboard_container.small {
+  max-width: calc(100vw - 310px);
+}
+.mainDashboard_container.large {
+  max-width: calc(100vw - 120px);
+}
+
+th {
+  padding-left: 0 !important;
 }/*# sourceMappingURL=basics.css.map */

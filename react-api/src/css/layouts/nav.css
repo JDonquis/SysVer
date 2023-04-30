@@ -60,6 +60,7 @@ ul.link_container a {
 }
 
 .dashboard_container {
+  overflow: hidden;
   display: flex;
   gap: 20px;
 }
@@ -69,10 +70,22 @@ ul.link_container a {
   padding: 20px;
 }
 
+.mainDashboard_container {
+  width: 100%;
+  float: right;
+}
+.mainDashboard_container.small {
+  max-width: calc(100vw - 310px);
+}
+.mainDashboard_container.large {
+  max-width: calc(100vw - 120px);
+}
+
 .left_nav {
   height: 100vh;
   background: rgba(6, 157, 191, 0.05);
-  width: 250px;
+  min-width: 250px;
+  max-width: 250px;
   padding-top: 5px;
   position: relative;
   transition: all 0.3s ease-in-out;
@@ -87,6 +100,7 @@ ul.link_container a {
   width: min-content;
   text-decoration: none;
   color: grey;
+  transition: all 0.3s cubic-bezier(0.445, 0.05, 0.55, 0.95);
 }
 .left_nav a.header .logo {
   max-width: 60px;
@@ -96,6 +110,7 @@ ul.link_container a {
 .left_nav a.header .system_title {
   margin-bottom: 0;
   transition: opacity 0.5s ease;
+  transition-delay: 0.3s;
   font-size: 20px;
 }
 .left_nav .arrowIcon {
@@ -114,6 +129,7 @@ ul.link_container a {
 }
 .left_nav ul.link_container {
   list-style: none;
+  transition: all 0.3s cubic-bezier(0.445, 0.05, 0.55, 0.95);
 }
 .left_nav ul.link_container a {
   text-decoration: none;
@@ -138,11 +154,11 @@ ul.link_container a {
 }
 
 .left_nav.closed {
-  width: 60px;
+  min-width: 60px;
+  max-width: 60px;
 }
-.left_nav.closed > *, .left_nav.closed a.header {
+.left_nav.closed .nav_into_container > *, .left_nav.closed a.header {
   padding-left: 10px;
-  transition: all 0.3s cubic-bezier(0.445, 0.05, 0.55, 0.95);
 }
 .left_nav.closed .text_link, .left_nav.closed .system_title {
   opacity: 0;

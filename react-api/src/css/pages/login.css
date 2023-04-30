@@ -11,6 +11,7 @@
 * {
   padding: 0;
   margin: 0;
+  margin-bottom: 0;
   box-sizing: border-box;
   font-family: "Manjari", sans-serif;
 }
@@ -49,6 +50,35 @@
 
 input[type=submit] {
   border: none;
+}
+
+ul.link_container {
+  list-style: none;
+}
+ul.link_container a {
+  text-decoration: none;
+}
+
+.dashboard_container {
+  overflow: hidden;
+  display: flex;
+  gap: 20px;
+}
+.dashboard_container .main_dashboard {
+  flex: auto;
+  background: rgb(238, 238, 238);
+  padding: 20px;
+}
+
+.mainDashboard_container {
+  width: 100%;
+  float: right;
+}
+.mainDashboard_container.small {
+  max-width: calc(100vw - 310px);
+}
+.mainDashboard_container.large {
+  max-width: calc(100vw - 120px);
 }
 
 .container_login {
