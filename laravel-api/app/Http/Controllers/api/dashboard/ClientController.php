@@ -3,17 +3,20 @@
 namespace App\Http\Controllers\api\dashboard;
 
 use App\Http\Controllers\Controller;
+use App\Models\Area;
 use App\Models\Client;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Exception;
+
 
 class ClientController extends Controller
 {
     public function index()
     {
         $clients = Client::with('blood_types','areas')->get();
-
-        return response(["clients" => $clients], Response::HTTP_OK);
+        $areas = Area::all();
+        return response(["clients" => $clients, 'areas' => $areas], Response::HTTP_OK);
     }
 
     /**
@@ -79,6 +82,26 @@ class ClientController extends Controller
      */
     public function destroy($id)
     {
-        //
+        try{
+            
+            $client = Client::findOrFail($id);
+            $client->delete();
+            return response(["Message" => 'Cliente eliminado correctamente'], Response::HTTP_OK);
+
+        }catch(Exception $e)
+        {
+            return response(["Message" => 'Cliente no encontrado'], Response::HTTP_BAD_REQUEST);
+        }
+        
+
+
+        
+
+            
+
+        
+        
+        
+        
     }
 }
