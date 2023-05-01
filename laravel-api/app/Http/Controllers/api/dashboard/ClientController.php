@@ -16,7 +16,7 @@ class ClientController extends Controller
     {
         $clients = Client::with('blood_types','areas')->get();
         $areas = Area::all();
-        return response(["clients" => $clients, 'areas' => $areas], Response::HTTP_OK);
+        return response(["clients" => $clients, 'all_areas_db' => $areas], Response::HTTP_OK);
     }
 
     /**
