@@ -15,7 +15,7 @@ class CreateAssistancesTable extends Migration
     {
         Schema::create('assistances', function (Blueprint $table) {
             $table->id();
-            $table->foreignId("user_area_id")->constrained()->onDelete("restrict")->onUpdate("cascade");
+            $table->foreignId("client_area_id")->constrained()->onDelete("restrict")->onUpdate("cascade");
             $table->foreignId("shift_id")->constrained()->onDelete("restrict")->onUpdate("cascade");
         });
     }

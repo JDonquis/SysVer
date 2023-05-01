@@ -3,22 +3,17 @@
 namespace App\Http\Controllers\api\dashboard;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
+use App\Models\Client;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class UsersController extends Controller
+class ClientController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        $users = User::where('type_user_id',1)->with('blood_types','areas')->get();
+        $clients = Client::with('blood_types','areas')->get();
 
-        return response(["users" => $users], Response::HTTP_OK);
+        return response(["clients" => $clients], Response::HTTP_OK);
     }
 
     /**

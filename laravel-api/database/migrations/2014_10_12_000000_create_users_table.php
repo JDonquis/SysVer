@@ -15,22 +15,10 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('code')->unique();
-            $table->foreignId("type_user_id")->constrained()->onDelete("restrict")->onUpdate("cascade");
             $table->string('name');
             $table->string('last_name');
             $table->string('ci')->unique();
             $table->string('password');
-            $table->date('birth_date');
-            $table->integer('age');
-            $table->string('sex');
-            $table->foreignId("blood_type_id")->constrained()->onDelete("restrict")->onUpdate("cascade")->nullable;
-            $table->integer('weight')->nullable;
-            $table->integer('height')->nullable;
-            $table->string('address',100);
-            $table->string('phone_number',11)->nullable;
-            $table->string('collaboration',100)->nullable;           
-            $table->rememberToken();
             $table->timestamps();
         });
     }

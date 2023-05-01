@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTypeUsersTable extends Migration
+class CreateClientAreasTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,10 @@ class CreateTypeUsersTable extends Migration
      */
     public function up()
     {
-        Schema::create('type_users', function (Blueprint $table) {
+        Schema::create('client_areas', function (Blueprint $table) {
             $table->id();
-            $table->string("name");
+            $table->foreignId("client_id")->constrained()->onDelete("restrict")->onUpdate("cascade");
+            $table->foreignId("area_id")->constrained()->onDelete("restrict")->onUpdate("cascade");
         });
     }
 
@@ -26,6 +27,6 @@ class CreateTypeUsersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('type_users');
+        Schema::dropIfExists('client_areas');
     }
 }
