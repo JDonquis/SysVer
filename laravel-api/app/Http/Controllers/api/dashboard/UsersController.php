@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\api\dashboard;
 
 use App\Http\Controllers\Controller;
+use App\Models\Area;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,8 +18,9 @@ class UsersController extends Controller
     public function index()
     {
         $users = User::where('type_user_id',1)->with('blood_types','areas')->get();
+        $areas = Area::all();
 
-        return response(["users" => $users], Response::HTTP_OK);
+        return response(["users" => $users, 'areas' => $areas], Response::HTTP_OK);
     }
 
     /**
