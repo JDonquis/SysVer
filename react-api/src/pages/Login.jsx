@@ -1,7 +1,7 @@
+
 import React, { useEffect, useLayoutEffect, useState } from "react";
 import "../css/pages/login.css";
 import circleLogo from "../assets/img/circleLogo.png";
-import 'bootstrap/dist/css/bootstrap.min.css'
 import {Link, useNavigate} from 'react-router-dom'
 
 import axios from '../api/axios'
@@ -75,10 +75,10 @@ export default function login() {
     // }, [ci || password])
     
     return (
-        <div className="container_login bg-blue d-block d-md-grid">
+        <div className="container_login bg-blue block md:grid">
             
             {/* squares for large screen */}
-            <div className="container_squares d-none d-md-grid ">
+            <div className="container_squares hidden md:grid ">
               <div className="sqr1 sqrBack" style={backSquaredX}></div>
               <div className="sqr2" style={frontSquaredX}></div>
               <div className="sqr3 sqrBack" style={backSquaredX}></div>
@@ -99,7 +99,7 @@ export default function login() {
             </div>
 
             {/* squares for phone screen */} 
-            <div className="container_squares d-grid d-md-none container_squares_cellphone">
+            <div className="container_squares grid md:hidden container_squares_cellphone">
               <div className="sqr1 sqrBack" style={backSquaredX}></div>
               <div className="sqr2" style={frontSquaredX}></div>
               <div className="sqr3 sqrBack" style={backSquaredX}></div>
@@ -115,13 +115,14 @@ export default function login() {
 
             <div className="card_form">
                 <form onSubmit={handleLogin}>
+                
                     <span className="title_and_icon">
                         <div className="background_icon">
                             <img src={circleLogo} alt="" className="icon" />
                         </div>
                         <h1>Login</h1>
                     </span>
-                <div className="body_form">
+                <div className="body_form mt-36">
 
                     <span>
                         <input

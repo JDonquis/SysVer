@@ -50,6 +50,7 @@
     ul.link_container{
         list-style: none;
         transition: all .3s cubic-bezier(0.445, 0.05, 0.55, 0.95);
+        padding-left: 32px;
 
         a {
             text-decoration: none;

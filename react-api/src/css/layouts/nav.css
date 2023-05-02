@@ -1,3 +1,6 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 @font-face {
   font-family: "Manjari";
   src: url("../assets/fonts/Manjari-Bold.ttf");
@@ -14,6 +17,10 @@
   margin-bottom: 0;
   box-sizing: border-box;
   font-family: "Manjari", sans-serif;
+}
+
+p {
+  margin-bottom: 0;
 }
 
 .blue {
@@ -62,12 +69,14 @@ ul.link_container a {
 .dashboard_container {
   overflow: hidden;
   display: flex;
-  gap: 20px;
 }
 .dashboard_container .main_dashboard {
   flex: auto;
-  background: rgb(238, 238, 238);
+  background: #f5f5f5;
   padding: 20px;
+}
+.dashboard_container .main_dashboard .MuiPaper-root {
+  box-shadow: none;
 }
 
 .mainDashboard_container {
@@ -79,6 +88,10 @@ ul.link_container a {
 }
 .mainDashboard_container.large {
   max-width: calc(100vw - 120px);
+}
+
+th {
+  padding-left: 0 !important;
 }
 
 .left_nav {
@@ -130,6 +143,7 @@ ul.link_container a {
 .left_nav ul.link_container {
   list-style: none;
   transition: all 0.3s cubic-bezier(0.445, 0.05, 0.55, 0.95);
+  padding-left: 32px;
 }
 .left_nav ul.link_container a {
   text-decoration: none;
