@@ -8,7 +8,7 @@ use App\Models\Client;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Exception;
-
+use DB;
 
 class ClientController extends Controller
 {
@@ -19,25 +19,41 @@ class ClientController extends Controller
         return response(["clients" => $clients, 'all_areas_db' => $areas], Response::HTTP_OK);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
-    {
-        //
+    {   
+        $client = new Client;
+        
+       DB::beginTransaction();
+
+        try {
+
+            
+            $code = $client->last_code();
+            $code = intval($code->code) + 1;
+            $code = strval($code);
+
+            $request->request->add(['code' => $code]);
+
+            $client->create($request->all());
+
+            $client_id = $client->latest('id')->first()->id;
+
+            foreach ($request->areas as $area){ DB::table('client_areas')->insert(['client_id' => $client_id, 'area_id' => $area]); }
+                
+            DB::commit();
+
+            return response(["Message" => 'Cliente creado exitosamente'], Response::HTTP_OK);
+
+        }catch (Exception $e) {
+            DB::rollback();
+
+            if($e->getCode() == '23000')
+                return response(["Message" => 'Cedula ya encontrada en la base de datos'], Response::HTTP_BAD_REQUEST);    
+            
+            return response(["Message" => 'No se pudo crear el cliente'], Response::HTTP_BAD_REQUEST);
+        }   
+    
+    
     }
 
     /**
@@ -82,26 +98,24 @@ class ClientController extends Controller
      */
     public function destroy($id)
     {
-        try{
-            
-            $client = Client::findOrFail($id);
-            $client->delete();
+        DB::beginTransaction();
+
+        try {
+
+            DB::table('client_areas')->where('client_id', $id)->delete();
+
+            DB::table('clients')->where('id', $id)->delete();
+
+            DB::commit();
+
             return response(["Message" => 'Cliente eliminado correctamente'], Response::HTTP_OK);
 
-        }catch(Exception $e)
-        {
-            return response(["Message" => 'Cliente no encontrado'], Response::HTTP_BAD_REQUEST);
-        }
-        
-
-
-        
-
+        }catch (Exception $e) {
+            DB::rollback();
             
-
-        
-        
-        
+            return response(["Message" => 'Cliente no encontrado'], Response::HTTP_BAD_REQUEST);
+        }   
+    
         
     }
 }
