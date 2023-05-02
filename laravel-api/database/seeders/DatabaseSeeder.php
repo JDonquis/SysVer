@@ -19,6 +19,9 @@ class DatabaseSeeder extends Seeder
 
         'blood_types',
         'users',
+        'clients',
+        'areas',
+        'client_areas',
 
 
         ]);
@@ -27,7 +30,9 @@ class DatabaseSeeder extends Seeder
 
             BloodTypesSeeder::class,
             UserSeeder::class,
+            AreaSeeder::class,
             ClientSeeder::class,
+            AreaClientSeeder::class,
 
             
         ]);

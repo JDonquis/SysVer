@@ -12,6 +12,7 @@ class Client extends Model
     protected $table = 'clients';
 
         protected $fillable = [
+        'code',
         'name',
         'last_name',
         'ci',
@@ -24,7 +25,13 @@ class Client extends Model
         'address',
         'phone_number',
         'collaboration',
+
     ];
+
+      public function last_code()
+      {
+        return Client::select('code')->latest()->first();
+      }
 
       public function blood_types()
       {
