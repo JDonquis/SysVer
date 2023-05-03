@@ -28,6 +28,8 @@ class Client extends Model
 
     ];
 
+    protected $hidden = ['pivot'];
+
       public function last_code()
       {
         return Client::select('code')->latest()->first();

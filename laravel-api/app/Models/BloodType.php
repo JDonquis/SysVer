@@ -15,4 +15,6 @@ class BloodType extends Model
         'name'
     ];
 
+    protected $hidden = ['pivot'];
+
 }

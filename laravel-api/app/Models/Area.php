@@ -16,6 +16,8 @@ class Area extends Model
         'name'
     ];
 
+    protected $hidden = ['pivot'];
+
       public function users()
       {
           return $this->belongsToMany(User::class,'user_areas');
