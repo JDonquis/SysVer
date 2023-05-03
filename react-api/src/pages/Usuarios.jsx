@@ -249,17 +249,18 @@ export default function usuarios() {
         e.preventDefault();
         try {
             if (submitStatus === "Inscribir") {
-                console.log(newUserData);
                 await axios.post(`/dashboard/clients/`, newUserData).then((response) => {
-                    const data = response.data;
                     console.log(response)
-                    // setUsuarios(prev=> [...prev, data])
+                    const client = response.data.client;
+                    setUsuarios(prev=> [...prev, client])
                 });;
             }
             if (submitStatus === "Editar") {
-                await axios.update(
+                console.log(submitStatus)
+                console.log(newUserData)
+                await axios.put(
                     `/dashboard/clients/${newUserData.id}`,
-                    setUsuarios(prev=> [...prev, newUserData    ])
+                    setUsuarios(prev=> prev.map(user => user.id === newUserData.id ? newUserData : user))
                 );
             }
         } catch (error) {
@@ -462,10 +463,10 @@ export default function usuarios() {
                         <Autocomplete
                             multiple 
                             onChange={(event, value) => {
-                                const id_areas =value.map(obj=> obj.id)
+                                
                                 setNewUserData((prev) => ({
                                     ...prev,
-                                    areas: id_areas,
+                                    areas: value,
                                 }))
                             }
                             }
