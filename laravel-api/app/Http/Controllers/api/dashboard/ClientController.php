@@ -60,31 +60,36 @@ class ClientController extends Controller
 
     public function update(Request $request, $id)
     {
-        return $request;
-
-        $client = new Client;
-        
        DB::beginTransaction();
 
         try {
 
-            DB::table('clients')
-            ->where('id', 3)
-            ->update(['title' => "Updated Title"]);
+                $client = Client::where('id',$id)->first();
+                $client->update($request->all());
+                $client->touch();
 
-            foreach ($request->areas as $area){ DB::table('client_areas')->insert(['client_id' => $client_id, 'area_id' => $area]); }
-                
-            DB::commit();
 
-            return response(["Message" => 'Cliente creado exitosamente'], Response::HTTP_OK);
+                foreach ($request->areas as $area){
+             
+                     DB::table('client_areas')->updateOrInsert(
+
+                        ['client_id' => $id, 'area_id' => $area],
+                        ['area_id' => $area]
+                    );
+
+             }
+                    
+                DB::commit();
+
+                return response(["Message" => 'Cliente actualizado exitosamente'], Response::HTTP_OK);
 
         }catch (Exception $e) {
             DB::rollback();
 
             if($e->getCode() == '23000')
-                return response(["Message" => 'No se pudo crear el cliente, verifique los datos'], Response::HTTP_BAD_REQUEST);    
+                return response(["Message" => 'No se pudo actualizar el cliente, verifique los datos'], Response::HTTP_BAD_REQUEST);    
             
-            return response(["Message" => 'No se pudo crear el cliente'], Response::HTTP_BAD_REQUEST);
+            return response(["Message" => 'No se pudo actualizar el cliente'], Response::HTTP_BAD_REQUEST);
         }   
     }
 
