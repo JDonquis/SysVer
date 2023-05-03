@@ -67,6 +67,8 @@ class ClientController extends Controller
 
     public function update(Request $request, $id)
     {
+
+
        DB::beginTransaction();
 
         try {
@@ -75,13 +77,14 @@ class ClientController extends Controller
                 $client->update($request->all());
                 $client->touch();
 
-
+                // return $request;
+                
                 foreach ($request->areas as $area){
-             
+                    
                      DB::table('client_areas')->updateOrInsert(
 
                         ['client_id' => $id, 'area_id' => $area['id']],
-                        ['area_id' => $area]
+                        ['area_id' => $area['id']]
                     );
 
              }
@@ -94,9 +97,9 @@ class ClientController extends Controller
             DB::rollback();
 
             if($e->getCode() == '23000')
-                return response(["Message" => 'No se pudo actualizar el cliente, verifique los datos'], Response::HTTP_BAD_REQUEST);    
+                return response(["Message" => 'No se pudo actualizar el cliente, verifique los datos',"ErrorMessage" => $e->getMessage()], Response::HTTP_BAD_REQUEST);    
             
-            return response(["Message" => 'No se pudo actualizar el cliente'], Response::HTTP_BAD_REQUEST);
+            return response(["Message" => 'No se pudo actualizar el cliente', "ErrorMessage" => $e->getMessage()], Response::HTTP_BAD_REQUEST);
         }   
     }
 
