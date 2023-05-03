@@ -109,9 +109,11 @@ export default function usuarios() {
             name: "areas",
             label: "Areas",
             options: {
-                customBodyRender: (value) => (
-                    <div>{value.map((obj) => `${obj.name}, `)}</div>
-                ),
+                customBodyRender: (value,tableMeta ) => {
+                    console.log({value, tableMeta})
+                   return <div>{value.map((obj) => `${obj.name} `)}</div>
+                } 
+                
             },
         },
     ];
@@ -170,7 +172,6 @@ export default function usuarios() {
         try {
             const id_user = usuarios[dataForDeleteUser.indx].id;
             const code = usuarios[dataForDeleteUser.indx].code;
-            console.log(code);
 
             await axios.delete(`dashboard/clients/${id_user}`);
 
@@ -221,7 +222,7 @@ export default function usuarios() {
 
     useEffect(() => { 
         getData();  
-        document.title = "Sysber | Usuarios";
+        document.title = "SysVer | Usuarios";
     }, []);
     const [open, setOpen] = useState(false);
     const [modalConfirm, setModalConfirm] = useState(false);
@@ -273,12 +274,10 @@ export default function usuarios() {
                 setOpen(false);
             }
             if (submitStatus === "Editar") {
-                console.log(newUserData);
                 setSubmitStatus('cargando...')
                 await axios
                     .put(`/dashboard/clients/${newUserData.id}`, newUserData)
                     .then((response) => {
-                        console.log(response);
                         setAlert({
                             open: true,
                             status: "Exito",
