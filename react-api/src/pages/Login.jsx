@@ -26,7 +26,7 @@ export default function login() {
     }
 
     useEffect(() => {
-      document.title = 'Sysber | Login'
+      document.title = 'SysVer | Login'
         document.querySelectorAll(".card_form input").forEach(input => {
             if (input.type !== 'file' && input.type !== 'submit') {
                 if (input.value ) {

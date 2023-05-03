@@ -214,7 +214,7 @@ export default function usuarios() {
 
     useEffect(() => {
         getData();
-        document.title = 'Sysber | Usuarios'
+        document.title = 'SysVer | Usuarios'
     }, []);
     const [open, setOpen] = useState(false);
     const [modalConfirm, setModalConfirm] = useState(false);
