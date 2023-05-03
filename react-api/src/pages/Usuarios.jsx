@@ -12,7 +12,7 @@ import { Modal, ModalDialog, Button } from "@mui/joy/";
 import ConfirmModal from "../components/ConfimModal";
 
 const divFlex = {
-  display:'flex', gap:'5px', marginBottom: '12px', justifyContent: 'space-between'
+  display:'flex', gap:'5px', marginBottom: '15px', justifyContent: 'space-between'
 }
 let fecha = new Date(),
 añoA = fecha.getFullYear(),
@@ -276,18 +276,15 @@ export default function usuarios() {
 
     return (
         <>
-            <Button
-                variant="outlined"
-                color="neutral"
-                className="mb-7"
-                startDecorator={<Add />}
+            <button
+                className="mb-7 border py-2 px-3 border-opacity-50 rounded-md border-dark"
                 onClick={() => {
                     setOpen(true)
                     setNewUserData({})
                 }}
-            >
+            >   <Add className="mr-2" />
                 Nuevo usuario
-            </Button>
+            </button>
 
             <Modal open={open} onClose={() => setOpen(false)}>
                 <ModalDialog
@@ -307,7 +304,9 @@ export default function usuarios() {
                                         ...prev,
                                         name: e.target.value,
                                     }))
+                                    
                                 }
+                                sx={{width: 223}}
                             />
                             <TextField
                                 label="Apellidos/s"
@@ -319,6 +318,7 @@ export default function usuarios() {
                                         last_name: e.target.value,
                                     }))
                                 }
+                                sx={{width: 223}}
                             />
                         </div>
                         <div style={divFlex}>
@@ -332,13 +332,16 @@ export default function usuarios() {
                                         ci: e.target.value,
                                     }))
                                 }
+                                sx={{width: 223}}
                             />
                             <TextField
                                 label="Código"
                                 variant="outlined"
                                 value={newUserData.code}
                                 disabled
+                                sx={{width: 223}}
                             />
+                            
                         </div>
                         <div style={divFlex}>
                             <TextField
@@ -368,6 +371,7 @@ export default function usuarios() {
                                         phone_number: e.target.value,
                                     }))
                                 }
+                                sx={{width: 223}}
                             />
                         </div>
 
@@ -468,7 +472,7 @@ export default function usuarios() {
                         <Autocomplete
                             multiple 
                             onChange={(event, value) => {
-                                
+                                delete value.pivot
                                 setNewUserData((prev) => ({
                                     ...prev,
                                     areas: value,
@@ -479,7 +483,7 @@ export default function usuarios() {
                             value={newUserData.areas}
                             options={all_areas_db}
                             getOptionLabel={(all_areas_db) => all_areas_db.name}
-                            // defaultValue={all_areas_db[0]}
+                            defaultValue={newUserData.areas}
                             filterSelectedOptions
                             renderInput={(params) => (
                                 <TextField

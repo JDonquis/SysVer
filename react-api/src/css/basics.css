@@ -16,7 +16,7 @@
   margin: 0;
   margin-bottom: 0;
   box-sizing: border-box;
-  font-family: "Manjari", sans-serif;
+  font-family: "Manjari", sans-serif !important;
 }
 
 p {
