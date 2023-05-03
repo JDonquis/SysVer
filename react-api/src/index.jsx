@@ -9,7 +9,7 @@ import { StyledEngineProvider } from "@mui/material";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
     <React.StrictMode>
-        <StyledEngineProvider injectFirst>
+        <StyledEngineProvider >
             <BrowserRouter>
                 <Routes>
                     <Route path="/" element={<Login />}></Route>

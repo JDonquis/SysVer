@@ -122,7 +122,7 @@ export default function login() {
                         </div>
                         <h1>Login</h1>
                     </span>
-                <div className="body_form mt-36">
+                <div className="body_form ">
 
                     <span>
                         <input

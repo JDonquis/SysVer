@@ -9,11 +9,27 @@ import Add from "@mui/icons-material/Add";
 // import Chip from '@material-ui/core/Chip';
 import { IconButton, TextField, Autocomplete, MenuItem } from "@mui/material";
 import { Modal, ModalDialog, Button } from "@mui/joy/";
+import ConfirmModal from "../components/ConfimModal";
+import { data } from "jquery";
+
+const divFlex = {
+  display:'flex', gap:'5px', marginBottom: '12px', justifyContent: 'space-between'
+}
+let fecha = new Date(),
+añoA = fecha.getFullYear(),
+mesA = fecha.getMonth() + 1,
+diaA = fecha.getDate();
 
 export default function usuarios() {
-    const bloodTypes = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
-
     const columns = [
+        {
+            name: "code",
+            label: "Código",
+            options: {
+                filter: false,
+            },
+        },
+
         {
             name: "name",
             label: "Nombres",
@@ -36,7 +52,7 @@ export default function usuarios() {
             },
         },
         {
-            name: "data_birth",
+            name: "birth_date",
             label: "F. de nacimiento",
             options: {
                 filter: false,
@@ -90,33 +106,53 @@ export default function usuarios() {
             name: "areas",
             label: "Areas",
             options: {
-                customBodyRender: (value) => <div>{value.join(", ")}</div>,
+                customBodyRender: (value) => (
+                    <div>{value.map((obj) => `${obj.name}, `)}</div>
+                ),
             },
         },
     ];
 
+    const [dataForDeleteUser, setDataForDeleteUser] = useState({
+        indx: "",
+        setSelectedRows: () => {},
+    });
+    // const [rowSelected, setRowSelected] = useState([])
     const options = {
         filterType: "checkbox",
         responsive: "vertical",
         selectableRowsOnClick: true,
         // selectableRowsOnClick: true,
-        selectableRows: "multiple",
+        selectableRows: "single",
+        // rowsSelected:rowSelected,
+
         // onRowSelectionChange: (currentRowsSelected, allRowsSelected, rowsSelected) => console.log({currentRowsSelected, allRowsSelected, rowsSelected}),
 
         customToolbarSelect: (selectedRows, displayData, setSelectedRows) => (
             <div>
                 <IconButton
-                    onClick={() => console.log(displayData)}
                     title="Editar"
+                    onClick={() =>
+                        editIconClick(
+                            selectedRows,
+                            displayData,
+                            setSelectedRows
+                        )
+                    }
                 >
                     <EditIcon />
                 </IconButton>
 
                 <IconButton
-                    onClick={() =>
-                        deleteRow(selectedRows, displayData, setSelectedRows)
-                    }
                     title="Eliminar"
+                    onClick={() => {
+                        console.log({ selectedRows, displayData });
+                        setModalConfirm(true);
+                        setDataForDeleteUser({
+                            indx: displayData[0].dataIndex,
+                            setSelectedRows: setSelectedRows,
+                        });
+                    }}
                 >
                     <DeleteIcon />
                 </IconButton>
@@ -126,25 +162,44 @@ export default function usuarios() {
         // onRowSelect: function(rowData, rowMeta) {console.log(rowData, rowMeta)},
     };
 
-    function deleteRow(selectedRows, displayData, setSelectedRows) {
-        const arrIndxToDelete = Object.keys(selectedRows.lookup);
-        arrIndxToDelete.forEach((v, i) => {
-            console.log(data[v]);
-            setData((prev) =>
-                prev.filter((eachUser, indx) => eachUser.ci != data[v].ci)
-            );
-        });
-        setSelectedRows([]);
+    function deleteUser() {
+        const id_user = usuarios[dataForDeleteUser.indx].id;
+        setUsuarios((prev) => prev.filter((eachU) => eachU.id != id_user));
+        // const arrIndxToDelete = Object.keys(selectedRows.lookup);
+        // arrIndxToDelete.forEach((v, i) => {
+        //     console.log(data[v]);
+        //     setData((prev) =>
+        //         prev.filter((eachUser, indx) => eachUser.ci != data[v].ci)
+        //     );
+        // });
+        dataForDeleteUser.setSelectedRows([]);
+    }
+
+    function editIconClick(selectedRows, displayData, setSelectedRows) {
+        // console.log(displayData);
+        const indx = displayData[0].dataIndex;
+        // console.log(usuarios[indx]);
+        setNewUserData(usuarios[indx]);
+        setOpen(true);
+        setSubmitStatus("Editar");
+        // setNewUserData()
     }
 
     const apiUrl = "dashboard/clients";
 
     const [usuarios, setUsuarios] = useState([]);
+    const [all_areas_db, setAll_areas_db] = useState([]);
+    const [all_blood_types, setAll_blood_types] = useState([]);
+    console.log(usuarios);
+
     const getData = async () => {
         await axios.get(apiUrl).then((response) => {
             const data = response.data;
             // console.log(data);
             setUsuarios(data.clients);
+            // console.log(data)
+            setAll_areas_db(data.all_areas_db);
+            setAll_blood_types(data.blood_types);
         });
     };
 
@@ -152,7 +207,7 @@ export default function usuarios() {
         getData();
     }, []);
     const [open, setOpen] = useState(false);
-
+    const [modalConfirm, setModalConfirm] = useState(false);
     const [newUserData, setNewUserData] = useState({
         name: "",
         last_name: "",
@@ -169,32 +224,42 @@ export default function usuarios() {
         areas: [],
     });
 
-    console.log(newUserData);
-    const [all_areas_bd, setAll_areas_bd] = useState([
-        "gym",
-        "boxeo",
-        "baile",
-        "merequetengue",
-    ]);
+    function calculateAge(date_bith){
+        let n = 0;
+        let añoN, mesN, diaN;
+        [añoN, mesN, diaN] = date_bith.split('-')
 
-    const all_blood_types = [
-        {
-          value: 'USD',
-          label: '$',
-        },
-        {
-          value: 'EUR',
-          label: '€',
-        },
-        {
-          value: 'BTC',
-          label: '฿',
-        },
-        {
-          value: 'JPY',
-          label: '¥',
-        },
-      ];
+        n = +añoA - +añoN
+        if ((mesA < mesN) || ((mesA == mesN) && (diaA < diaN))) n--
+        
+        return n
+    }
+
+    const [submitStatus, setSubmitStatus] = useState("Inscribir");
+    console.log(newUserData);
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            if (submitStatus === "Inscribir") {
+                await axios.post(`/dashboard/clients/`, newUserData).then((response) => {
+                    const data = response.data;
+                    console.log(response)
+                    // setUsuarios(prev=> [...prev, data])
+                });;
+            }
+            if (submitStatus === "Editar") {
+                await axios.update(
+                    `/dashboard/clients/${newUserData.id}`,
+                    setUsuarios(prev=> [...prev, newUserData])
+                );
+            }
+        } catch (error) {
+            alert(error.response.data.message);
+            console.log(error.response.data);
+        }
+    };
+
     return (
         <>
             <Button
@@ -206,20 +271,16 @@ export default function usuarios() {
             >
                 Nuevo usuario
             </Button>
+
             <Modal open={open} onClose={() => setOpen(false)}>
                 <ModalDialog
                     aria-labelledby="basic-modal-dialog-title"
                     aria-describedby="basic-modal-dialog-description"
                     className="min-w-[465px] max-w-[465px] min-h-min"
+                    
                 >
-                    <form
-                        onSubmit={(event) => {
-                            event.preventDefault();
-                            setOpen(false);
-                        }}
-                        className="w-full"
-                    >
-                        <div className="flex gap-2 mb-5 justify-between">
+                    <form onSubmit={handleSubmit} className="w-full">
+                        <div style={divFlex}>
                             <TextField
                                 label="Nombres/s"
                                 variant="outlined"
@@ -234,6 +295,7 @@ export default function usuarios() {
                             <TextField
                                 label="Apellidos/s"
                                 variant="outlined"
+                                value={newUserData.last_name}
                                 onChange={(e) =>
                                     setNewUserData((prev) => ({
                                         ...prev,
@@ -242,7 +304,7 @@ export default function usuarios() {
                                 }
                             />
                         </div>
-                        <div className="flex gap-2 mb-5 justify-between">
+                        <div style={divFlex}>
                             <TextField
                                 label="Cédula"
                                 variant="outlined"
@@ -257,11 +319,11 @@ export default function usuarios() {
                             <TextField
                                 label="Código"
                                 variant="outlined"
-                                value={"jdfjia"}
+                                value={newUserData.code}
                                 disabled
                             />
                         </div>
-                        <div className="flex gap-2 mb-5 justify-between">
+                        <div style={divFlex}>
                             <TextField
                                 type="date"
                                 className="w-[223px]"
@@ -273,8 +335,10 @@ export default function usuarios() {
                                     setNewUserData((prev) => ({
                                         ...prev,
                                         birth_date: e.target.value,
+                                        age: calculateAge(e.target.value)
                                     }))
                                 }
+                                sx={{width: 223}}
                             />
                             <TextField
                                 label="Nro de teléfono"
@@ -290,7 +354,7 @@ export default function usuarios() {
                             />
                         </div>
 
-                        <div className="flex gap-2 mb-5 justify-between">
+                        <div style={divFlex}>
                             <TextField
                                 id="outlined-textarea"
                                 label="Dirección"
@@ -302,6 +366,8 @@ export default function usuarios() {
                                         address: e.target.value,
                                     }))
                                 }
+                                sx={{width: 223}}
+
                             />
                             <TextField
                                 id="outlined-textarea"
@@ -314,39 +380,27 @@ export default function usuarios() {
                                         collaboration: e.target.value,
                                     }))
                                 }
+                                sx={{width: 223}}
+
                             />
                         </div>
-                        <div className="flex gap-2 mb-5 justify-between">
-                            {/* <Autocomplete
-                                disablePortal
-                                id="combo-box-demo"
-                                options={bloodTypes}
-                                value={newUserData.blood_type_id}
-                                onChange={(e, newValue) =>
-                                    setNewUserData(prev => ({...prev, blood_type_id: e.target.value}))
-                                }
-                                sx={{ width: 110 }}
-                                className="pr-0"
-                                renderInput={(params) => (
-                                    <TextField
-                                        {...params}
-                                        label="T. de sangre"
-                                    />
-                                )}
-                            /> */}
+                        <div style={divFlex}>
                             <TextField
                                 id="outlined-select-currency"
                                 select
-                                label="Select"
-                                defaultValue="EUR"
-                                helperText="Please select your currency"
+                                label="T. de sangre"
+                                value={newUserData.blood_type_id}
+                                onChange={(e) =>
+                                    setNewUserData((prev) => ({
+                                        ...prev,
+                                        blood_type_id: e.target.value,
+                                    }))
+                                }
+                                sx={{ width: 110 }}
                             >
-                                {currencies.map((option) => (
-                                    <MenuItem
-                                        key={option.value}
-                                        value={option.value}
-                                    >
-                                        {option.label}
+                                {all_blood_types.map((option) => (
+                                    <MenuItem key={option.id} value={option.id}>
+                                        {option.name}
                                     </MenuItem>
                                 ))}
                             </TextField>
@@ -355,7 +409,8 @@ export default function usuarios() {
                                 id="outlined-select-currency"
                                 label="Sexo"
                                 // defaultValue="EUR"
-                                value={10}
+                                select
+                                value={newUserData.sex}
                                 onChange={(e) =>
                                     setNewUserData((prev) => ({
                                         ...prev,
@@ -364,8 +419,8 @@ export default function usuarios() {
                                 }
                                 sx={{ width: 110 }}
                             >
-                                <MenuItem value={10}>F</MenuItem>
-                                <MenuItem value={20}>M</MenuItem>
+                                <MenuItem value={"F"}>F</MenuItem>
+                                <MenuItem value={"M"}>M</MenuItem>
                             </TextField>
 
                             <TextField
@@ -394,11 +449,18 @@ export default function usuarios() {
                             />
                         </div>
                         <Autocomplete
-                            multiple
+                            multiple 
+                            onChange={(event, value) =>
+                                setNewUserData((prev) => ({
+                                    ...prev,
+                                    areas: value,
+                                }))
+                            }
                             id="tags-outlined"
-                            options={all_areas_bd}
-                            // getOptionLabel={(option) => option.title}
-                            defaultValue={[all_areas_bd[0]]}
+                            value={newUserData.areas}
+                            options={all_areas_db}
+                            getOptionLabel={(all_areas_db) => all_areas_db.name}
+                            // defaultValue={all_areas_db[0]}
                             filterSelectedOptions
                             renderInput={(params) => (
                                 <TextField
@@ -408,19 +470,32 @@ export default function usuarios() {
                                 />
                             )}
                         />
-                        <Button type="submit" className="w-full bg_purple mt-5">
-                            Guardar
-                        </Button>
+                        <button
+                            type="submit"
+                            value={submitStatus}
+                            style={{width: '100%', background: '#A64684', padding: '10px', marginTop: '15px', borderRadius: '5px', color: 'white',}}
+                        >
+                            {submitStatus}
+                        </button>
                     </form>
-                </ModalDialog>
+                </ModalDialog>   
             </Modal>
+
+            {/* modal de confimar eliminar */}  
+ 
             <MUIDataTable
                 isRowSelectable={true}
                 title={"Tabla de Usuarios"}
                 data={usuarios}
                 columns={columns}
                 options={options}
+
             />
+
+            <ConfirmModal closeModal={()=> {
+                setModalConfirm(false)
+                // setRowSelected([])
+            } } isOpen={modalConfirm} aceptFunction={() => deleteUser()}  />
         </>
     );
 }
