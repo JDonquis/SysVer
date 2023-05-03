@@ -76,8 +76,6 @@ class ClientController extends Controller
                 $client = Client::where('id',$id)->first();
                 $client->update($request->all());
                 $client->touch();
-
-                // return $request;
                 
                 foreach ($request->areas as $area){
                     
