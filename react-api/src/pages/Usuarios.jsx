@@ -10,7 +10,6 @@ import Add from "@mui/icons-material/Add";
 import { IconButton, TextField, Autocomplete, MenuItem } from "@mui/material";
 import { Modal, ModalDialog, Button } from "@mui/joy/";
 import ConfirmModal from "../components/ConfimModal";
-import { data } from "jquery";
 
 const divFlex = {
   display:'flex', gap:'5px', marginBottom: '12px', justifyContent: 'space-between'
@@ -125,7 +124,7 @@ export default function usuarios() {
         // selectableRowsOnClick: true,
         selectableRows: "single",
         // rowsSelected:rowSelected,
-
+        fixedHeader: true,
         // onRowSelectionChange: (currentRowsSelected, allRowsSelected, rowsSelected) => console.log({currentRowsSelected, allRowsSelected, rowsSelected}),
 
         customToolbarSelect: (selectedRows, displayData, setSelectedRows) => (
@@ -162,17 +161,25 @@ export default function usuarios() {
         // onRowSelect: function(rowData, rowMeta) {console.log(rowData, rowMeta)},
     };
 
-    function deleteUser() {
-        const id_user = usuarios[dataForDeleteUser.indx].id;
-        setUsuarios((prev) => prev.filter((eachU) => eachU.id != id_user));
-        // const arrIndxToDelete = Object.keys(selectedRows.lookup);
-        // arrIndxToDelete.forEach((v, i) => {
-        //     console.log(data[v]);
-        //     setData((prev) =>
-        //         prev.filter((eachUser, indx) => eachUser.ci != data[v].ci)
-        //     );
-        // });
-        dataForDeleteUser.setSelectedRows([]);
+    const deleteUser = async () => {
+
+        try {
+            const id_user = usuarios[dataForDeleteUser.indx].id;
+            
+            await axios.delete(`dashboard/clients/${id_user}`)
+        
+            setUsuarios((prev) => prev.filter((eachU) => eachU.id != id_user));
+            // const arrIndxToDelete = Object.keys(selectedRows.lookup);
+            // arrIndxToDelete.forEach((v, i) => {
+            //     console.log(data[v]);
+            //     setData((prev) =>
+            //         prev.filter((eachUser, indx) => eachUser.ci != data[v].ci)
+            //     );
+            // });
+            dataForDeleteUser.setSelectedRows([]);
+        } catch (error) {
+            
+        }
     }
 
     function editIconClick(selectedRows, displayData, setSelectedRows) {
@@ -251,7 +258,7 @@ export default function usuarios() {
             if (submitStatus === "Editar") {
                 await axios.update(
                     `/dashboard/clients/${newUserData.id}`,
-                    setUsuarios(prev=> [...prev, newUserData])
+                    setUsuarios(prev=> [...prev, newUserData    ])
                 );
             }
         } catch (error) {
@@ -267,7 +274,10 @@ export default function usuarios() {
                 color="neutral"
                 className="mb-7"
                 startDecorator={<Add />}
-                onClick={() => setOpen(true)}
+                onClick={() => {
+                    setOpen(true)
+                    setNewUserData({})
+                }}
             >
                 Nuevo usuario
             </Button>
@@ -450,11 +460,13 @@ export default function usuarios() {
                         </div>
                         <Autocomplete
                             multiple 
-                            onChange={(event, value) =>
+                            onChange={(event, value) => {
+                                const id_areas =value.map(obj=> obj.id)
                                 setNewUserData((prev) => ({
                                     ...prev,
-                                    areas: value,
+                                    areas: id_areas,
                                 }))
+                            }
                             }
                             id="tags-outlined"
                             value={newUserData.areas}
