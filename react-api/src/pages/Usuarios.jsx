@@ -242,6 +242,7 @@ export default function usuarios() {
         e.preventDefault();
         try {
             if (submitStatus === "Inscribir") {
+                console.log(newUserData);
                 await axios.post(`/dashboard/clients/`, newUserData).then((response) => {
                     const data = response.data;
                     console.log(response)
