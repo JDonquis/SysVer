@@ -23,6 +23,7 @@ class ClientController extends Controller
 
     public function store(Request $request)
     {   
+
         $client = new Client;
         
        DB::beginTransaction();
@@ -40,7 +41,13 @@ class ClientController extends Controller
 
             $client_id = $client->latest('id')->first()->id;
 
-            foreach ($request->areas as $area){ DB::table('client_areas')->insert(['client_id' => $client_id, 'area_id' => $area]); }
+            
+
+            foreach ($request->areas as $area){ 
+
+                DB::table('client_areas')->insert(['client_id' => $client_id, 'area_id' => $area['id'] ] ); 
+
+            }
 
             $client_created = Client::where('id',$client_id)->with('blood_types','areas')->first();
                 
@@ -52,9 +59,9 @@ class ClientController extends Controller
             DB::rollback();
 
             if($e->getCode() == '23000')
-                return response(["Message" => 'No se pudo crear el cliente, verifique los datos'], Response::HTTP_BAD_REQUEST);    
+                return response(["Message" => 'No se pudo crear el cliente, verifique los datos', 'ErrorMessage' => $e->getMessage()], Response::HTTP_BAD_REQUEST);    
             
-            return response(["Message" => 'No se pudo crear el cliente'], Response::HTTP_BAD_REQUEST);
+            return response(["Message" => 'No se pudo crear el cliente','ErrorMessage' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
         }   
     }
 
@@ -73,7 +80,7 @@ class ClientController extends Controller
              
                      DB::table('client_areas')->updateOrInsert(
 
-                        ['client_id' => $id, 'area_id' => $area],
+                        ['client_id' => $id, 'area_id' => $area['id']],
                         ['area_id' => $area]
                     );
 
