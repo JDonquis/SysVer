@@ -10,14 +10,18 @@ import Add from "@mui/icons-material/Add";
 import { IconButton, TextField, Autocomplete, MenuItem } from "@mui/material";
 import { Modal, ModalDialog, Button } from "@mui/joy/";
 import ConfirmModal from "../components/ConfimModal";
+import Alert from "../components/Alert";
 
 const divFlex = {
-  display:'flex', gap:'5px', marginBottom: '15px', justifyContent: 'space-between'
-}
+    display: "flex",
+    gap: "5px",
+    marginBottom: "15px",
+    justifyContent: "space-between",
+};
 let fecha = new Date(),
-añoA = fecha.getFullYear(),
-mesA = fecha.getMonth() + 1,
-diaA = fecha.getDate();
+    añoA = fecha.getFullYear(),
+    mesA = fecha.getMonth() + 1,
+    diaA = fecha.getDate();
 
 export default function usuarios() {
     const columns = [
@@ -122,6 +126,7 @@ export default function usuarios() {
         responsive: "vertical",
         selectableRowsOnClick: true,
         // selectableRowsOnClick: true,
+        selectableRowsHideCheckboxes: true,
         selectableRows: "single",
         // rowsSelected:rowSelected,
         fixedHeader: true,
@@ -162,16 +167,13 @@ export default function usuarios() {
     };
 
     const deleteUser = async () => {
-
         try {
             const id_user = usuarios[dataForDeleteUser.indx].id;
             const code = usuarios[dataForDeleteUser.indx].code;
-            console.log(code)
+            console.log(code);
 
-            
-            await axios.delete(`dashboard/clients/${id_user}`)
-        
-            setUsuarios((prev) => prev.filter((eachU) => eachU.id != id_user));
+            await axios.delete(`dashboard/clients/${id_user}`);
+
             // const arrIndxToDelete = Object.keys(selectedRows.lookup);
             // arrIndxToDelete.forEach((v, i) => {
             //     console.log(data[v]);
@@ -179,11 +181,16 @@ export default function usuarios() {
             //         prev.filter((eachUser, indx) => eachUser.ci != data[v].ci)
             //     );
             // });
+            setAlert({
+                open: true,
+                status: "Exito",
+                message: `El usuario ha sido Eliminado`,
+            });
+            setUsuarios((prev) => prev.filter((eachU) => eachU.id != id_user));
+
             dataForDeleteUser.setSelectedRows([]);
-        } catch (error) {
-            
-        }
-    }
+        } catch (error) {}
+    };
 
     function editIconClick(selectedRows, displayData, setSelectedRows) {
         // console.log({displayData});
@@ -212,9 +219,9 @@ export default function usuarios() {
         });
     };
 
-    useEffect(() => {
-        getData();
-        document.title = 'SysVer | Usuarios'
+    useEffect(() => { 
+        getData();  
+        document.title = "Sysber | Usuarios";
     }, []);
     const [open, setOpen] = useState(false);
     const [modalConfirm, setModalConfirm] = useState(false);
@@ -234,15 +241,15 @@ export default function usuarios() {
         areas: {},
     });
 
-    function calculateAge(date_bith){
+    function calculateAge(date_bith) {
         let n = 0;
         let añoN, mesN, diaN;
-        [añoN, mesN, diaN] = date_bith.split('-')
+        [añoN, mesN, diaN] = date_bith.split("-");
 
-        n = +añoA - +añoN
-        if ((mesA < mesN) || ((mesA == mesN) && (diaA < diaN))) n--
-        
-        return n
+        n = +añoA - +añoN;
+        if (mesA < mesN || (mesA == mesN && diaA < diaN)) n--;
+
+        return n;
     }
 
     const [submitStatus, setSubmitStatus] = useState("Inscribir");
@@ -252,46 +259,83 @@ export default function usuarios() {
         e.preventDefault();
         try {
             if (submitStatus === "Inscribir") {
-                await axios.post(`/dashboard/clients/`, newUserData).then((response) => {
-                    const client = response.data.client;
-                    setUsuarios(prev=> [...prev, client])
-                });;
-                setOpen(false)
+                await axios
+                    .post(`/dashboard/clients/`, newUserData)
+                    .then((response) => {
+                        const client = response.data.client;
+                        setUsuarios((prev) => [...prev, client]);
+                    });
+                    setAlert({
+                        open: true,
+                        status: "Exito",
+                        message: `El usuario ${newUserData.name} ha sido creado`,
+                    });
+                setOpen(false);
             }
             if (submitStatus === "Editar") {
-                console.log(newUserData)
-                await axios.put(
-                    `/dashboard/clients/${newUserData.id}`,newUserData).then((response) => {
-                        console.log(response)
-                    })
-                    setUsuarios(prev=> prev.map(user => user.id === newUserData.id ? newUserData : user))
-                setOpen(false)
+                console.log(newUserData);
+                setSubmitStatus('cargando...')
+                await axios
+                    .put(`/dashboard/clients/${newUserData.id}`, newUserData)
+                    .then((response) => {
+                        console.log(response);
+                        setAlert({
+                            open: true,
+                            status: "Exito",
+                            message: `${newUserData.name} ha sido editado`,
+                        });
+                    });
+                setUsuarios((prev) =>
+                    prev.map((user) =>
+                        user.id === newUserData.id ? newUserData : user
+                    )
+                );
+                setOpen(false);
 
             }
         } catch (error) {
-            alert(error.response.data.message);
             console.log(error.response.data);
+            setAlert({
+                open: true,
+                status: "Error",
+                message: `Algo salió mal`,
+            });
+            setSubmitStatus(() => newUserData.id >0 ? 'Editar' : 'Inscribir')
         }
+
     };
 
+    const [alert, setAlert] = useState({
+        open: false,
+        status: "",
+        message: "",
+    });
+    useEffect(() => {
+        setTimeout(() => {
+            setAlert({open: false, message:'', status: ''})
+        }, 3000);
+    }, [alert.open === true])
     return (
         <>
             <button
-                className="mb-7 border py-2 px-3 border-opacity-50 rounded-md border-dark"
+                className="mb-7 border py-2 px-3 border-opacity-40 rounded-md border-dark"
                 onClick={() => {
-                    setOpen(true)
-                    setNewUserData({})
+                    setOpen(true);
+                    setNewUserData({});
+                    setSubmitStatus("Inscribir");
                 }}
-            >   <Add className="mr-2" />
+            >
+                {" "}
+                <Add className="mr-2" />
                 Nuevo usuario
             </button>
 
-            <Modal open={open} onClose={() => setOpen(false)}>
+            <Modal open={open} onClose={() => setOpen(false)} sx={{zIndex: '1'}}>
                 <ModalDialog
                     aria-labelledby="basic-modal-dialog-title"
                     aria-describedby="basic-modal-dialog-description"
                     className="min-w-[465px] max-w-[465px] min-h-min"
-                    
+                    style={{ overflowY: "scroll", scrollbarWidth: "none" }}
                 >
                     <form onSubmit={handleSubmit} className="w-full">
                         <div style={divFlex}>
@@ -304,9 +348,8 @@ export default function usuarios() {
                                         ...prev,
                                         name: e.target.value,
                                     }))
-                                    
                                 }
-                                sx={{width: 223}}
+                                sx={{ width: 223 }}
                             />
                             <TextField
                                 label="Apellidos/s"
@@ -318,12 +361,13 @@ export default function usuarios() {
                                         last_name: e.target.value,
                                     }))
                                 }
-                                sx={{width: 223}}
+                                sx={{ width: 223 }}
                             />
                         </div>
                         <div style={divFlex}>
                             <TextField
                                 label="Cédula"
+                                inputProps={{ minLength: 6, maxLength: 10 }}
                                 variant="outlined"
                                 value={newUserData.ci}
                                 onChange={(e) =>
@@ -332,16 +376,15 @@ export default function usuarios() {
                                         ci: e.target.value,
                                     }))
                                 }
-                                sx={{width: 223}}
+                                sx={{ width: 223 }}
                             />
                             <TextField
                                 label="Código"
                                 variant="outlined"
                                 value={newUserData.code}
                                 disabled
-                                sx={{width: 223}}
+                                sx={{ width: 223 }}
                             />
-                            
                         </div>
                         <div style={divFlex}>
                             <TextField
@@ -355,15 +398,16 @@ export default function usuarios() {
                                     setNewUserData((prev) => ({
                                         ...prev,
                                         birth_date: e.target.value,
-                                        age: calculateAge(e.target.value)
+                                        age: calculateAge(e.target.value),
                                     }))
                                 }
-                                sx={{width: 223}}
+                                sx={{ width: 223 }}
                             />
                             <TextField
                                 label="Nro de teléfono"
                                 variant="outlined"
                                 type="tel"
+                                inputProps={{ maxLength: 14, minLength: 10 }}
                                 value={newUserData.phone_number}
                                 onChange={(e) =>
                                     setNewUserData((prev) => ({
@@ -371,7 +415,7 @@ export default function usuarios() {
                                         phone_number: e.target.value,
                                     }))
                                 }
-                                sx={{width: 223}}
+                                sx={{ width: 223 }}
                             />
                         </div>
 
@@ -387,8 +431,7 @@ export default function usuarios() {
                                         address: e.target.value,
                                     }))
                                 }
-                                sx={{width: 223}}
-
+                                sx={{ width: 223 }}
                             />
                             <TextField
                                 id="outlined-textarea"
@@ -401,8 +444,7 @@ export default function usuarios() {
                                         collaboration: e.target.value,
                                     }))
                                 }
-                                sx={{width: 223}}
-
+                                sx={{ width: 223 }}
                             />
                         </div>
                         <div style={divFlex}>
@@ -470,15 +512,14 @@ export default function usuarios() {
                             />
                         </div>
                         <Autocomplete
-                            multiple 
+                            multiple
                             onChange={(event, value) => {
-                                delete value.pivot
+                                delete value.pivot;
                                 setNewUserData((prev) => ({
                                     ...prev,
                                     areas: value,
-                                }))
-                            }
-                            }
+                                }));
+                            }}
                             id="tags-outlined"
                             value={newUserData.areas}
                             options={all_areas_db}
@@ -496,29 +537,45 @@ export default function usuarios() {
                         <button
                             type="submit"
                             value={submitStatus}
-                            style={{width: '100%', background: '#A64684', padding: '10px', marginTop: '15px', borderRadius: '5px', color: 'white',}}
+                            style={{
+                                width: "100%",
+                                background: "#A64684",
+                                padding: "10px",
+                                marginTop: "15px",
+                                borderRadius: "5px",
+                                color: "white",
+                            }}
                         >
                             {submitStatus}
                         </button>
                     </form>
-                </ModalDialog>   
+                </ModalDialog>
             </Modal>
 
-            {/* modal de confimar eliminar */}  
- 
+            {/* modal de confimar eliminar */}
+
             <MUIDataTable
                 isRowSelectable={true}
                 title={"Tabla de Usuarios"}
-                data={usuarios}
+                data={usuarios} 
                 columns={columns}
                 options={options}
-
+            />
+ 
+            <Alert  
+                open={alert.open}
+                status={alert.status}
+                message={alert.message}
             />
 
-            <ConfirmModal closeModal={()=> {
-                setModalConfirm(false)
-                // setRowSelected([])
-            } } isOpen={modalConfirm} aceptFunction={() => deleteUser()}  />
+            <ConfirmModal
+                closeModal={() => {
+                    setModalConfirm(false);
+                    // setRowSelected([])
+                }}
+                isOpen={modalConfirm}
+                aceptFunction={() => deleteUser()}
+            />
         </>
     );
 }
