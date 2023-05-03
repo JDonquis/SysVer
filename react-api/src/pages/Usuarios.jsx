@@ -145,10 +145,10 @@ export default function usuarios() {
                 <IconButton
                     title="Eliminar"
                     onClick={() => {
-                        console.log({ selectedRows, displayData });
+                        // console.log({ selectedRows, displayData });
                         setModalConfirm(true);
                         setDataForDeleteUser({
-                            indx: displayData[0].dataIndex,
+                            indx: selectedRows.data[0].dataIndex,
                             setSelectedRows: setSelectedRows,
                         });
                     }}
@@ -165,6 +165,9 @@ export default function usuarios() {
 
         try {
             const id_user = usuarios[dataForDeleteUser.indx].id;
+            const code = usuarios[dataForDeleteUser.indx].code;
+            console.log(code)
+
             
             await axios.delete(`dashboard/clients/${id_user}`)
         
@@ -183,8 +186,8 @@ export default function usuarios() {
     }
 
     function editIconClick(selectedRows, displayData, setSelectedRows) {
-        // console.log(displayData);
-        const indx = displayData[0].dataIndex;
+        // console.log({displayData});
+        const indx = selectedRows.data[0].dataIndex;
         // console.log(usuarios[indx]);
         setNewUserData(usuarios[indx]);
         setOpen(true);
@@ -197,7 +200,6 @@ export default function usuarios() {
     const [usuarios, setUsuarios] = useState([]);
     const [all_areas_db, setAll_areas_db] = useState([]);
     const [all_blood_types, setAll_blood_types] = useState([]);
-    console.log(usuarios);
 
     const getData = async () => {
         await axios.get(apiUrl).then((response) => {
@@ -212,6 +214,7 @@ export default function usuarios() {
 
     useEffect(() => {
         getData();
+        document.title = 'Sysber | Usuarios'
     }, []);
     const [open, setOpen] = useState(false);
     const [modalConfirm, setModalConfirm] = useState(false);
@@ -228,7 +231,7 @@ export default function usuarios() {
         address: "",
         phone_number: "",
         collaboration: "",
-        areas: [],
+        areas: {},
     });
 
     function calculateAge(date_bith){
@@ -250,18 +253,20 @@ export default function usuarios() {
         try {
             if (submitStatus === "Inscribir") {
                 await axios.post(`/dashboard/clients/`, newUserData).then((response) => {
-                    console.log(response)
                     const client = response.data.client;
                     setUsuarios(prev=> [...prev, client])
                 });;
+                setOpen(false)
             }
             if (submitStatus === "Editar") {
-                console.log(submitStatus)
                 console.log(newUserData)
                 await axios.put(
-                    `/dashboard/clients/${newUserData.id}`,
+                    `/dashboard/clients/${newUserData.id}`,newUserData).then((response) => {
+                        console.log(response)
+                    })
                     setUsuarios(prev=> prev.map(user => user.id === newUserData.id ? newUserData : user))
-                );
+                setOpen(false)
+
             }
         } catch (error) {
             alert(error.response.data.message);

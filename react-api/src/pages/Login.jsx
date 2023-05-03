@@ -26,7 +26,7 @@ export default function login() {
     }
 
     useEffect(() => {
-      
+      document.title = 'Sysber | Login'
         document.querySelectorAll(".card_form input").forEach(input => {
             if (input.type !== 'file' && input.type !== 'submit') {
                 if (input.value ) {
@@ -148,7 +148,7 @@ export default function login() {
                         
                     </span>
                 </div>
-                    <input type="submit" className={`btn_submit disabled position-md-absolute ${ci.trim().length > 6 && password.trim().length > 1 ? 'active' : 'disabled'}` } value="INICIAR &#x25B8;" />
+                    <input type="submit" className={`btn_submit mt-3  pt-3 disabled position-md-absolute ${ci.trim().length > 6 && password.trim().length > 1 ? 'active' : 'disabled'}` } value="INICIAR &#x25B8;" />
                 </form>
             </div>
         </div>
