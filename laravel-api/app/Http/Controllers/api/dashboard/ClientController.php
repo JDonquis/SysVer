@@ -77,13 +77,19 @@ class ClientController extends Controller
                 $client->update($request->all());
                 $client->touch();
                 
+                $area_ids = array();
                 foreach ($request->areas as $area){
+
+                    array_push($area_ids, $area['id']);
                     
                      DB::table('client_areas')->updateOrInsert(
 
                         ['client_id' => $id, 'area_id' => $area['id']],
                         ['area_id' => $area['id']]
                     );
+
+
+                $deleted = DB::table('client_areas')->where('client_id', '=', $id)->whereNotIn('area_id',$area_ids)->delete();
 
              }
                     
