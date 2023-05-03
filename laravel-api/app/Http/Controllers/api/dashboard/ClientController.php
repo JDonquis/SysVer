@@ -40,7 +40,7 @@ class ClientController extends Controller
 
             $client_id = $client->latest('id')->first()->id;
 
-            foreach ($request->areas as $area){ DB::table('client_areas')->insert(['client_id' => $client_id, 'area_id' => $area['id']]); }
+            foreach ($request->areas as $area){ DB::table('client_areas')->insert(['client_id' => $client_id, 'area_id' => $area]); }
 
             $client_created = Client::where('id',$client_id)->with('blood_types','areas')->first();
                 
@@ -73,7 +73,7 @@ class ClientController extends Controller
              
                      DB::table('client_areas')->updateOrInsert(
 
-                        ['client_id' => $id, 'area_id' => $area['id']],
+                        ['client_id' => $id, 'area_id' => $area],
                         ['area_id' => $area]
                     );
 
