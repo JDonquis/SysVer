@@ -41,10 +41,12 @@ class ClientController extends Controller
             $client_id = $client->latest('id')->first()->id;
 
             foreach ($request->areas as $area){ DB::table('client_areas')->insert(['client_id' => $client_id, 'area_id' => $area]); }
+
+            $client_created = Client::where('id',$client_id)->with('blood_types','areas')->first();
                 
             DB::commit();
 
-            return response(["Message" => 'Cliente creado exitosamente'], Response::HTTP_OK);
+            return response(["Message" => 'Cliente creado exitosamente', "client" => $client_created], Response::HTTP_OK);
 
         }catch (Exception $e) {
             DB::rollback();
