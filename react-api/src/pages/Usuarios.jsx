@@ -24,6 +24,7 @@ let fecha = new Date(),
     diaA = fecha.getDate();
 
 export default function usuarios() {
+   
     const columns = [
         {
             name: "code",
@@ -83,13 +84,13 @@ export default function usuarios() {
                 filter: false,
             },
         },
-        // {
-        //     name: "blood_types",
-        //     label: "Tipo de sangre",
-        //     options: {
-        //         customBodyRender: (value) => <div>{value.name}</div>,
-        //     },
-        // },
+        {
+            name: "blood_types",
+            label: "T. de sangre",
+            options: {
+                customBodyRender: (value) => <div>{value.name}</div>,
+            },
+        },
         {
             name: "address",
             label: "Dirección",
@@ -106,14 +107,13 @@ export default function usuarios() {
             label: "Colaboración",
         },
         {
-            name: "areas",
+            name: "array_areas",
             label: "Areas",
             options: {
-                customBodyRender: (value,tableMeta ) => {
-                    console.log({value, tableMeta})
-                   return <div>{value.map((obj) => `${obj.name} `)}</div>
-                } 
-                
+                customBodyRender: (value, tableMeta) => {
+                    // console.log({value, tableMeta})
+                    return <div>{value.map((area) => `${area} `)}</div>;
+                },
             },
         },
     ];
@@ -213,17 +213,23 @@ export default function usuarios() {
         await axios.get(apiUrl).then((response) => {
             const data = response.data;
             // console.log(data);
-            setUsuarios(data.clients);
+            const clients = response.data.clients
+            clients.forEach(user => {
+                user.array_areas = user.areas.map(a => a.name)
+            })
+            
+            setUsuarios(clients);
             // console.log(data)
             setAll_areas_db(data.all_areas_db);
             setAll_blood_types(data.blood_types);
         });
     };
 
-    useEffect(() => { 
-        getData();  
+    useEffect(() => {
+        getData();
         document.title = "SysVer | Usuarios";
     }, []);
+    console.log({usuarios});
     const [open, setOpen] = useState(false);
     const [modalConfirm, setModalConfirm] = useState(false);
     const [newUserData, setNewUserData] = useState({
@@ -234,7 +240,7 @@ export default function usuarios() {
         height: "",
         age: "",
         sex: "",
-        blood_type_id: "",
+        blood_types: {},
         weight: "",
         address: "",
         phone_number: "",
@@ -266,15 +272,15 @@ export default function usuarios() {
                         const client = response.data.client;
                         setUsuarios((prev) => [...prev, client]);
                     });
-                    setAlert({
-                        open: true,
-                        status: "Exito",
-                        message: `El usuario ${newUserData.name} ha sido creado`,
-                    });
+                setAlert({
+                    open: true,
+                    status: "Exito",
+                    message: `El usuario ${newUserData.name} ha sido creado`,
+                });
                 setOpen(false);
             }
             if (submitStatus === "Editar") {
-                setSubmitStatus('cargando...')
+                setSubmitStatus("cargando...");
                 await axios
                     .put(`/dashboard/clients/${newUserData.id}`, newUserData)
                     .then((response) => {
@@ -290,7 +296,6 @@ export default function usuarios() {
                     )
                 );
                 setOpen(false);
-
             }
         } catch (error) {
             console.log(error.response.data);
@@ -299,9 +304,10 @@ export default function usuarios() {
                 status: "Error",
                 message: `Algo salió mal`,
             });
-            setSubmitStatus(() => newUserData.id >0 ? 'Editar' : 'Inscribir')
+            setSubmitStatus(() =>
+                newUserData.id > 0 ? "Editar" : "Inscribir"
+            );
         }
-
     };
 
     const [alert, setAlert] = useState({
@@ -311,9 +317,9 @@ export default function usuarios() {
     });
     useEffect(() => {
         setTimeout(() => {
-            setAlert({open: false, message:'', status: ''})
+            setAlert({ open: false, message: "", status: "" });
         }, 3000);
-    }, [alert.open === true])
+    }, [alert.open === true]);
     return (
         <>
             <button
@@ -329,7 +335,11 @@ export default function usuarios() {
                 Nuevo usuario
             </button>
 
-            <Modal open={open} onClose={() => setOpen(false)} sx={{zIndex: '1'}}>
+            <Modal
+                open={open}
+                onClose={() => setOpen(false)}
+                sx={{ zIndex: "1" }}
+            >
                 <ModalDialog
                     aria-labelledby="basic-modal-dialog-title"
                     aria-describedby="basic-modal-dialog-description"
@@ -451,13 +461,16 @@ export default function usuarios() {
                                 id="outlined-select-currency"
                                 select
                                 label="T. de sangre"
-                                value={newUserData.blood_type_id}
-                                onChange={(e) =>
+                                value={newUserData.blood_types.id}
+                                onChange={(e) => {
+                                    let obj_blood = all_blood_types.find(
+                                        (obj) => obj.id === e.target.value
+                                    );
                                     setNewUserData((prev) => ({
                                         ...prev,
-                                        blood_type_id: e.target.value,
-                                    }))
-                                }
+                                        blood_types: obj_blood,
+                                    }));
+                                }}
                                 sx={{ width: 110 }}
                             >
                                 {all_blood_types.map((option) => (
@@ -513,10 +526,11 @@ export default function usuarios() {
                         <Autocomplete
                             multiple
                             onChange={(event, value) => {
-                                delete value.pivot;
+                                const arr_areas = value.map(a => a.name);
                                 setNewUserData((prev) => ({
                                     ...prev,
                                     areas: value,
+                                    array_areas: arr_areas
                                 }));
                             }}
                             id="tags-outlined"
@@ -556,12 +570,12 @@ export default function usuarios() {
             <MUIDataTable
                 isRowSelectable={true}
                 title={"Tabla de Usuarios"}
-                data={usuarios} 
+                data={usuarios}
                 columns={columns}
                 options={options}
             />
- 
-            <Alert  
+
+            <Alert
                 open={alert.open}
                 status={alert.status}
                 message={alert.message}
