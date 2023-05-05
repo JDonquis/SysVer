@@ -36,6 +36,7 @@ class ClientController extends Controller
             $code = strval($code);
 
             $request->request->add(['code' => $code]);
+            $request->request->add(['blood_type_id' => $request->blood_types['id']]);
 
             $client->create($request->all());
 
@@ -78,7 +79,14 @@ class ClientController extends Controller
                 $client->touch();
                 
                 $area_ids = array();
-                foreach ($request->areas as $area){
+
+                if(count($request->areas) == 0)
+                {
+                    DB::table('client_areas')->where('client_id', '=', $id)->delete();                    
+                }
+                else{
+
+                    foreach ($request->areas as $area){
 
                     array_push($area_ids, $area['id']);
                     
@@ -89,8 +97,11 @@ class ClientController extends Controller
                     );
 
 
-                $deleted = DB::table('client_areas')->where('client_id', '=', $id)->whereNotIn('area_id',$area_ids)->delete();
+                    $deleted = DB::table('client_areas')->where('client_id', '=', $id)->whereNotIn('area_id',$area_ids)->delete();
+    
+                }
 
+                
              }
                     
                 DB::commit();

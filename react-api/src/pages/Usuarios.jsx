@@ -270,7 +270,8 @@ export default function usuarios() {
                     .post(`/dashboard/clients/`, newUserData)
                     .then((response) => {
                         const client = response.data.client;
-                        setUsuarios((prev) => [...prev, client]);
+                        client.array_areas = client.areas.map(a => a.name)
+                                    setUsuarios((prev) => [...prev, client]);
                     });
                 setAlert({
                     open: true,
@@ -461,7 +462,7 @@ export default function usuarios() {
                                 id="outlined-select-currency"
                                 select
                                 label="T. de sangre"
-                                value={newUserData.blood_types.id}
+                                value={newUserData.blood_types?.id}
                                 onChange={(e) => {
                                     let obj_blood = all_blood_types.find(
                                         (obj) => obj.id === e.target.value

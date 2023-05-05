@@ -26,7 +26,7 @@ class CreateClientsTable extends Migration
             $table->integer('weight')->nullable;
             $table->integer('height')->nullable;
             $table->string('address',100);
-            $table->string('phone_number',11)->nullable;
+            $table->string('phone_number',13)->nullable;
             $table->string('collaboration',100)->nullable;           
             $table->rememberToken();
             $table->timestamps();
