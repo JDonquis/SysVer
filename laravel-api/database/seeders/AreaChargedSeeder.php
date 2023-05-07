@@ -3,9 +3,10 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+
 use DB;
 
-class AreaClientSeeder extends Seeder
+class AreaChargedSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -16,11 +17,11 @@ class AreaClientSeeder extends Seeder
     {
         $fields = [
 
-            ['client_id' => 1, 'area_id' => 1],
-            ['client_id' => 1, 'area_id' => 2],
-
+            ['area_id' => 1, 'name' => 'Gymnasio', 'price'=>2 ],
+            
+        
          ];   
 
-         DB::table('client_areas')->insert($fields);
+         DB::table('area_chargeds')->insert($fields);
     }
 }

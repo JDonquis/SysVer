@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateAssistancesTable extends Migration
+class CreateAreaChargedsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,11 @@ class CreateAssistancesTable extends Migration
      */
     public function up()
     {
-        Schema::create('assistances', function (Blueprint $table) {
+        Schema::create('area_chargeds', function (Blueprint $table) {
             $table->id();
-            $table->foreignId("client_id")->constrained()->onDelete("restrict")->onUpdate("cascade");
-            $table->foreignId("schedule_id")->constrained()->onDelete("restrict")->onUpdate("cascade");
+            $table->foreignId("area_id")->constrained()->onDelete("restrict")->onUpdate("cascade");
+            $table->string("name");
+            $table->integer("price");
         });
     }
 
@@ -27,6 +28,6 @@ class CreateAssistancesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('assistances');
+        Schema::dropIfExists('area_chargeds');
     }
 }

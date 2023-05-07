@@ -18,10 +18,12 @@ class DatabaseSeeder extends Seeder
         $this->truncateTable([
 
         'blood_types',
+        'type_areas',
         'users',
         'clients',
         'areas',
-        'client_areas',
+        'area_chargeds',
+        'client_area_chargeds',
 
 
         ]);
@@ -29,10 +31,12 @@ class DatabaseSeeder extends Seeder
         $this->call([
 
             BloodTypesSeeder::class,
+            TypeAreaSeeder::class,
             UserSeeder::class,
             AreaSeeder::class,
             ClientSeeder::class,
-            AreaClientSeeder::class,
+            AreaChargedSeeder::class,
+            ClientAreaChargedSeeder::class,
 
             
         ]);
