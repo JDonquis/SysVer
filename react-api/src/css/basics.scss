@@ -74,7 +74,7 @@ ul.link_container{
         flex: auto;
         padding: 20px; 
         background: rgb(255,255,255);
-        background: linear-gradient(-50deg, rgba(255,255,255,1) 25%, #003b58 100%);
+        background: linear-gradient(-50deg, rgba(255,255,255,1) 10%, #003b58 100%);
     }
 }           
 
@@ -84,10 +84,10 @@ ul.link_container{
     // transition: width .4s ease;
     &.small {
 
-        max-width: calc(100vw - 305px); 
+        max-width: calc(100vw - 295px); 
     }
     &.large {
-        max-width: calc(100vw - 115px); 
+        max-width: calc(100vw - 105px); 
 
     }
 }
@@ -116,4 +116,7 @@ th * {
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
+}
+.Mui-focused fieldset {
+    border-color: 'green' !important;
 }

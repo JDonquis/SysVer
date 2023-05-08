@@ -9,8 +9,9 @@ const Input = memo((props) => {
             onChange={(e) => props.onChange(e)}
             value={props.value}
             name={props.name}
-            sx={{ width: props.width || 223 }}
+            sx={{ width: props.width || 223 , borderColor: '#069DBF',}}
             type={props.type}
+            color="primary"
             inputProps={{ reandOnly: props.readOnly, minLength: props.minLength, maxLength: props.maxLength }}
             InputLabelProps={{ shrink: props.shrink }}
             
