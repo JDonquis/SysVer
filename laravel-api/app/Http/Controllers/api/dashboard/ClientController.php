@@ -46,7 +46,9 @@ class ClientController extends Controller
 
             foreach ($request->areas as $area){ 
 
-                DB::table('client_areas')->insert(['client_id' => $client_id, 'area_id' => $area['id'] ] ); 
+                return $area;
+
+                DB::table('client_area_chargeds')->insert(['client_id' => $client_id, 'area_charged_id' => $area['id'] ] ); 
 
             }
 
@@ -82,7 +84,7 @@ class ClientController extends Controller
 
                 if(count($request->areas) == 0)
                 {
-                    DB::table('client_areas')->where('client_id', '=', $id)->delete();                    
+                    DB::table('client_area_chargeds')->where('client_id', '=', $id)->delete();                    
                 }
                 else{
 
@@ -90,14 +92,14 @@ class ClientController extends Controller
 
                     array_push($area_ids, $area['id']);
                     
-                     DB::table('client_areas')->updateOrInsert(
+                     DB::table('client_area_chargeds')->updateOrInsert(
 
-                        ['client_id' => $id, 'area_id' => $area['id']],
-                        ['area_id' => $area['id']]
+                        ['client_id' => $id, 'area_charged_id' => $area['id']],
+                        ['area_charged_id' => $area['id']]
                     );
 
 
-                    $deleted = DB::table('client_areas')->where('client_id', '=', $id)->whereNotIn('area_id',$area_ids)->delete();
+                    $deleted = DB::table('client_area_chargeds')->where('client_id', '=', $id)->whereNotIn('area_charged_id',$area_ids)->delete();
     
                 }
 
@@ -124,7 +126,7 @@ class ClientController extends Controller
 
         try {
 
-            DB::table('client_areas')->where('client_id', $id)->delete();
+            DB::table('client_area_chargeds')->where('client_id', $id)->delete();
 
             DB::table('clients')->where('id', $id)->delete();
 

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateClientAreasTable extends Migration
+class CreateSchedulesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,19 @@ class CreateClientAreasTable extends Migration
      */
     public function up()
     {
-        Schema::create('client_areas', function (Blueprint $table) {
+        Schema::create('schedules', function (Blueprint $table) {
+            
             $table->id();
-            $table->foreignId("client_id")->constrained()->onDelete("restrict")->onUpdate("cascade");
+            
+            $table->unsignedBigInteger('start_shift_id');
+            $table->unsignedBigInteger('end_shift_id');
+            
+            $table->foreign('start_shift_id')->references('id')->on('shifts');
+
+            $table->foreign('end_shift_id')->references('id')->on('shifts');
+
             $table->foreignId("area_id")->constrained()->onDelete("restrict")->onUpdate("cascade");
+            
         });
     }
 
@@ -27,6 +36,6 @@ class CreateClientAreasTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('client_areas');
+        Schema::dropIfExists('schedules');
     }
 }

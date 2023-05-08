@@ -42,7 +42,7 @@ class Client extends Model
 
       public function areas()
       {
-          return $this->belongsToMany(Area::class,'client_areas');
+          return $this->belongsToMany(AreaCharged::class,'client_area_chargeds');
       }
 
 
