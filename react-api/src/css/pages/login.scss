@@ -10,7 +10,7 @@
     background: $blue;
     @include card-form(100vh, 100%);
     .title_and_icon {
-        display: flex !important;
+        display: flex !important;   
         align-items: center;
         gap: 25px;
         justify-content: center;

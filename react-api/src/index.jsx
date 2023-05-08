@@ -14,7 +14,7 @@ root.render(
                 <Routes>
                     <Route path="/" element={<Login />}></Route>
                     <Route path="/dashboard/*" element={<App />}></Route>
-                </Routes>
+                </Routes>  
             </BrowserRouter>
         </StyledEngineProvider>
     </React.StrictMode>

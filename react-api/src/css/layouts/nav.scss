@@ -2,13 +2,13 @@
 
 .left_nav {
     height: 100vh;
-    background: rgba(6, 157, 191, 0.05);
-    min-width: 250px;
-    max-width: 250px; 
+    background: rgba(6, 157, 191, 0.05); 
+    min-width: 250px; 
+    max-width: 250px;  
     padding-top: 5px;
     position: relative;
     // overflow: hidden;
-    transition: all .3s ease-in-out;
+    transition: all .3s ease-in-out; 
     color: $blue;
     a.header {
         display: flex; 
@@ -20,15 +20,15 @@
         color: grey;
         transition: all .3s cubic-bezier(0.445, 0.05, 0.55, 0.95);
 
-        .logo {
+        .logo { 
             max-width: 60px;
             transition: .3s all ease-in;
             margin-right: 13px;
         }
-        .system_title {
+        .system_title {  
             margin-bottom: 0;
             transition: opacity .5s ease;
-            transition-delay: .3s;
+            transition-delay: .3s;  
             font-size: 20px;
         }
         
@@ -38,9 +38,9 @@
         position: absolute;
         right: -5px;
         font-size: 25px;
-        filter:drop-shadow(0px 2px 4px rgba(0, 0, 0, 0.25));
+        filter:drop-shadow(0px 2px 4px rgba(0, 0, 0, 0.45));
         top: 9px;
-        color: $blue;
+        color: whitesmoke;
         transform: rotate(180deg);
         &:hover {
             cursor: pointer;
@@ -48,7 +48,7 @@
         }
     }
     ul.link_container{
-        list-style: none;
+        list-style: none; 
         transition: all .3s cubic-bezier(0.445, 0.05, 0.55, 0.95);
         padding-left: 32px;
 
@@ -78,10 +78,10 @@
     } 
   
 }
-.left_nav.closed {
+.left_nav.closed { 
     min-width: 60px; 
     max-width: 60px; 
-    & .nav_into_container > *, a.header {
+    & .nav_into_container > *, a.header { 
         padding-left: 10px;
     }
     .text_link, .system_title {

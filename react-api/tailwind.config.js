@@ -6,10 +6,10 @@ export default {
     extend: {},
     colors: {
       'blue': '#069DBF',
-      'yellow': '#069DBF',
+      'yellow': '#D9831A',
       'purple': '#A64684',
       'green': '#027353',
-      'white': '#ffffff',
+      'white': 'whitesmoke',
       'black': '#000000',
       'dark': '#202020',
 

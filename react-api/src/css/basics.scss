@@ -64,21 +64,19 @@ ul.link_container{
     }
     
 }  
-
+   
 /// general dashboard
 .dashboard_container {
     overflow: hidden;
     display: flex;
-    // gap: 20px; 
+    // gap: 20px;   
     .main_dashboard { 
         flex: auto;
-        background: #f5f5f5;
-        padding: 20px;
-        .MuiPaper-root  {
-            box-shadow: none;
-        }
+        padding: 20px; 
+        background: rgb(255,255,255);
+        background: linear-gradient(-50deg, rgba(255,255,255,1) 25%, #003b58 100%);
     }
-}
+}           
 
 .mainDashboard_container{
     width: 100%; 
@@ -86,16 +84,36 @@ ul.link_container{
     // transition: width .4s ease;
     &.small {
 
-        max-width: calc(100vw - 310px); 
+        max-width: calc(100vw - 305px); 
     }
     &.large {
-        max-width: calc(100vw - 120px); 
+        max-width: calc(100vw - 115px); 
 
     }
 }
-th {
-    padding-left: 0 !important;
-}
+th * {
+    // padding-left: 20px !important;
+    text-transform: uppercase !important; 
+} 
 .MuiTableCell-footer {
     padding: 0 !important;
+}
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #003b58;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }

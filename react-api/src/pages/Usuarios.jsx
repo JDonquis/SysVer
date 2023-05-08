@@ -1,5 +1,10 @@
-import React, { useEffect, useLayoutEffect, useState } from "react";
-import "../css/basics.css";
+import React, {
+    useEffect,
+    useLayoutEffect,
+    useState,
+    useCallback,
+} from "react";
+// import "../css/basics.css"; 
 
 import MUIDataTable from "mui-datatables";
 import axios from "../api/axios";
@@ -11,6 +16,7 @@ import { IconButton, TextField, Autocomplete, MenuItem } from "@mui/material";
 import { Modal, ModalDialog, Button } from "@mui/joy/";
 import ConfirmModal from "../components/ConfimModal";
 import Alert from "../components/Alert";
+import Input from "../components/Input";
 
 const divFlex = {
     display: "flex",
@@ -23,8 +29,11 @@ let fecha = new Date(),
     mesA = fecha.getMonth() + 1,
     diaA = fecha.getDate();
 
-export default function usuarios() {
-   
+export default function Usuarios() {
+    const [usuarios, setUsuarios] = useState([]);
+    const [all_areas_db, setAll_areas_db] = useState([]);
+    const [all_blood_types, setAll_blood_types] = useState([]);
+
     const columns = [
         {
             name: "code",
@@ -65,6 +74,9 @@ export default function usuarios() {
         {
             name: "age",
             label: "Edad",
+            options: {
+                filter: false,
+            },
         },
         {
             name: "sex",
@@ -85,15 +97,15 @@ export default function usuarios() {
             },
         },
         {
-            name: "blood_types",
+            name: "blood_name",
             label: "T. de sangre",
-            options: {
-                customBodyRender: (value) => <div>{value.name}</div>,
-            },
         },
         {
             name: "address",
             label: "Dirección",
+            options: {
+                filter: false,
+            },
         },
         {
             name: "phone_number",
@@ -105,6 +117,16 @@ export default function usuarios() {
         {
             name: "collaboration",
             label: "Colaboración",
+            options: {
+                filter: true,
+                filterOptions: {
+                    names: ["Nada"],
+                },
+                customBodyRender: (value) => {
+                    return  value.trim().length >  0 ? value :  <div  style={{color: '#afafaf'}} >Nada</div>
+                    // return <div className="text-dark"> {value.trim() !== 'a' ? value : 'Nada'}</div>;
+                },
+            },
         },
         {
             name: "array_areas",
@@ -205,19 +227,16 @@ export default function usuarios() {
 
     const apiUrl = "dashboard/clients";
 
-    const [usuarios, setUsuarios] = useState([]);
-    const [all_areas_db, setAll_areas_db] = useState([]);
-    const [all_blood_types, setAll_blood_types] = useState([]);
-
     const getData = async () => {
         await axios.get(apiUrl).then((response) => {
             const data = response.data;
             // console.log(data);
-            const clients = response.data.clients
-            clients.forEach(user => {
-                user.array_areas = user.areas.map(a => a.name)
-            })
-            
+            const clients = response.data.clients;
+            clients.forEach((user) => {
+                user.array_areas = user.areas.map((a) => a.name);
+                user.blood_name = user.blood_types.name;
+            });
+
             setUsuarios(clients);
             // console.log(data)
             setAll_areas_db(data.all_areas_db);
@@ -229,7 +248,7 @@ export default function usuarios() {
         getData();
         document.title = "SysVer | Usuarios";
     }, []);
-    console.log({usuarios});
+    // console.log({usuarios});
     const [open, setOpen] = useState(false);
     const [modalConfirm, setModalConfirm] = useState(false);
     const [newUserData, setNewUserData] = useState({
@@ -241,11 +260,12 @@ export default function usuarios() {
         age: "",
         sex: "",
         blood_types: {},
+        blood_name: "",
         weight: "",
         address: "",
         phone_number: "",
         collaboration: "",
-        areas: {},
+        areas: [],
     });
 
     function calculateAge(date_bith) {
@@ -260,18 +280,24 @@ export default function usuarios() {
     }
 
     const [submitStatus, setSubmitStatus] = useState("Inscribir");
-    console.log(newUserData);
+
+    console.log({ newUserData });
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        console.log(newUserData);
+        
         try {
+            if (newUserData.collaboration.trim().length === 0) {
+
+            }
             if (submitStatus === "Inscribir") {
                 await axios
                     .post(`/dashboard/clients/`, newUserData)
                     .then((response) => {
                         const client = response.data.client;
-                        client.array_areas = client.areas.map(a => a.name)
-                                    setUsuarios((prev) => [...prev, client]);
+                        client.array_areas = client.areas.map((a) => a.name);
+                        setUsuarios((prev) => [...prev, client]);
                     });
                 setAlert({
                     open: true,
@@ -311,6 +337,32 @@ export default function usuarios() {
         }
     };
 
+    const [tabla, setTabla] = useState();
+    useEffect(() => {
+        setTabla(
+            <MUIDataTable
+                isRowSelectable={true}
+                title={"Usuarios"}
+                data={usuarios}
+                columns={columns}
+                options={options}
+            />
+        );
+    }, [usuarios]);
+
+    const handleChange = useCallback((e) => {
+        const { name, value } = e.target;
+
+        if (name === "birth_date") {
+            setNewUserData((prev) => ({
+                ...prev,
+                [name]: value,
+                age: calculateAge(value),
+            }));
+        }
+        setNewUserData((prev) => ({ ...prev, [name]: value }));
+    }, []);
+
     const [alert, setAlert] = useState({
         open: false,
         status: "",
@@ -321,10 +373,23 @@ export default function usuarios() {
             setAlert({ open: false, message: "", status: "" });
         }, 3000);
     }, [alert.open === true]);
-    return (
+
+    const MyTextInput = React.memo((props) => {
+        console.log(props.value);
+        return (
+            <TextField
+                variant={"outlined"}
+                label={props.label}
+                onChange={props.onChange}
+                value={props.value}
+            />
+        );
+    });
+  
+    return ( 
         <>
             <button
-                className="mb-7 border py-2 px-3 border-opacity-40 rounded-md border-dark"
+                className="mb-7 border py-2 px-3 border-opacity-30 rounded-md border-dark duration-100 text-white hover:bg-yellow"
                 onClick={() => {
                     setOpen(true);
                     setNewUserData({});
@@ -349,120 +414,97 @@ export default function usuarios() {
                 >
                     <form onSubmit={handleSubmit} className="w-full">
                         <div style={divFlex}>
-                            <TextField
-                                label="Nombres/s"
-                                variant="outlined"
+                            <Input
+                                label={"Nombres/s"}
+                                key={0}
+                                onChange={handleChange}
                                 value={newUserData.name}
-                                onChange={(e) =>
-                                    setNewUserData((prev) => ({
-                                        ...prev,
-                                        name: e.target.value,
-                                    }))
-                                }
-                                sx={{ width: 223 }}
+                                name={"name"}
                             />
-                            <TextField
-                                label="Apellidos/s"
-                                variant="outlined"
+
+                            <Input
+                                label={"Apellidos/s"}
+                                key={1}
+                                onChange={handleChange}
                                 value={newUserData.last_name}
-                                onChange={(e) =>
-                                    setNewUserData((prev) => ({
-                                        ...prev,
-                                        last_name: e.target.value,
-                                    }))
-                                }
-                                sx={{ width: 223 }}
+                                name={"last_name"}
                             />
                         </div>
                         <div style={divFlex}>
-                            <TextField
-                                label="Cédula"
-                                inputProps={{ minLength: 6, maxLength: 10 }}
-                                variant="outlined"
+                            <Input
+                                label={"Cédula"}
+                                key={2}
+                                minLength={6}
+                                maxLength={10}
                                 value={newUserData.ci}
-                                onChange={(e) =>
-                                    setNewUserData((prev) => ({
-                                        ...prev,
-                                        ci: e.target.value,
-                                    }))
-                                }
-                                sx={{ width: 223 }}
+                                name={"ci"}
+                                onChange={handleChange}
                             />
-                            <TextField
-                                label="Código"
-                                variant="outlined"
-                                value={newUserData.code}
-                                disabled
-                                sx={{ width: 223 }}
+                            <Input
+                                label={"Nro de teléfono"}
+                                type={"tel"}
+                                key={3}
+                                minLength={10}
+                                maxLength={11}
+                                // InputProps={{ maxLength: 14, minLength: 10 }}
+                                value={newUserData.phone_number}
+                                name={"phone_number"}
+                                onChange={handleChange}
                             />
                         </div>
                         <div style={divFlex}>
-                            <TextField
-                                type="date"
-                                className="w-[223px]"
-                                InputLabelProps={{ shrink: true }}
-                                label="Fecha de nacimiento"
-                                variant="outlined"
+                            <Input
+                                shrink={true}
+                                type={"date"}
+                                label={"Fecha de nacimiento"}
                                 value={newUserData.birth_date}
-                                onChange={(e) =>
-                                    setNewUserData((prev) => ({
-                                        ...prev,
-                                        birth_date: e.target.value,
-                                        age: calculateAge(e.target.value),
-                                    }))
-                                }
-                                sx={{ width: 223 }}
+                                name={"birth_date"}
+                                onChange={handleChange}
                             />
-                            <TextField
-                                label="Nro de teléfono"
-                                variant="outlined"
-                                type="tel"
-                                inputProps={{ maxLength: 14, minLength: 10 }}
-                                value={newUserData.phone_number}
-                                onChange={(e) =>
-                                    setNewUserData((prev) => ({
-                                        ...prev,
-                                        phone_number: e.target.value,
-                                    }))
-                                }
-                                sx={{ width: 223 }}
+                            <Input
+                                key={4}
+                                label={"Edad"}
+                                // InputProps={{
+                                //     readOnly: true,
+                                // }}
+                                readOnly={true}
+                                value={newUserData.age}
+                                shrink={newUserData.age > 0 ? true : false}
+                                //     shrink: newUserData.age > 0 ? true : false,
+                                // }}
+                                // variant="outlined"
                             />
                         </div>
 
                         <div style={divFlex}>
-                            <TextField
-                                id="outlined-textarea"
-                                label="Dirección"
+                            <Input
+                                key={5}
+                                id={"outlined-textarea"}
+                                label={"Dirección"}
                                 multiline
                                 value={newUserData.address}
-                                onChange={(e) =>
-                                    setNewUserData((prev) => ({
-                                        ...prev,
-                                        address: e.target.value,
-                                    }))
-                                }
-                                sx={{ width: 223 }}
+                                name={"address"}
+                                onChange={handleChange}
                             />
-                            <TextField
-                                id="outlined-textarea"
-                                label="Colaboración"
+                            <Input
+                                key={6}
+                                id={"outlined-textarea"}
+                                label={"Colaboración"}
                                 multiline
                                 value={newUserData.collaboration}
-                                onChange={(e) =>
-                                    setNewUserData((prev) => ({
-                                        ...prev,
-                                        collaboration: e.target.value,
-                                    }))
-                                }
-                                sx={{ width: 223 }}
+                                name={"collaboration"}
+                                onChange={handleChange}
                             />
                         </div>
                         <div style={divFlex}>
                             <TextField
+                                sx={{ width: 110 }}
                                 id="outlined-select-currency"
                                 select
                                 label="T. de sangre"
                                 value={newUserData.blood_types?.id}
+                                defaultValue=""
+                                name="blood_types"
                                 onChange={(e) => {
                                     let obj_blood = all_blood_types.find(
                                         (obj) => obj.id === e.target.value
@@ -470,9 +512,9 @@ export default function usuarios() {
                                     setNewUserData((prev) => ({
                                         ...prev,
                                         blood_types: obj_blood,
+                                        blood_name: obj_blood.name,
                                     }));
                                 }}
-                                sx={{ width: 110 }}
                             >
                                 {all_blood_types.map((option) => (
                                     <MenuItem key={option.id} value={option.id}>
@@ -484,61 +526,55 @@ export default function usuarios() {
                             <TextField
                                 id="outlined-select-currency"
                                 label="Sexo"
-                                // defaultValue="EUR"
+                                defaultValue=""
                                 select
                                 value={newUserData.sex}
-                                onChange={(e) =>
-                                    setNewUserData((prev) => ({
-                                        ...prev,
-                                        sex: e.target.value,
-                                    }))
-                                }
+                                name="sex"
+                                onChange={handleChange}
                                 sx={{ width: 110 }}
                             >
                                 <MenuItem value={"F"}>F</MenuItem>
                                 <MenuItem value={"M"}>M</MenuItem>
                             </TextField>
 
-                            <TextField
-                                label="Peso (kg)"
-                                variant="outlined"
-                                sx={{ width: 110 }}
+                            <Input
+                                label={"Peso (kg)"}
+                                variant={"outlined"}
+                                key={7}
+                                width={110}
                                 value={newUserData.weight}
-                                onChange={(e) =>
-                                    setNewUserData((prev) => ({
-                                        ...prev,
-                                        weight: e.target.value,
-                                    }))
-                                }
+                                name={"weight"}
+                                onChange={handleChange}
                             />
-                            <TextField
-                                label="Altura"
-                                variant="outlined"
-                                sx={{ width: 110 }}
+                            <Input
+                                label={"Altura"}
+                                key={8}
+                                variant={"outlined"}
+                                width={110}
                                 value={newUserData.height}
-                                onChange={(e) =>
-                                    setNewUserData((prev) => ({
-                                        ...prev,
-                                        height: e.target.value,
-                                    }))
-                                }
+                                name={"height"}
+                                onChange={handleChange}
                             />
                         </div>
                         <Autocomplete
                             multiple
+                            name="areas"
                             onChange={(event, value) => {
-                                const arr_areas = value.map(a => a.name);
+                                const arr_areas = value.map((a) => a.name);
                                 setNewUserData((prev) => ({
                                     ...prev,
                                     areas: value,
-                                    array_areas: arr_areas
+                                    array_areas: arr_areas,
                                 }));
                             }}
                             id="tags-outlined"
                             value={newUserData.areas}
                             options={all_areas_db}
                             getOptionLabel={(all_areas_db) => all_areas_db.name}
-                            defaultValue={newUserData.areas}
+                            defaultValue={newUserData.array_areas}
+                            isOptionEqualToValue={(option, value) =>
+                                option.id === value.id
+                            }
                             filterSelectedOptions
                             renderInput={(params) => (
                                 <TextField
@@ -568,13 +604,7 @@ export default function usuarios() {
 
             {/* modal de confimar eliminar */}
 
-            <MUIDataTable
-                isRowSelectable={true}
-                title={"Tabla de Usuarios"}
-                data={usuarios}
-                columns={columns}
-                options={options}
-            />
+            {tabla}
 
             <Alert
                 open={alert.open}

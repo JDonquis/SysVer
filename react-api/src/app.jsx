@@ -8,8 +8,8 @@ import { useState } from "react";
 
 export default function app() {
     const [navStatus, setNavStatus] = useState(true)
-    return (
-        <>
+    return (    
+        <> 
             
             <div className="dashboard_container">
                 <Nav getNavStatus={() => setNavStatus(prev => !prev)} />
