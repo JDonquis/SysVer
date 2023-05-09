@@ -7,6 +7,9 @@ import Personal from "./pages/Personal";
 import { useState } from "react";
 
 export default function app() {
+
+
+    
     const [navStatus, setNavStatus] = useState(true)
     return (    
         <> 
