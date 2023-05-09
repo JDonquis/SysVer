@@ -325,7 +325,7 @@ export default function Usuarios() {
                 setOpen(false);
             }
         } catch (error) {
-            console.log(error.response.data);
+            // console.log(error);
             setAlert({
                 open: true,
                 status: "Error",
