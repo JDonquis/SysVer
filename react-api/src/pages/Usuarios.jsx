@@ -19,7 +19,7 @@ import Alert from "../components/Alert";
 import Input from "../components/Input";
 
 const divFlex = {
-    display: "flex",
+    display: "flex", 
     gap: "5px",
     marginBottom: "15px",
     justifyContent: "space-between",
@@ -299,6 +299,7 @@ export default function Usuarios() {
                         console.log({ response });
                         const client = response.data.client;
                         client.array_areas = client.areas.map((a) => a.name);
+                        client.blood_name = client.blood_types.name
                         setUsuarios((prev) => [...prev, client]);
                     });
                 setAlert({
@@ -327,7 +328,7 @@ export default function Usuarios() {
                 setOpen(false);
             }
         } catch (error) {
-            console.log(error);
+            // console.log(error);
             setAlert({
                 open: true,
                 status: "Error",
@@ -523,6 +524,7 @@ export default function Usuarios() {
                                         {option.name}
                                     </MenuItem>
                                 ))}
+                                 
                             </TextField>
 
                             <TextField
@@ -582,7 +584,7 @@ export default function Usuarios() {
                                 <TextField
                                     {...params}
                                     variant="outlined"
-                                    label="Areas inscritas"
+                                    label="Areas pagas"
                                 />
                             )}
                         />

@@ -133,8 +133,8 @@ th * {
     & * {
         color: white !important;
     }
-    & *:focus {
-        outline: white !important;
-        border-color: white !important;
-    }
+    // & *:focus {
+    //     outline: white !important;
+    //     border-color: white !important;
+    // }
 }

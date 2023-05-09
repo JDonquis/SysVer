@@ -3,6 +3,27 @@ import Input from "../components/Input";
 import { Autocomplete, TextField, MenuItem } from "@mui/material";
 import MUIDataTable from "mui-datatables";
 
+import { styled } from "@mui/material/styles";
+
+const CssTextField = styled(TextField)({
+    "& label.Mui-focused": {
+        color: "white",
+    },
+
+    "& .MuiOutlinedInput-root": {
+        // "& fieldset": {
+        //     borderColor: "whitesmoke",
+        // },
+        "& fieldset": {
+            borderColor: "rgba(255, 255, 255, 0.39)",
+        },
+
+        "&.Mui-focused fieldset": {
+            borderColor: "whitesmoke",
+        },
+    },
+});
+
 export default function Asistencia() {
     const all_areas_db = [
         {
@@ -22,62 +43,65 @@ export default function Asistencia() {
         },
     ];
 
-let fecha = new Date(),
-    añoA = fecha.getFullYear(),
-    mesA = fecha.getMonth() + 1,
-    diaA = fecha.getDate();
+    let fecha = new Date(),
+        añoA = fecha.getFullYear(),
+        mesA = fecha.getMonth() + 1,
+        diaA = fecha.getDate();
 
-const asistencia = [
-    {code: 1124, name:'emilia', last_name:'sanchez', area: 'boxeo', turno:'1', hora: '3pm' }
-]
-const columns = [
-    {
-        name: 'code',
-        label:'Código',
-        options: {
-            filter: false,
-        }
-            
-    },
-    {
-        name: 'name',
-        label:'Nombre',
-        options: {
-            filter: false,
-        }
-            
-    },
-    {
-        name: 'last_name',
-        label:'Apellido',
-        options: {
-            filter: false,
-        }
-            
-    },
-    {
-        name: 'area',
-        label:'Area',
-        options: {
-            filter: true,
-        }
-    },
-    {
-        name: 'turno',
-        label:'Turno',
-    },
-    {
-        name: 'hora',
-        label:'Hora',
-        options: {
-            filter: false,
-        }
-            
-    },
-]
+    const asistencia = [
+        {
+            code: 1124,
+            name: "emilia",
+            last_name: "sanchez",
+            area: "boxeo",
+            turno: "1",
+            hora: "3pm",
+        },
+    ];
+    const columns = [
+        {
+            name: "code",
+            label: "Código",
+            options: {
+                filter: false,
+            },
+        },
+        {
+            name: "name",
+            label: "Nombre",
+            options: {
+                filter: false,
+            },
+        },
+        {
+            name: "last_name",
+            label: "Apellido",
+            options: {
+                filter: false,
+            },
+        },
+        {
+            name: "area",
+            label: "Area",
+            options: {
+                filter: true,
+            },
+        },
+        {
+            name: "turno",
+            label: "Turno",
+        },
+        {
+            name: "hora",
+            label: "Hora",
+            options: {
+                filter: false,
+            },
+        },
+    ];
 
-const options = {
-    filterType: "checkbox",
+    const options = {
+        filterType: "checkbox",
         responsive: "vertical",
         selectableRowsOnClick: true,
         // selectableRowsOnClick: true,
@@ -85,20 +109,18 @@ const options = {
         selectableRows: "single",
         // rowsSelected:rowSelected,
         fixedHeader: true,
-}
-
-
+    };
 
     const turnos = [
         { id: 1, name: "1" },
         { id: 2, name: "2" },
         { id: 3, name: "3" },
-        { id: 4, name: "4" }, 
+        { id: 4, name: "4" },
     ];
     return (
         <>
             <form className="flex glass p-3 gap-3 w-min rounded-md mb-5">
-                <Input
+                <CssTextField
                     // shrink={true}
                     // type={"Código"}
                     label={"Código"}
@@ -108,7 +130,6 @@ const options = {
                     // onChange={handleChange}
                 />
                 <Autocomplete
-                    multiple
                     name="area"
                     onChange={(event, value) => {
                         const arr_areas = value.map((a) => a.name);
@@ -126,10 +147,10 @@ const options = {
                     isOptionEqualToValue={(option, value) =>
                         option.id === value.id
                     }
-                    sx={{ minWidth: 223 }}
+                    sx={{ minWidth: 223, color: "white" }}
                     filterSelectedOptions
                     renderInput={(params) => (
-                        <TextField
+                        <CssTextField
                             {...params}
                             variant="outlined"
                             label="Area"
@@ -137,8 +158,8 @@ const options = {
                     )}
                 />
 
-                <TextField
-                    sx={{ width: 150 }}
+                <CssTextField
+                    sx={{ width: 190 }}
                     id="outlined-select-currency"
                     select
                     label="Turno"
@@ -161,15 +182,15 @@ const options = {
                             {option.name}
                         </MenuItem>
                     ))}
-                </TextField>
+                </CssTextField> 
 
-                <button type="submit" className="border-white border px-3 rounded-md text-white">
-                        Guardar
+                <button
+                    type="submit"
+                    className="bg-purple/30  px-5 rounded-md text-dark hover:bg-purple"
+                >
+                    Guardar
                 </button>
             </form>
-
-
-
 
             <MUIDataTable
                 isRowSelectable={true}

@@ -130,8 +130,4 @@ th * {
 }
 .glass * {
   color: white !important;
-}
-.glass *:focus {
-  outline: white !important;
-  border-color: white !important;
 }/*# sourceMappingURL=basics.css.map */
