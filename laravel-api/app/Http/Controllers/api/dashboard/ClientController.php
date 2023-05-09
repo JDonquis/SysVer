@@ -4,6 +4,7 @@ namespace App\Http\Controllers\api\dashboard;
 
 use App\Http\Controllers\Controller;
 use App\Models\Area;
+use App\Models\AreaCharged;
 use App\Models\BloodType;
 use App\Models\Client;
 use DB;
@@ -16,14 +17,13 @@ class ClientController extends Controller
     public function index()
     {
         $clients = Client::with('blood_types','areas')->get();
-        $areas = Area::all();
+        $areas = AreaCharged::all();
         $blood_types = BloodType::all();
         return response(["clients" => $clients, 'all_areas_db' => $areas, 'blood_types' => $blood_types], Response::HTTP_OK);
     }
 
     public function store(Request $request)
     {   
-
         $client = new Client;
         
        DB::beginTransaction();
@@ -42,16 +42,19 @@ class ClientController extends Controller
 
             $client_id = $client->latest('id')->first()->id;
 
+            if(isset($request->areas))
+            {
+                if(count($request->areas) != 0 )
+                {
+                    foreach ($request->areas as $area){ 
+
+                        DB::table('client_area_chargeds')->insert(['client_id' => $client_id, 'area_charged_id' => $area['id'] ] ); 
+                    }
+
+                }
+    
+            }  
             
-
-            foreach ($request->areas as $area){ 
-
-                return $area;
-
-                DB::table('client_area_chargeds')->insert(['client_id' => $client_id, 'area_charged_id' => $area['id'] ] ); 
-
-            }
-
             $client_created = Client::where('id',$client_id)->with('blood_types','areas')->first();
                 
             DB::commit();
