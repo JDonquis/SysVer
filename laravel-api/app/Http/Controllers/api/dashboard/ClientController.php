@@ -80,6 +80,7 @@ class ClientController extends Controller
         try {
 
                 $client = Client::where('id',$id)->first();
+                $request->request->add(['blood_type_id' => $request->blood_types['id']]);
                 $client->update($request->all());
                 $client->touch();
                 
