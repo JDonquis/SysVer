@@ -20,13 +20,13 @@
         color: grey;
         transition: all .3s cubic-bezier(0.445, 0.05, 0.55, 0.95);
 
-        .logo { 
+        .logo {  
             max-width: 60px;
             transition: .3s all ease-in;
-            margin-right: 13px; 
+            margin-right: 13px;      
         }
         .system_title {  
-            margin-bottom: 0;
+            margin-bottom: 0; 
             transition: opacity .5s ease;
             transition-delay: .3s;  
             font-size: 20px;

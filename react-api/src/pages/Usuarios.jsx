@@ -4,7 +4,7 @@ import React, {
     useState,
     useCallback,
 } from "react";
-// import "../css/basics.css"; 
+// import "../css/basics.css";
 
 import MUIDataTable from "mui-datatables";
 import axios from "../api/axios";
@@ -19,7 +19,7 @@ import Alert from "../components/Alert";
 import Input from "../components/Input";
 
 const divFlex = {
-    display: "flex",
+    display: "flex", 
     gap: "5px",
     marginBottom: "15px",
     justifyContent: "space-between",
@@ -33,7 +33,7 @@ export default function Usuarios() {
     const [usuarios, setUsuarios] = useState([]);
     const [all_areas_db, setAll_areas_db] = useState([]);
     const [all_blood_types, setAll_blood_types] = useState([]);
-
+    console.log(all_areas_db);
     const columns = [
         {
             name: "code",
@@ -123,7 +123,11 @@ export default function Usuarios() {
                     names: ["Nada"],
                 },
                 customBodyRender: (value) => {
-                    return  value.trim().length >  0 ? value :  <div  style={{color: '#afafaf'}} >Nada</div>
+                    return value.trim().length > 0 ? (
+                        value
+                    ) : (
+                        <div style={{ color: "#afafaf" }}>Nada</div>
+                    );
                     // return <div className="text-dark"> {value.trim() !== 'a' ? value : 'Nada'}</div>;
                 },
             },
@@ -286,17 +290,16 @@ export default function Usuarios() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         console.log(newUserData);
-        
-        try {
-            if (newUserData.collaboration.trim().length === 0) {
 
-            }
+        try {
             if (submitStatus === "Inscribir") {
                 await axios
                     .post(`/dashboard/clients/`, newUserData)
                     .then((response) => {
+                        console.log({ response });
                         const client = response.data.client;
                         client.array_areas = client.areas.map((a) => a.name);
+                        client.blood_name = client.blood_types.name
                         setUsuarios((prev) => [...prev, client]);
                     });
                 setAlert({
@@ -345,7 +348,7 @@ export default function Usuarios() {
                 title={"Usuarios"}
                 data={usuarios}
                 columns={columns}
-                options={options}
+                options={options} 
             />
         );
     }, [usuarios]);
@@ -385,11 +388,11 @@ export default function Usuarios() {
             />
         );
     });
-  
-    return ( 
+
+    return (
         <>
             <button
-                className="mb-7 border py-2 px-3 border-opacity-30 rounded-md border-dark duration-100 text-white hover:bg-yellow"
+                className="mb-7 border py-2 px-3 rounded-md glass duration-100 text-white hover:bg-yellow"
                 onClick={() => {
                     setOpen(true);
                     setNewUserData({});
@@ -460,10 +463,10 @@ export default function Usuarios() {
                                 value={newUserData.birth_date}
                                 name={"birth_date"}
                                 onChange={handleChange}
-                            />
-                            <Input
+                            /> 
+                            <Input  
                                 key={4}
-                                label={"Edad"}
+                                label={"Edad"} 
                                 // InputProps={{
                                 //     readOnly: true,
                                 // }}
@@ -521,6 +524,7 @@ export default function Usuarios() {
                                         {option.name}
                                     </MenuItem>
                                 ))}
+                                 
                             </TextField>
 
                             <TextField
@@ -580,7 +584,7 @@ export default function Usuarios() {
                                 <TextField
                                     {...params}
                                     variant="outlined"
-                                    label="Areas inscritas"
+                                    label="Areas pagas"
                                 />
                             )}
                         />

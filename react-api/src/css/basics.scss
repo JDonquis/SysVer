@@ -8,115 +8,133 @@
     font-family: "Manjari";
     src: url("../assets/fonts/Manjari-Bold.ttf");
     font-weight: 700;
-} 
-@font-face {  
+}
+@font-face {
     font-family: "Manjari";
     src: url("../assets/fonts/Manjari-Regular.ttf");
-    font-weight: 400; 
-} 
+    font-weight: 400;
+}
 //colors: ******************************************************
-$blue: #069DBF;
-$yellow: #D9831A;  
-$green: #027353; 
-$purple: #A64684;
-* { 
-    padding: 0;   
+$blue: #069dbf;
+$yellow: #d9831a;
+$green: #027353;
+$purple: #a64684;
+* {
+    padding: 0;
     margin: 0;
     margin-bottom: 0;
     box-sizing: border-box;
-    font-family: "Manjari", sans-serif  !important;
+    font-family: "Manjari", sans-serif !important;
 }
 p {
     margin-bottom: 0;
 }
 .blue {
-    color: #069DBF;
+    color: #069dbf;
 }
 .yellow {
-    color: #D9831A;
-} 
-.purple { 
-    color:#A64684;
+    color: #d9831a;
+}
+.purple {
+    color: #a64684;
 }
 .green {
     color: #027353;
 }
 
 .bg_blue {
-    background-color: #069DBF;
+    background-color: #069dbf;
 }
 .bg_yellow {
-    background-color: #D9831A;
+    background-color: #d9831a;
 }
 .bg_purple {
-    background-color:#A64684;
+    background-color: #a64684;
 }
 .bg_green {
     background-color: #027353;
 }
-input[type=submit]{
+input[type="submit"] {
     border: none;
 }
-ul.link_container{
+ul.link_container {
     list-style: none;
     a {
         text-decoration: none;
     }
-    
-}  
-   
+}
+
 /// general dashboard
 .dashboard_container {
     overflow: hidden;
     display: flex;
-    // gap: 20px;   
-    .main_dashboard { 
+    // gap: 20px;
+    .main_dashboard {
         flex: auto;
-        padding: 20px; 
-        background: rgb(255,255,255);
-        background: linear-gradient(-50deg, rgba(255,255,255,1) 10%, #003b58 100%);
+        padding: 20px;
+        background: rgb(255, 255, 255);
+        background: linear-gradient(
+            -50deg,
+            hwb(320 94% 0%) 0%,
+            #003b58 100%
+        );
     }
-}           
+}
 
-.mainDashboard_container{
-    width: 100%; 
+.mainDashboard_container {
+    width: 100%;
     float: right;
     // transition: width .4s ease;
     &.small {
-
-        max-width: calc(100vw - 295px); 
+        max-width: calc(100vw - 295px);
     }
     &.large {
-        max-width: calc(100vw - 105px); 
-
+        max-width: calc(100vw - 105px);
     }
 }
 th * {
-    // padding-left: 20px !important;
-    text-transform: uppercase !important; 
-} 
+    padding-left: 0px !important;  
+    text-transform: uppercase !important;
+}
 .MuiTableCell-footer {
     padding: 0 !important;
+    
 }
+
 ::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
+    width: 10px;
+    height: 10px;
 }
 
 /* Track */
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;
+    background: #f1f1f1;
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: #003b58;
+    background: #003b58;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: #555;
+    background: #555;
 }
 .Mui-focused fieldset {
-    border-color: 'green' !important;
+    border-color: "green" !important;
+}
+
+.glass {
+    background: rgba(255, 255, 255, 0.25);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    border: 1px solid rgba( 255, 255, 255, 0.18 );
+    & * {
+        color: white !important;
+    }
+    // & *:focus {
+    //     outline: white !important;
+    //     border-color: white !important;
+    // }
 }
