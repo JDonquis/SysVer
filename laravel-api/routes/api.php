@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\api\LoginController;
+use App\Http\Controllers\api\dashboard\AssistanceController;
 use App\Http\Controllers\api\dashboard\ClientController;
 use App\Http\Controllers\api\dashboard\UsersController;
 use Illuminate\Http\Request;
@@ -25,9 +26,13 @@ Route::post('/login',[LoginController::class,'login']);
 
 Route::group(['prefix' => 'dashboard', 'middleware' => ['auth:sanctum']], function(){
 
+    // Clients
     Route::get('clients',[ClientController::class,'index']);
     Route::post('clients',[ClientController::class,'store']);
     Route::put('clients/{id}',[ClientController::class,'update']);
     Route::delete('clients/{id}',[ClientController::class,'destroy']);
+
+    // Assistances
+    Route::get('assistance',[AssistanceController::class,'index']);
 
 });
