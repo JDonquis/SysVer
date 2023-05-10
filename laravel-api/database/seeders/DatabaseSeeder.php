@@ -24,6 +24,8 @@ class DatabaseSeeder extends Seeder
         'areas',
         'area_chargeds',
         'client_area_chargeds',
+        'shifts',
+        'schedules',
 
 
         ]);
@@ -37,6 +39,8 @@ class DatabaseSeeder extends Seeder
             ClientSeeder::class,
             AreaChargedSeeder::class,
             ClientAreaChargedSeeder::class,
+            ShiftSeeder::class,
+            ScheduleSeeder::class,
 
             
         ]);
