@@ -88,13 +88,18 @@ ul.link_container a {
   max-width: calc(100vw - 105px);
 }
 
-th * {
-  padding-left: 0px !important;
+th {
+  padding: 20px !important;
+  margin: 20px;
   text-transform: uppercase !important;
 }
 
 .MuiTableCell-footer {
   padding: 0 !important;
+}
+
+MuiPaper-root.MuiPaper-elevation.MuiPaper-rounded.MuiPaper-elevation4.tss-11quiee-MUIDataTable-paper.tss-1x5mjc5-MUIDataTable-root.css-11mde6h-MuiPaper-root {
+  background-attachment: transparent !important;
 }
 
 ::-webkit-scrollbar {
@@ -117,10 +122,6 @@ th * {
   background: #555;
 }
 
-.Mui-focused fieldset {
-  border-color: "green" !important;
-}
-
 .glass {
   background: rgba(255, 255, 255, 0.25);
   box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
@@ -128,10 +129,13 @@ th * {
   -webkit-backdrop-filter: blur(4px);
   border: 1px solid rgba(255, 255, 255, 0.18);
 }
+.glass * {
+  color: white !important;
+}
 
 .left_nav {
   height: 100vh;
-  background: rgba(6, 157, 191, 0.05);
+  background: rgba(6, 157, 191, 0.089);
   min-width: 250px;
   max-width: 250px;
   padding-top: 5px;

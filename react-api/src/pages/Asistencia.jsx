@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Input from "../components/Input";
-import { Autocomplete, TextField, MenuItem } from "@mui/material";
+import { Autocomplete, IconButton, TextField, MenuItem } from "@mui/material";
 import MUIDataTable from "mui-datatables";
-
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
 import { styled } from "@mui/material/styles";
 
 const CssTextField = styled(TextField)({
@@ -25,10 +26,16 @@ const CssTextField = styled(TextField)({
 });
 
 export default function Asistencia() {
+    const [newAttendance, setNewAttendance] = useState({
+        code: "",
+        area: {},
+        turno: { },
+    });
+
     const all_areas_db = [
         {
-            id: 1,
-            name: "Gymnasio",
+            id: 1,   
+            name: "Gimnasio",
             type_area_id: 2,
         },
         {
@@ -48,16 +55,17 @@ export default function Asistencia() {
         mesA = fecha.getMonth() + 1,
         diaA = fecha.getDate();
 
-    const asistencia = [
+    const [asistencia, setAsistencia] = useState([
         {
             code: 1124,
             name: "emilia",
             last_name: "sanchez",
-            area: "boxeo",
-            turno: "1",
+            area: { id: 1, name: "Gimnasio" },
+            turno: { id: 2, name: "2" },
             hora: "3pm",
         },
-    ];
+    ]);
+    console.log(newAttendance.turno?.id)
     const columns = [
         {
             name: "code",
@@ -85,11 +93,22 @@ export default function Asistencia() {
             label: "Area",
             options: {
                 filter: true,
+                customBodyRender: (value, tableMeta) => {
+                    // console.log({value, tableMeta})
+                    return <div>{value.name}</div>;
+                },
             },
         },
         {
             name: "turno",
             label: "Turno",
+            options: {
+                filter: true,
+                customBodyRender: (value, tableMeta) => {
+                    // console.log({value, tableMeta})
+                    return <div>{value.name}</div>;
+                },
+            },
         },
         {
             name: "hora",
@@ -109,6 +128,35 @@ export default function Asistencia() {
         selectableRows: "single",
         // rowsSelected:rowSelected,
         fixedHeader: true,
+        customToolbarSelect: (selectedRows, displayData, setSelectedRows) => (
+            <div>
+                <IconButton
+                    title="Editar"
+                    onClick={() => {
+                        const indx = selectedRows.data[0].dataIndex;
+                        // console.log(usuarios[indx]);
+                        setNewAttendance(asistencia[indx]);
+                        // setNewAttendance({});
+                    }}
+                >
+                    <EditIcon />
+                </IconButton>
+
+                <IconButton
+                    title="Eliminar"
+                    onClick={() => {
+                        // console.log({ selectedRows, displayData });
+                        setModalConfirm(true);
+                        setDataForDeleteUser({
+                            indx: selectedRows.data[0].dataIndex,
+                            setSelectedRows: setSelectedRows,
+                        });
+                    }}
+                >
+                    <DeleteIcon />
+                </IconButton>
+            </div>
+        ),
     };
 
     const turnos = [
@@ -117,6 +165,22 @@ export default function Asistencia() {
         { id: 3, name: "3" },
         { id: 4, name: "4" },
     ];
+
+    const [tabla, setTabla] = useState();
+    useEffect(() => {
+        setTabla(
+            <MUIDataTable
+                isRowSelectable={true}
+                title={`Asistencia de hoy ${diaA}/${mesA}/${añoA}`}
+                data={asistencia}
+                columns={columns}
+                options={options}
+            />
+        );
+    }, [asistencia]);
+
+    console.log(newAttendance);
+
     return (
         <>
             <form className="flex glass p-3 gap-3 w-min rounded-md mb-5">
@@ -124,10 +188,15 @@ export default function Asistencia() {
                     // shrink={true}
                     // type={"Código"}
                     label={"Código"}
-                    // value={""}
+                    value={newAttendance.code}
                     name={"birth_date"}
                     width={150}
-                    // onChange={handleChange}
+                    onChange={(e) =>
+                        setNewAttendance((prev) => ({
+                            ...prev,
+                            code: e.target.value,
+                        }))
+                    }
                 />
                 <Autocomplete
                     name="area"
@@ -140,7 +209,7 @@ export default function Asistencia() {
                         // }));
                     }}
                     id="tags-outlined"
-                    // value={newUserData.areas}
+                    value={newAttendance.area}
                     options={all_areas_db}
                     getOptionLabel={(all_areas_db) => all_areas_db.name}
                     // defaultValue={newUserData.array_areas}
@@ -163,7 +232,7 @@ export default function Asistencia() {
                     id="outlined-select-currency"
                     select
                     label="Turno"
-                    // value={newUserData.blood_types?.id}
+                    value={newAttendance.turno?.id}
                     defaultValue=""
                     name="turno"
                     // onChange={(e) => {
@@ -182,7 +251,7 @@ export default function Asistencia() {
                             {option.name}
                         </MenuItem>
                     ))}
-                </CssTextField> 
+                </CssTextField>
 
                 <button
                     type="submit"
@@ -192,13 +261,7 @@ export default function Asistencia() {
                 </button>
             </form>
 
-            <MUIDataTable
-                isRowSelectable={true}
-                title={`Asistencia de hoy ${diaA}/${mesA}/${añoA}`}
-                data={asistencia}
-                columns={columns}
-                options={options}
-            />
+            {tabla}
         </>
     );
 }

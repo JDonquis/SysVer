@@ -18,6 +18,20 @@ import ConfirmModal from "../components/ConfimModal";
 import Alert from "../components/Alert";
 import Input from "../components/Input";
 
+import {styled} from "@mui/material/styles";
+
+const CssTextField = styled(TextField)({
+    '& label.Mui-focused': {
+    color: '#069dbf',
+  },
+    '& .MuiOutlinedInput-root': {
+    
+    '&.Mui-focused fieldset': {
+      borderColor: '#069dbf',
+    },
+  },
+})
+
 const divFlex = {
     display: "flex", 
     gap: "5px",
@@ -307,14 +321,13 @@ export default function Usuarios() {
                     status: "Exito",
                     message: `El usuario ${newUserData.name} ha sido creado`,
                 });
-                setOpen(false);
             }
             if (submitStatus === "Editar") {
                 setSubmitStatus("cargando...");
                 await axios
                     .put(`/dashboard/clients/${newUserData.id}`, newUserData)
                     .then((response) => {
-                        setAlert({
+                        setAlert({ 
                             open: true,
                             status: "Exito",
                             message: `${newUserData.name} ha sido editado`,
@@ -325,8 +338,10 @@ export default function Usuarios() {
                         user.id === newUserData.id ? newUserData : user
                     )
                 );
-                setOpen(false);
             }
+            setNewUserData({});
+            setOpen(false);
+
         } catch (error) {
             // console.log(error);
             setAlert({
@@ -392,10 +407,12 @@ export default function Usuarios() {
     return (
         <>
             <button
-                className="mb-7 border py-2 px-3 rounded-md glass duration-100 text-white hover:bg-yellow"
+                className="mb-7 border py-2 px-3 rounded-md glass duration-100 text-white hover:bg-purple"
                 onClick={() => {
+                    if(submitStatus === 'Editar') {
+                        setNewUserData({})
+                    }
                     setOpen(true);
-                    setNewUserData({});
                     setSubmitStatus("Inscribir");
                 }}
             >
@@ -500,7 +517,7 @@ export default function Usuarios() {
                             />
                         </div>
                         <div style={divFlex}>
-                            <TextField
+                            <CssTextField
                                 sx={{ width: 110 }}
                                 id="outlined-select-currency"
                                 select
@@ -525,9 +542,9 @@ export default function Usuarios() {
                                     </MenuItem>
                                 ))}
                                  
-                            </TextField>
+                            </CssTextField>
 
-                            <TextField
+                            <CssTextField
                                 id="outlined-select-currency"
                                 label="Sexo"
                                 defaultValue=""
@@ -539,7 +556,7 @@ export default function Usuarios() {
                             >
                                 <MenuItem value={"F"}>F</MenuItem>
                                 <MenuItem value={"M"}>M</MenuItem>
-                            </TextField>
+                            </CssTextField>
 
                             <Input
                                 label={"Peso (kg)"}
@@ -581,7 +598,7 @@ export default function Usuarios() {
                             }
                             filterSelectedOptions
                             renderInput={(params) => (
-                                <TextField
+                                <CssTextField
                                     {...params}
                                     variant="outlined"
                                     label="Areas pagas"

@@ -2,10 +2,10 @@
 
 .left_nav {
     height: 100vh;
-    background: rgba(6, 157, 191, 0.05); 
+    background: rgba(6, 157, 191, 0.089); 
     min-width: 250px; 
     max-width: 250px;  
-    padding-top: 5px;
+    padding-top: 5px; 
     position: relative;
     // overflow: hidden;
     transition: all .3s ease-in-out; 
@@ -34,14 +34,14 @@
         
     }
     .arrowIcon {
-        transition: all .2s ease;
-        position: absolute;
+        transition: all .2s ease; 
+        position: absolute; 
         right: -5px;
         font-size: 25px;
         filter:drop-shadow(0px 2px 4px rgba(0, 0, 0, 0.45));
-        top: 9px;
+        top: 9px; 
         color: whitesmoke;
-        transform: rotate(180deg);
+        transform: rotate(180deg); 
         &:hover {
             cursor: pointer;
             font-size: 29px;

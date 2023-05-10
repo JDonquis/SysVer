@@ -88,13 +88,38 @@ ul.link_container a {
   max-width: calc(100vw - 105px);
 }
 
-th * {
-  padding-left: 0px !important;
+th {
+  padding: 20px !important;
+  margin: 20px;
   text-transform: uppercase !important;
 }
 
 .MuiTableCell-footer {
   padding: 0 !important;
+}
+
+.css-11mde6h-MuiPaper-root {
+  background: rgba(255, 255, 255, 0.25) !important;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37) !important;
+  backdrop-filter: blur(4px) !important;
+  -webkit-backdrop-filter: blur(4px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.18) !important;
+}
+
+.tss-1dqj55d-MUIDataTableToolbarSelect-root {
+  background: transparent !important;
+}
+
+h6.MuiTypography-root {
+  color: rgb(255, 255, 255) !important;
+}
+
+tbody.MuiTableBody-root.css-apqrd9-MuiTableBody-root {
+  background-color: rgb(255, 255, 255);
+}
+
+thead, .tss-gm6zfk-MUIDataTableHeadCell-fixedHeader {
+  background-color: rgb(255, 255, 255) !important;
 }
 
 ::-webkit-scrollbar {
@@ -115,10 +140,6 @@ th * {
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
-}
-
-.Mui-focused fieldset {
-  border-color: "green" !important;
 }
 
 .glass {
