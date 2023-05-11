@@ -17,7 +17,7 @@ class AssistanceController extends Controller
      */
     public function index()
     {
-        return Assistance::with('schedule.area','schedule.shift_start','schedule.shift_end')->get();
+        return Assistance::with('schedule.area','schedule.shift_start','schedule.shift_end','client')->get();
         
     }
 
