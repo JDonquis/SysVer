@@ -5,6 +5,8 @@ import MUIDataTable from "mui-datatables";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import { styled } from "@mui/material/styles";
+import axios from "../api/axios";
+
 
 const CssTextField = styled(TextField)({
     "& label.Mui-focused": {
@@ -26,47 +28,61 @@ const CssTextField = styled(TextField)({
 });
 
 export default function Asistencia() {
-    const [newAttendance, setNewAttendance] = useState({
-        code: "",
-        area: {},
-        turno: { },
-    });
-
-    const all_areas_db = [
-        {
-            id: 1,   
-            name: "Gimnasio",
-            type_area_id: 2,
-        },
-        {
-            id: 2,
-            name: "Artes Marciales",
-            type_area_id: 1,
-        },
-        {
-            id: 3,
-            name: "Yoga",
-            type_area_id: 1,
-        },
-    ];
-
-    let fecha = new Date(),
-        añoA = fecha.getFullYear(),
-        mesA = fecha.getMonth() + 1,
-        diaA = fecha.getDate();
-
-    const [asistencia, setAsistencia] = useState([
-        {
-            code: 1124,
-            name: "emilia",
-            last_name: "sanchez",
-            area: { id: 1, name: "Gimnasio" },
-            turno: { id: 2, name: "2" },
-            hora: "3pm",
-        },
-    ]);
-    console.log(newAttendance.turno?.id)
-    const columns = [
+     const [asistencia, setAsistencia] = useState([
+    {
+        id: 1,
+        client_id: 1,
+        schedule_id: 1,
+        schedule: {
+            id: 1,
+            start_shift_id: 1,
+            end_shift_id: 1,
+            area_id: 1,
+            area: {
+                id: 1,
+                name: "Gimnasio",
+                type_area_id: 2
+            },
+            shift_start: {
+                id: 1,
+                start: "07:00 AM.",
+                end: "08:00 AM."
+            },
+            shift_end: {
+                id: 1,
+                start: "07:00 AM.",
+                end: "08:00 AM."
+            }
+        }
+    },
+    {
+        id: 2,
+        client_id: 1,
+        schedule_id: 1,
+        schedule: {
+            id: 1,
+            start_shift_id: 1,
+            end_shift_id: 1,
+            area_id: 1,
+            area: {
+                id: 1,
+                name: "Gimnasio",
+                type_area_id: 2
+            },
+            shift_start: {
+                id: 1,
+                start: "07:00 AM.",
+                end: "08:00 AM."
+            },
+            shift_end: {
+                id: 1,
+                start: "07:00 AM.",
+                end: "08:00 AM."
+            }
+        }
+    }
+]);
+ const columns = [
         {
             name: "code",
             label: "Código",
@@ -95,6 +111,7 @@ export default function Asistencia() {
                 filter: true,
                 customBodyRender: (value, tableMeta) => {
                     // console.log({value, tableMeta})
+
                     return <div>{value.name}</div>;
                 },
             },
@@ -118,6 +135,60 @@ export default function Asistencia() {
             },
         },
     ];
+     const getData = async () => {
+        await axios.get('dashboard/assistance').then((response) => {
+            const data = response;
+            // console.log(data);
+            const clients = response.data
+            // clients.forEach((user) => {
+            //     user.array_areas = user.areas.map((a) => a.name);
+            //     user.blood_name = user.blood_types.name;
+            // });
+
+            // setAsistencia(clients);
+            console.log(data)
+            // console.log(data)
+        });
+    };
+
+    useEffect(() => {
+        getData();
+        document.title = "SysVer | Asistencia";
+    }, []);
+    const [newAttendance, setNewAttendance] = useState({
+        code: "",
+        area: {},
+        turno: { },
+    });
+
+    const all_areas_db = [
+        {
+            id: 1,   
+            name: "Gimnasio",
+            type_area_id: 2,
+        },
+        {
+            id: 2,
+            name: "Artes Marciales",
+            type_area_id: 1,
+        },
+        {
+            id: 3,
+            name: "Yoga",
+            type_area_id: 1,
+        },
+    ];
+
+
+
+    let fecha = new Date(),
+        añoA = fecha.getFullYear(),
+        mesA = fecha.getMonth() + 1,
+        diaA = fecha.getDate();
+
+   
+    // console.log(newAttendance.turno?.id)
+   
 
     const options = {
         filterType: "checkbox",
@@ -179,7 +250,7 @@ export default function Asistencia() {
         );
     }, [asistencia]);
 
-    console.log(newAttendance);
+    // console.log(newAttendance);
 
     return (
         <>
