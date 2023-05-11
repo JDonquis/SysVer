@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\api\dashboard;
 
 use App\Http\Controllers\Controller;
+use App\Models\Area;
 use App\Models\Assistance;
 use App\Models\Client;
 use App\Models\Schedule;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class AssistanceController extends Controller
 {
@@ -17,8 +19,10 @@ class AssistanceController extends Controller
      */
     public function index()
     {
-        return Assistance::with('schedule.area','schedule.shift_start','schedule.shift_end','client')->get();
-        
+        $assistances = Assistance::with('schedule.area','schedule.shift_start','schedule.shift_end','client')->get();
+        $areas = Area::with('schedule')->get();
+
+        return response(["areas" => $areas, 'assistances' => $assistances], Response::HTTP_OK);    
     }
 
     /**
