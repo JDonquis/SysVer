@@ -224,6 +224,7 @@ export default function Asistencia() {
                 .then((response) => {
                     console.log({ response });
                     // setAsistencia((prev) => [...prev, client]);
+                    setAsistencia(prev => [...prev, response.data.assistance])
                 });
             setAlert({
                 open: true,
