@@ -29,127 +29,90 @@ const CssTextField = styled(TextField)({
 
 export default function Asistencia() {
      const [asistencia, setAsistencia] = useState([
-    {
-        id: 1,
-        client_id: 1,
-        schedule_id: 1,
-        schedule: {
-            id: 1,
-            start_shift_id: 1,
-            end_shift_id: 1,
-            area_id: 1,
-            area: {
-                id: 1,
-                name: "Gimnasio",
-                type_area_id: 2
-            },
-            shift_start: {
-                id: 1,
-                start: "07:00 AM.",
-                end: "08:00 AM."
-            },
-            shift_end: {
-                id: 1,
-                start: "07:00 AM.",
-                end: "08:00 AM."
-            }
-        }
-    },
-    {
-        id: 2,
-        client_id: 1,
-        schedule_id: 1,
-        schedule: {
-            id: 1,
-            start_shift_id: 1,
-            end_shift_id: 1,
-            area_id: 1,
-            area: {
-                id: 1,
-                name: "Gimnasio",
-                type_area_id: 2
-            },
-            shift_start: {
-                id: 1,
-                start: "07:00 AM.",
-                end: "08:00 AM."
-            },
-            shift_end: {
-                id: 1,
-                start: "07:00 AM.",
-                end: "08:00 AM."
-            }
-        }
-    }
+   
 ]);
  const columns = [
         {
-            name: "code",
+            name: "client",
             label: "Código",
             options: {
                 filter: false,
+                 customBodyRender: (value, tableMeta) => {
+
+                    return value.code;
+                },
             },
         },
         {
-            name: "name",
+            name: "client",
             label: "Nombre",
             options: {
                 filter: false,
+                 customBodyRender: (value, tableMeta) => {
+                    // console.log({value, tableMeta})
+                    return value.name;
+                },
             },
         },
         {
-            name: "last_name",
+            name: "client",
             label: "Apellido",
             options: {
                 filter: false,
+                 customBodyRender: (value, tableMeta) => {
+                    // console.log({value, tableMeta})
+                    return value.last_name;
+                },
             },
         },
         {
-            name: "area",
+            name: "schedule",
             label: "Area",
             options: {
                 filter: true,
                 customBodyRender: (value, tableMeta) => {
                     // console.log({value, tableMeta})
+                    return value.area.name;
 
-                    return <div>{value.name}</div>;
                 },
             },
         },
         {
-            name: "turno",
+            name: "schedule",
             label: "Turno",
             options: {
                 filter: true,
                 customBodyRender: (value, tableMeta) => {
                     // console.log({value, tableMeta})
-                    return <div>{value.name}</div>;
+                    return value.shift_start.start + ' - ' + value.shift_end.end
                 },
             },
         },
-        {
-            name: "hora",
-            label: "Hora",
-            options: {
-                filter: false,
-            },
-        },
+        // {
+        //     name: "hora",
+        //     label: "Hora",
+        //     options: {
+        //         filter: false,
+        //     },
+        // },
     ];
      const getData = async () => {
         await axios.get('dashboard/assistance').then((response) => {
-            const data = response;
+            const data = response.data;
             // console.log(data);
-            const clients = response.data
             // clients.forEach((user) => {
             //     user.array_areas = user.areas.map((a) => a.name);
             //     user.blood_name = user.blood_types.name;
             // });
-
-            // setAsistencia(clients);
-            console.log(data)
+            const asis = data.assistances
+            
+            console.log(asis)
+            
+            setAsistencia(asis);
             // console.log(data)
         });
     };
+    console.log(asistencia)
 
     useEffect(() => {
         getData();
@@ -188,7 +151,7 @@ export default function Asistencia() {
 
    
     // console.log(newAttendance.turno?.id)
-   
+   console.log(asistencia)
 
     const options = {
         filterType: "checkbox",
@@ -206,6 +169,7 @@ export default function Asistencia() {
                     onClick={() => {
                         const indx = selectedRows.data[0].dataIndex;
                         // console.log(usuarios[indx]);
+                        console.log(indx)
                         setNewAttendance(asistencia[indx]);
                         // setNewAttendance({});
                     }}
@@ -259,20 +223,20 @@ export default function Asistencia() {
                     // shrink={true}
                     // type={"Código"}
                     label={"Código"}
-                    value={newAttendance.code}
+                    value={newAttendance.client?.code}
                     name={"birth_date"}
                     width={150}
-                    onChange={(e) =>
-                        setNewAttendance((prev) => ({
-                            ...prev,
-                            code: e.target.value,
-                        }))
-                    }
+                    // onChange={(e) =>
+                    //     setNewAttendance((prev) => ({
+                    //         ...prev,
+                    //         client: {...prev.client, }code: e.target.value,
+                    //     }))
+                    // }
                 />
-                <Autocomplete
+                {/* <Autocomplete
                     name="area"
                     onChange={(event, value) => {
-                        const arr_areas = value.map((a) => a.name);
+                        // const arr_areas = value.map((a) => a.name);
                         // setNewUserData((prev) => ({
                         //     ...prev,
                         //     areas: value,
@@ -296,7 +260,7 @@ export default function Asistencia() {
                             label="Area"
                         />
                     )}
-                />
+                /> */}
 
                 <CssTextField
                     sx={{ width: 190 }}
