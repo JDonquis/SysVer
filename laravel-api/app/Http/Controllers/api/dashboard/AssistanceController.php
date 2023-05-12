@@ -21,19 +21,9 @@ class AssistanceController extends Controller
     public function index()
     {
         $assistances = Assistance::with('schedule.area','schedule.shift_start','schedule.shift_end','client')->get();
-        $areas = Area::with('schedule')->get();
+        $areas = Area::with('schedule.shift_start','schedule.shift_end')->get();
 
         return response(["areas" => $areas, 'assistances' => $assistances], Response::HTTP_OK);    
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -44,7 +34,46 @@ class AssistanceController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+       
+       $client_id = Client::where("code",$request->code)->first();
+       
+       if(!isset($client_id->id))
+             return response(["Message" => 'Codigo no valido'], Response::HTTP_CONFLICT);       
+
+       $assistances = Assistance::where('client_id',$client_id->id)->first();
+
+       
+
+       if(isset($assistances->id))
+             return response(["Message" => 'El usuario ya se encuentra en la asistencia'], Response::HTTP_CONFLICT);
+
+       DB::beginTransaction();
+
+        try {
+            
+            $new_assistance = new Assistance;
+            
+            $request->request->add(['client_id' => $client_id->id]);
+
+            $new_assistance->create($request->all());
+
+            $assistance_id = $new_assistance->latest('id')->first()->id;
+
+            $assistance_created = Assistance::where('id',$assistance_id)->with('schedule.area','schedule.shift_start','schedule.shift_end','client')->first();
+                
+            DB::commit();
+
+            return response(["Message" => 'Asistencia creada exitosamente', "assistance" => $assistance_created], Response::HTTP_OK);
+
+        }catch (Exception $e) {
+            DB::rollback();
+
+            if($e->getCode() == '23000')
+                return response(["Message" => 'No se pudo crear la asistencia, verifique los datos', 'ErrorMessage' => $e->getMessage()], Response::HTTP_BAD_REQUEST);    
+            
+            return response(["Message" => 'No se pudo crear la asistencia','ErrorMessage' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
+        }   
     }
 
     /**
