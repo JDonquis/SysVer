@@ -13,6 +13,8 @@ class Assistance extends Model
 
     protected $table = "assistances";
 
+    public $timestamps = false;
+
     // protected $hidden = ['pivot'];
 
     protected $fillable = [

@@ -34,6 +34,7 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth:sanctum']], functi
 
     // Assistances
     Route::get('assistance',[AssistanceController::class,'index']);
+    Route::post('assistance',[AssistanceController::class,'store']);
     Route::delete('assistance/{id}',[AssistanceController::class,'destroy']);
 
 });
