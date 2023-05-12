@@ -104,12 +104,12 @@ export default function Asistencia() {
             const data = response.data;
             const asis = data.assistances;
             const areas = data.areas;
-            console.log(response)
+            console.log(response);
             setAsistencia(asis);
             setAll_areas(areas);
         });
     };
-    console.log(all_areas);
+    // console.log(all_areas);
 
     useEffect(() => {
         getData();
@@ -175,7 +175,7 @@ export default function Asistencia() {
         mesA = fecha.getMonth() + 1,
         diaA = fecha.getDate();
 
-    console.log(newAttendance);
+    console.log({ newAttendance });
 
     const options = {
         filterType: "checkbox",
@@ -215,6 +215,32 @@ export default function Asistencia() {
         ),
     };
 
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        try {
+            await axios
+                .post(`dashboard/assistance`, newAttendance)
+                .then((response) => {
+                    console.log({ response });
+                    // setAsistencia((prev) => [...prev, client]);
+                });
+            setAlert({
+                open: true,
+                status: "Exito",
+                // message: `El usuario ${newUserData.name} ha sido creado`,
+            });
+        } catch (error) {
+            // console.log(error);
+            setAlert({
+                open: true,
+                status: "Error",
+                message: `Algo salió mal`,
+            });
+            
+        }
+    };
+
     const turnos = [
         { id: 1, name: "1" },
         { id: 2, name: "2" },
@@ -235,11 +261,16 @@ export default function Asistencia() {
         );
     }, [asistencia]);
 
-    let pave = all_areas.find(obj => obj.id == newAttendance.area_id)?.schedule
-    console.log(pave)
+    let pave = all_areas.find(
+        (obj) => obj.id == newAttendance.area_id
+    )?.schedule;
+    console.log(pave);
     return (
         <>
-            <form className="flex glass p-3 gap-3 w-min rounded-md mb-5">
+            <form
+                className="flex glass p-3 gap-3 w-min rounded-md mb-5"
+                onSubmit={handleSubmit}
+            >
                 <CssTextField
                     // shrink={true}
                     // type={"Código"}
@@ -264,7 +295,7 @@ export default function Asistencia() {
                     defaultValue=""
                     name="turno"
                     onChange={(e) => {
-                       setNewAttendance((prev) => ({
+                        setNewAttendance((prev) => ({
                             ...prev,
                             area_id: e.target.value,
                         }));
@@ -277,29 +308,29 @@ export default function Asistencia() {
                     ))}
                 </CssTextField>
                 <CssTextField
-                    sx={{ width: 190 }}
+                    sx={{ width: 290 }}
                     id="outlined-select-currency"
                     select
                     label="Turno"
                     value={newAttendance?.turno_id}
                     defaultValue=""
                     name="turno"
-                    // onChange={(e) => {
-                    //     let obj_blood = all_blood_types.find(
-                    //         (obj) => obj.id === e.target.value
-                    //     );
-                    //     setNewUserData((prev) => ({
-                    //         ...prev,
-                    //         blood_types: obj_blood,
-                    //         blood_name: obj_blood.name,
-                    //     }));
-                    // }}
+                    onChange={(e) => {
+                        setNewAttendance((prev) => ({
+                            ...prev,
+                            schedule_id: e.target.value,
+                        }));
+                    }}
                 >
-                    {all_areas.find(obj => obj.id === newAttendance.area_id)?.schedule.map((option) => (
-                        <MenuItem key={option.id} value={option.id}>
-                            {option.shift_start.start + ' - ' + option.shift_start.end}
-                        </MenuItem>
-                    ))} 
+                    {all_areas
+                        .find((obj) => obj.id === newAttendance.area_id)
+                        ?.schedule.map((option) => (
+                            <MenuItem key={option.id} value={option.id}>
+                                {option.shift_start.start +
+                                    " - " +
+                                    option.shift_start.end}
+                            </MenuItem>
+                        ))}
                 </CssTextField>
 
                 <button
