@@ -6,7 +6,8 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import { styled } from "@mui/material/styles";
 import axios from "../api/axios";
-
+import ConfirmModal from "../components/ConfimModal";
+import Alert from "../components/Alert";
 
 const CssTextField = styled(TextField)({
     "& label.Mui-focused": {
@@ -28,17 +29,21 @@ const CssTextField = styled(TextField)({
 });
 
 export default function Asistencia() {
-     const [asistencia, setAsistencia] = useState([
-   
-]);
- const columns = [
+    const [asistencia, setAsistencia] = useState([]);
+    const [modalConfirm, setModalConfirm] = useState(false);
+    const [alert, setAlert] = useState({
+        open: false,
+        status: "",
+        message: "",
+    });
+    const [all_areas, setAll_areas] = useState([]);
+    const columns = [
         {
             name: "client",
             label: "Código",
             options: {
                 filter: false,
-                 customBodyRender: (value, tableMeta) => {
-
+                customBodyRender: (value, tableMeta) => {
                     return value.code;
                 },
             },
@@ -48,8 +53,7 @@ export default function Asistencia() {
             label: "Nombre",
             options: {
                 filter: false,
-                 customBodyRender: (value, tableMeta) => {
-                    // console.log({value, tableMeta})
+                customBodyRender: (value, tableMeta) => {
                     return value.name;
                 },
             },
@@ -59,8 +63,7 @@ export default function Asistencia() {
             label: "Apellido",
             options: {
                 filter: false,
-                 customBodyRender: (value, tableMeta) => {
-                    // console.log({value, tableMeta})
+                customBodyRender: (value, tableMeta) => {
                     return value.last_name;
                 },
             },
@@ -71,9 +74,7 @@ export default function Asistencia() {
             options: {
                 filter: true,
                 customBodyRender: (value, tableMeta) => {
-                    // console.log({value, tableMeta})
                     return value.area.name;
-
                 },
             },
         },
@@ -83,8 +84,9 @@ export default function Asistencia() {
             options: {
                 filter: true,
                 customBodyRender: (value, tableMeta) => {
-                    // console.log({value, tableMeta})
-                    return value.shift_start.start + ' - ' + value.shift_end.end
+                    return (
+                        value.shift_start.start + " - " + value.shift_end.end
+                    );
                 },
             },
         },
@@ -96,23 +98,18 @@ export default function Asistencia() {
         //     },
         // },
     ];
-     const getData = async () => {
-        await axios.get('dashboard/assistance').then((response) => {
+
+    const getData = async () => {
+        await axios.get("dashboard/assistance").then((response) => {
             const data = response.data;
-            // console.log(data);
-            // clients.forEach((user) => {
-            //     user.array_areas = user.areas.map((a) => a.name);
-            //     user.blood_name = user.blood_types.name;
-            // });
-            const asis = data.assistances
-            
-            console.log(asis)
-            
+            const asis = data.assistances;
+            const areas = data.areas;
+            console.log(response)
             setAsistencia(asis);
-            // console.log(data)
+            setAll_areas(areas);
         });
     };
-    console.log(asistencia)
+    console.log(all_areas);
 
     useEffect(() => {
         getData();
@@ -120,13 +117,13 @@ export default function Asistencia() {
     }, []);
     const [newAttendance, setNewAttendance] = useState({
         code: "",
-        area: {},
-        turno: { },
+        area_id: "",
+        schedule_id: "",
     });
 
     const all_areas_db = [
         {
-            id: 1,   
+            id: 1,
             name: "Gimnasio",
             type_area_id: 2,
         },
@@ -141,17 +138,44 @@ export default function Asistencia() {
             type_area_id: 1,
         },
     ];
+    const [dataForDeleteUser, setDataForDeleteUser] = useState({
+        indx: "",
+        setSelectedRows: () => {},
+    });
 
+    useEffect(() => {
+        setTimeout(() => {
+            setAlert({ open: false, message: "", status: "" });
+        }, 3000);
+    }, [alert.open === true]);
 
+    const deleteUser = async () => {
+        try {
+            const id = asistencia[dataForDeleteUser.indx].client_id;
+            // const code = usuarios[dataForDeleteUser.indx].code;
+            await axios.delete(`dashboard/assistance/${id}`);
+
+            setAlert({
+                open: true,
+                status: "Exito",
+                message: `La asistencia ha sido Eliminada`,
+            });
+            setAsistencia((prev) =>
+                prev.filter((eachU) => eachU.client_id != id)
+            );
+
+            dataForDeleteUser.setSelectedRows([]);
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     let fecha = new Date(),
         añoA = fecha.getFullYear(),
         mesA = fecha.getMonth() + 1,
         diaA = fecha.getDate();
 
-   
-    // console.log(newAttendance.turno?.id)
-   console.log(asistencia)
+    console.log(newAttendance);
 
     const options = {
         filterType: "checkbox",
@@ -168,10 +192,8 @@ export default function Asistencia() {
                     title="Editar"
                     onClick={() => {
                         const indx = selectedRows.data[0].dataIndex;
-                        // console.log(usuarios[indx]);
-                        console.log(indx)
+                        console.log(indx);
                         setNewAttendance(asistencia[indx]);
-                        // setNewAttendance({});
                     }}
                 >
                     <EditIcon />
@@ -180,7 +202,6 @@ export default function Asistencia() {
                 <IconButton
                     title="Eliminar"
                     onClick={() => {
-                        // console.log({ selectedRows, displayData });
                         setModalConfirm(true);
                         setDataForDeleteUser({
                             indx: selectedRows.data[0].dataIndex,
@@ -214,8 +235,8 @@ export default function Asistencia() {
         );
     }, [asistencia]);
 
-    // console.log(newAttendance);
-
+    let pave = all_areas.find(obj => obj.id == newAttendance.area_id)?.schedule
+    console.log(pave)
     return (
         <>
             <form className="flex glass p-3 gap-3 w-min rounded-md mb-5">
@@ -223,51 +244,44 @@ export default function Asistencia() {
                     // shrink={true}
                     // type={"Código"}
                     label={"Código"}
-                    value={newAttendance.client?.code}
+                    value={newAttendance.code}
                     name={"birth_date"}
                     width={150}
-                    // onChange={(e) =>
-                    //     setNewAttendance((prev) => ({
-                    //         ...prev,
-                    //         client: {...prev.client, }code: e.target.value,
-                    //     }))
-                    // }
-                />
-                {/* <Autocomplete
-                    name="area"
-                    onChange={(event, value) => {
-                        // const arr_areas = value.map((a) => a.name);
-                        // setNewUserData((prev) => ({
-                        //     ...prev,
-                        //     areas: value,
-                        //     array_areas: arr_areas,
-                        // }));
-                    }}
-                    id="tags-outlined"
-                    value={newAttendance.area}
-                    options={all_areas_db}
-                    getOptionLabel={(all_areas_db) => all_areas_db.name}
-                    // defaultValue={newUserData.array_areas}
-                    isOptionEqualToValue={(option, value) =>
-                        option.id === value.id
+                    onChange={(e) =>
+                        setNewAttendance((prev) => ({
+                            ...prev,
+                            code: e.target.value,
+                        }))
                     }
-                    sx={{ minWidth: 223, color: "white" }}
-                    filterSelectedOptions
-                    renderInput={(params) => (
-                        <CssTextField
-                            {...params}
-                            variant="outlined"
-                            label="Area"
-                        />
-                    )}
-                /> */}
+                />
 
+                <CssTextField
+                    sx={{ width: 290 }}
+                    id="outlined-select-currency"
+                    select
+                    label="Areas"
+                    value={newAttendance.area_id?.id}
+                    defaultValue=""
+                    name="turno"
+                    onChange={(e) => {
+                       setNewAttendance((prev) => ({
+                            ...prev,
+                            area_id: e.target.value,
+                        }));
+                    }}
+                >
+                    {all_areas.map((option) => (
+                        <MenuItem key={option.id} value={option.id}>
+                            {option.name}
+                        </MenuItem>
+                    ))}
+                </CssTextField>
                 <CssTextField
                     sx={{ width: 190 }}
                     id="outlined-select-currency"
                     select
                     label="Turno"
-                    value={newAttendance.turno?.id}
+                    value={newAttendance?.turno_id}
                     defaultValue=""
                     name="turno"
                     // onChange={(e) => {
@@ -281,11 +295,11 @@ export default function Asistencia() {
                     //     }));
                     // }}
                 >
-                    {turnos.map((option) => (
+                    {all_areas.find(obj => obj.id === newAttendance.area_id)?.schedule.map((option) => (
                         <MenuItem key={option.id} value={option.id}>
-                            {option.name}
+                            {option.shift_start.start + ' - ' + option.shift_start.end}
                         </MenuItem>
-                    ))}
+                    ))} 
                 </CssTextField>
 
                 <button
@@ -297,6 +311,21 @@ export default function Asistencia() {
             </form>
 
             {tabla}
+
+            <Alert
+                open={alert.open}
+                status={alert.status}
+                message={alert.message}
+            />
+
+            <ConfirmModal
+                closeModal={() => {
+                    setModalConfirm(false);
+                    // setRowSelected([])
+                }}
+                isOpen={modalConfirm}
+                aceptFunction={() => deleteUser()}
+            />
         </>
     );
 }

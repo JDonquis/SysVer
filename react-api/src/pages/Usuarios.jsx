@@ -392,6 +392,8 @@ export default function Usuarios() {
         }, 3000);
     }, [alert.open === true]);
 
+    console.log(all_areas_db)
+
     const MyTextInput = React.memo((props) => {
         console.log(props.value);
         return (
