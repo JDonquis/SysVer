@@ -9,6 +9,7 @@ use App\Models\Client;
 use App\Models\Schedule;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
+use DB;
 
 class AssistanceController extends Controller
 {
@@ -88,6 +89,20 @@ class AssistanceController extends Controller
      */
     public function destroy($id)
     {
-        //
+        DB::beginTransaction();
+
+        try {
+
+            DB::table('assistances')->where('client_id', $id)->delete();
+
+            DB::commit();
+
+            return response(["Message" => 'Asistencia eliminada correctamente'], Response::HTTP_OK);
+
+        }catch (Exception $e) {
+            DB::rollback();
+            
+            return response(["Message" => 'Asistencia no encontrada'], Response::HTTP_BAD_REQUEST);
+        }  
     }
 }
