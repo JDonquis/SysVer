@@ -36,9 +36,7 @@ export default function Asistencia() {
         message: "",
     });
     const [all_areas, setAll_areas] = useState([]);
-    const [statusSubmit, setStatusSubmit] = useState('Guardar')
-
-
+    const [statusSubmit, setStatusSubmit] = useState("Guardar");
 
     const columns = [
         {
@@ -199,12 +197,17 @@ export default function Asistencia() {
                     onClick={() => {
                         const indx = selectedRows.data[0].dataIndex;
                         const asis = asistencia[indx];
-                        const asis_id = asis.id
+                        const asis_id = asis.id;
                         const code = asis.client.code;
-                        const schedule_id = asis.schedule_id
-                        const area_id = asis.schedule.area_id
-                        setNewAttendance({code, area_id ,schedule_id, id: asis_id });
-                        setStatusSubmit('Editar')
+                        const schedule_id = asis.schedule_id;
+                        const area_id = asis.schedule.area_id;
+                        setNewAttendance({
+                            code,
+                            area_id,
+                            schedule_id,
+                            id: asis_id,
+                        });
+                        setStatusSubmit("Editar");
                     }}
                 >
                     <EditIcon />
@@ -230,8 +233,8 @@ export default function Asistencia() {
         e.preventDefault();
 
         try {
-            if( statusSubmit == 'Guardar') {
-                setStatusSubmit('Guardando...')
+            if (statusSubmit == "Guardar") {
+                setStatusSubmit("Guardando...");
 
                 await axios
                     .post(`dashboard/assistance`, newAttendance)
@@ -242,41 +245,47 @@ export default function Asistencia() {
                             ...prev,
                             response.data.assistance,
                         ]);
-                        setNewAttendance({ code: "", area_id: "", schedule_id: "" });
+                        setNewAttendance({
+                            code: "",
+                            area_id: "",
+                            schedule_id: "",
+                        });
                         setAlert({
                             open: true,
                             status: "Exito",
                             message: `${response.data.Message}`,
                         });
-                        setStatusSubmit('Guardar')
+                        setStatusSubmit("Guardar");
                     });
-                
-
             }
 
-            if (statusSubmit == 'Editar') {
-                setStatusSubmit('Editando...')
-                console.log(newAttendance)
+            if (statusSubmit == "Editar") {
+                setStatusSubmit("Editando...");
+                console.log(newAttendance);
                 await axios
-                .put(`dashboard/assistance/${newAttendance.id}`, newAttendance)
-                .then((response) => {
-                   
-                    const asis_update = response.data.assistance
-                    
-                    setAsistencia(prev => prev.map(obj => obj.id === asis_update.id ? asis_update : obj))
-                    setAlert({
-                        open: true,
-                        status: "Exito",
-                        message: `${response.data.Message}`,
+                    .put(
+                        `dashboard/assistance/${newAttendance.id}`,
+                        newAttendance
+                    )
+                    .then((response) => {
+                        const asis_update = response.data.assistance;
+
+                        setAsistencia((prev) =>
+                            prev.map((obj) =>
+                                obj.id === asis_update.id ? asis_update : obj
+                            )
+                        );
+                        setAlert({
+                            open: true,
+                            status: "Exito",
+                            message: `${response.data.Message}`,
+                        });
                     });
-                });
                 setNewAttendance({ code: "", area_id: "", schedule_id: "" });
-                setStatusSubmit('Guardar')
-                
+                setStatusSubmit("Guardar");
             }
-           
         } catch (error) {
-            console.log({error});
+            console.log({ error });
             setAlert({
                 open: true,
                 status: "Error",
@@ -284,6 +293,25 @@ export default function Asistencia() {
             });
         }
     };
+
+    const [scheduleOfThisArea, setScheduleOfThisArea] = useState([]);
+
+    useEffect(() => {
+        setScheduleOfThisArea(
+            all_areas.find((obj) => obj.id === newAttendance.area_id)?.schedule
+        );
+
+        // setTimeout(() => {
+        //     if (scheduleOfThisArea.length === 1) {
+        //         setNewAttendance((prev) => ({
+        //             ...prev,
+        //             schedule_id: scheduleOfThisArea[0].id,
+        //         }));
+        //     }
+        // }, 100);
+    }, [newAttendance]);
+
+    console.log(scheduleOfThisArea);
 
     const turnos = [
         { id: 1, name: "1" },
@@ -362,15 +390,13 @@ export default function Asistencia() {
                         }));
                     }}
                 >
-                    {all_areas
-                        .find((obj) => obj.id === newAttendance.area_id)
-                        ?.schedule.map((option) => (
-                            <MenuItem key={option.id} value={option.id}>
-                                {option.shift_start.start +
-                                    " - " +
-                                    option.shift_start.end}
-                            </MenuItem>
-                        ))}
+                    {scheduleOfThisArea?.map((option) => (
+                        <MenuItem key={option.id} value={option.id} >
+                            {option.shift_start.start +
+                                " - " +
+                                option.shift_end.end}
+                        </MenuItem>
+                    ))}
                 </CssTextField>
 
                 <button
