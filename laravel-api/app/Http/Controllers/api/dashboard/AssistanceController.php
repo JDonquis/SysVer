@@ -34,13 +34,11 @@ class AssistanceController extends Controller
      */
     public function store(Request $request)
     {
-       
+       $s = new Schedule;
        $client_id = Client::where("code",$request->code)->first();
-       $schedules = Schedule::select("id")->where("area_id",$request->area_id)->get()->toArray();
-       $ids = array();
-
-       foreach ($schedules as $schedule){ array_push($ids, $schedule["id"]); }
-
+       
+       $ids = $s->get_areas_ids($request->area_id);
+       
        if(!isset($client_id->id))
              return response(["Message" => 'Codigo no valido'], Response::HTTP_CONFLICT);       
 
@@ -87,11 +85,21 @@ class AssistanceController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    {
+    {   
+        $s = new Schedule;
+
         $client_id = Client::where("code",$request->code)->first();
         
         if(!isset($client_id->id))
             return response(["Message" => 'Codigo no valido'], Response::HTTP_CONFLICT);
+
+        
+        $ids = $s->get_areas_ids($request->area_id);
+
+        $assistances = Assistance::where('client_id',$client_id->id)->whereIn('schedule_id',$ids)->first();
+
+       if(isset($assistances->id))
+             return response(["Message" => 'El usuario ya se encuentra en la asistencia'], Response::HTTP_CONFLICT);
 
         DB::beginTransaction();
 
