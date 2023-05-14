@@ -151,7 +151,7 @@ export default function Asistencia() {
 
     const deleteUser = async () => {
         try {
-            const id = asistencia[dataForDeleteUser.indx].client_id;
+            const id = asistencia[dataForDeleteUser.indx].id;
             // const code = usuarios[dataForDeleteUser.indx].code;
             await axios.delete(`dashboard/assistance/${id}`);
 
@@ -161,7 +161,7 @@ export default function Asistencia() {
                 message: `La asistencia ha sido Eliminada`,
             });
             setAsistencia((prev) =>
-                prev.filter((eachU) => eachU.client_id != id)
+                prev.filter((eachU) => eachU.id != id)
             );
 
             dataForDeleteUser.setSelectedRows([]);
@@ -173,6 +173,22 @@ export default function Asistencia() {
             });
         }
     };
+
+    const getLastAttended = async () => {
+        try {
+            await axios.get(`dashboard/assistance/${newAttendance.code}`).then((response) => {
+                console.log({response})
+               const area_id = response.data.latest.schedule.area.id
+               const schedule_id = response.data.latest.schedule_id
+               setNewAttendance(prev => ({...prev, area_id, schedule_id}))
+            });
+
+           
+
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
     let fecha = new Date(),
         añoA = fecha.getFullYear(),
@@ -291,6 +307,8 @@ export default function Asistencia() {
                 status: "Error",
                 message: `${error.response.data.Message}`,
             });
+            setStatusSubmit("Guardar");
+            
         }
     };
 
@@ -311,7 +329,6 @@ export default function Asistencia() {
         // }, 100);
     }, [newAttendance]);
 
-    console.log(scheduleOfThisArea);
 
     const turnos = [
         { id: 1, name: "1" },
@@ -332,7 +349,7 @@ export default function Asistencia() {
             />
         );
     }, [asistencia]);
-
+console.log(newAttendance)
     return (
         <>
             <form
@@ -346,6 +363,8 @@ export default function Asistencia() {
                     value={newAttendance?.code}
                     name={"birth_date"}
                     width={150}
+                    onBlur={getLastAttended}
+
                     onChange={(e) =>
                         setNewAttendance((prev) => ({
                             ...prev,
@@ -363,6 +382,7 @@ export default function Asistencia() {
                     defaultValue=""
                     name="turno"
                     onChange={(e) => {
+                        
                         setNewAttendance((prev) => ({
                             ...prev,
                             area_id: e.target.value,
