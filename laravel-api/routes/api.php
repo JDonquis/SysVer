@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\api\LoginController;
+use App\Http\Controllers\api\dashboard\AreasController;
 use App\Http\Controllers\api\dashboard\AssistanceController;
 use App\Http\Controllers\api\dashboard\ClientController;
 use App\Http\Controllers\api\dashboard\UsersController;
@@ -38,5 +39,8 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth:sanctum']], functi
     Route::post('assistance',[AssistanceController::class,'store']);
     Route::put('assistance/{id}',[AssistanceController::class,'update']);
     Route::delete('assistance/{id}',[AssistanceController::class,'destroy']);
+
+    // Areas
+    Route::get('areas',[AreasController::class,'index']);
 
 });

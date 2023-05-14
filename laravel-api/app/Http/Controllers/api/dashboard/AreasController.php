@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\api\dashboard;
 
 use App\Http\Controllers\Controller;
+use App\Models\Area;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class AreasController extends Controller
 {
@@ -14,7 +16,9 @@ class AreasController extends Controller
      */
     public function index()
     {
-        
+        $areas = Area::with('schedule.shift_start','schedule.shift_end','schedule.days')->get();
+
+        return response(["areas" => $areas], Response::HTTP_OK);
     }
 
     /**

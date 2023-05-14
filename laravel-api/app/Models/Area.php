@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Day;
 use App\Models\Schedule;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -28,4 +29,6 @@ class Area extends Model
       {
           return $this->hasMany(Schedule::class, 'area_id', 'id');
       }
+
+      
 }
