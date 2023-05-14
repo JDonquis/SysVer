@@ -34,17 +34,19 @@ class AssistanceController extends Controller
      */
     public function store(Request $request)
     {
-
        
        $client_id = Client::where("code",$request->code)->first();
-       
+       $schedules = Schedule::select("id")->where("area_id",$request->area_id)->get()->toArray();
+       $ids = array();
+
+       foreach ($schedules as $schedule){ array_push($ids, $schedule["id"]); }
+
        if(!isset($client_id->id))
              return response(["Message" => 'Codigo no valido'], Response::HTTP_CONFLICT);       
 
-       $assistances = Assistance::where('client_id',$client_id->id)->first();
+       $assistances = Assistance::where('client_id',$client_id->id)->whereIn('schedule_id',$ids)->first();
 
        
-
        if(isset($assistances->id))
              return response(["Message" => 'El usuario ya se encuentra en la asistencia'], Response::HTTP_CONFLICT);
 
@@ -76,27 +78,6 @@ class AssistanceController extends Controller
         }   
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
@@ -107,7 +88,35 @@ class AssistanceController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $client_id = Client::where("code",$request->code)->first();
+        
+        if(!isset($client_id->id))
+            return response(["Message" => 'Codigo no valido'], Response::HTTP_CONFLICT);
+
+        DB::beginTransaction();
+
+        try {
+
+            DB::table('assistances')->where('id',$id)->update(array('client_id'=>$client_id->id,'schedule_id'=>$request->schedule_id));
+
+            $assistanceUpdated = Assistance::where("id",$id)->with('schedule.area','schedule.shift_start','schedule.shift_end','client')->first();        
+            
+            DB::commit();
+
+            return response(["Message" => 'Asistencia actualizada exitosamente', "assistance" => $assistanceUpdated], Response::HTTP_OK);
+
+        }catch (Exception $e) {
+
+            DB::rollback();
+
+            if($e->getCode() == '23000')
+                return response(["Message" => 'No se pudo actualizar la asistencia, verifique los datos', 'ErrorMessage' => $e->getMessage()], Response::HTTP_BAD_REQUEST);    
+            
+            return response(["Message" => 'No se pudo actualizar la asistencia','ErrorMessage' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
+        }  
+
+
+
     }
 
     /**
