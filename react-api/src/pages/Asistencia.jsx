@@ -242,34 +242,39 @@ export default function Asistencia() {
                             ...prev,
                             response.data.assistance,
                         ]);
+                        setNewAttendance({ code: "", area_id: "", schedule_id: "" });
+                        setAlert({
+                            open: true,
+                            status: "Exito",
+                            message: `${response.data.Message}`,
+                        });
+                        setStatusSubmit('Guardar')
                     });
-                setAlert({
-                    open: true,
-                    status: "Exito",
-                    // message: `El usuario ${newUserData.name} ha sido creado`,
-                });
-                setNewAttendance({ code: "", area_id: "", schedule_id: "" });
+                
+
             }
 
             if (statusSubmit == 'Editar') {
                 setStatusSubmit('Editando...')
-
+                console.log(newAttendance)
                 await axios
                 .put(`dashboard/assistance/${newAttendance.id}`, newAttendance)
                 .then((response) => {
-                    console.log({ response });
-                    // setAsistencia((prev) => [...prev, client]);
-                    // setAsistencia((prev) => [
-                    //     ...prev,
-                    //     response.data.assistance,
-                    // ]);
+                   
+                    const asis_update = response.data.assistance
+                    
+                    setAsistencia(prev => prev.map(obj => obj.id === asis_update.id ? asis_update : obj))
+                    setAlert({
+                        open: true,
+                        status: "Exito",
+                        message: `${response.data.Message}`,
+                    });
                 });
-                setAlert({
-                    open: true,
-                    status: "Exito",
-                    // message: `El usuario ${newUserData.name} ha sido creado`,
-                });
+                setNewAttendance({ code: "", area_id: "", schedule_id: "" });
+                setStatusSubmit('Guardar')
+                
             }
+           
         } catch (error) {
             console.log({error});
             setAlert({
@@ -278,7 +283,6 @@ export default function Asistencia() {
                 message: `${error.response.data.Message}`,
             });
         }
-        setStatusSubmit('Guardar')
     };
 
     const turnos = [
