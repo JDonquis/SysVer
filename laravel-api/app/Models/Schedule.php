@@ -36,4 +36,15 @@ class Schedule extends Model
     {
         return $this->belongsTo(Area::class,'area_id','id');
     }
+
+    public function get_areas_ids($area_id)
+    {
+        $schedules = Schedule::select("id")->where("area_id",$area_id)->get()->toArray();
+        
+        $ids = array();
+
+       foreach ($schedules as $schedule){ array_push($ids, $schedule["id"]); }
+        
+       return $ids;
+    }
 }

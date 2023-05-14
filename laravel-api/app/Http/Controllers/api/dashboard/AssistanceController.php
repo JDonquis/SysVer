@@ -6,10 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Models\Area;
 use App\Models\Assistance;
 use App\Models\Client;
+use App\Models\HistorialAssistance;
 use App\Models\Schedule;
+use DB;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
-use DB;
 
 class AssistanceController extends Controller
 {
@@ -34,13 +35,11 @@ class AssistanceController extends Controller
      */
     public function store(Request $request)
     {
-       
+       $s = new Schedule;
        $client_id = Client::where("code",$request->code)->first();
-       $schedules = Schedule::select("id")->where("area_id",$request->area_id)->get()->toArray();
-       $ids = array();
-
-       foreach ($schedules as $schedule){ array_push($ids, $schedule["id"]); }
-
+       
+       $ids = $s->get_areas_ids($request->area_id);
+       
        if(!isset($client_id->id))
              return response(["Message" => 'Codigo no valido'], Response::HTTP_CONFLICT);       
 
@@ -87,11 +86,21 @@ class AssistanceController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    {
+    {   
+        $s = new Schedule;
+
         $client_id = Client::where("code",$request->code)->first();
         
         if(!isset($client_id->id))
             return response(["Message" => 'Codigo no valido'], Response::HTTP_CONFLICT);
+
+        
+        $ids = $s->get_areas_ids($request->area_id);
+
+        $assistances = Assistance::where('client_id',$client_id->id)->whereIn('schedule_id',$ids)->first();
+
+       if(isset($assistances->id))
+             return response(["Message" => 'El usuario ya se encuentra en la asistencia'], Response::HTTP_CONFLICT);
 
         DB::beginTransaction();
 
@@ -131,7 +140,7 @@ class AssistanceController extends Controller
 
         try {
 
-            DB::table('assistances')->where('client_id', $id)->delete();
+            DB::table('assistances')->where('id', $id)->delete();
 
             DB::commit();
 
@@ -142,5 +151,12 @@ class AssistanceController extends Controller
             
             return response(["Message" => 'Asistencia no encontrada'], Response::HTTP_BAD_REQUEST);
         }  
+    }
+
+    public function last_assistance($code)
+    {
+        $client_id = Client::where("code",$code)->first();
+        $latest = HistorialAssistance::where('client_id',$client_id->id)->latest()->with('schedule.area','schedule.shift_start','schedule.shift_end')->first();
+        return response(["latest" => $latest], Response::HTTP_OK);
     }
 }
