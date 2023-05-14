@@ -129,6 +129,13 @@ export default function Usuarios() {
             },
         },
         {
+            name: "email",
+            label: "Correo",
+            options: {
+                filter: false,
+            },
+        },
+        {
             name: "collaboration",
             label: "Colaboración",
             options: {
@@ -280,6 +287,7 @@ export default function Usuarios() {
         blood_types: {},
         blood_name: "",
         weight: "",
+        email: "",
         address: "",
         phone_number: "",
         collaboration: "",
@@ -483,7 +491,14 @@ export default function Usuarios() {
                                 name={"birth_date"}
                                 onChange={handleChange}
                             /> 
-                            <Input  
+                             <Input
+                                type={"email"}
+                                label={"Correo"}
+                                value={newUserData.email}
+                                name={"email"}
+                                onChange={handleChange}
+                            /> 
+                            {/* <Input  
                                 key={4}
                                 label={"Edad"} 
                                 // InputProps={{
@@ -495,7 +510,7 @@ export default function Usuarios() {
                                 //     shrink: newUserData.age > 0 ? true : false,
                                 // }}
                                 // variant="outlined"
-                            />
+                            /> */}
                         </div>
 
                         <div style={divFlex}>

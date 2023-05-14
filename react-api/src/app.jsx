@@ -4,6 +4,7 @@ import Nav from "./layouts/nav";
 import Dashboard from "./pages/Dashboard";
 import Asistencia from "./pages/Asistencia";
 import Personal from "./pages/Personal";
+import Areas from "./pages/areas";
 import { useState } from "react";
 
 export default function app() {
@@ -23,6 +24,7 @@ export default function app() {
                         <Route path="/" element={<Dashboard />}></Route>
                         <Route path="/usuarios" element={<Usuarios />}></Route>
                         <Route path="/personal" element={<Personal />}></Route>
+                        <Route path="/areas" element={<Areas />}></Route>
                         <Route path="/asistencia" element={<Asistencia />}></Route>
                     </Routes>
                     </div>

@@ -49,6 +49,12 @@ export default function nav(props) {
                         <span className="text_link"> Asistencia</span>
                     </NavLink>
                 </li>
+                <li>
+                    <NavLink to="/dashboard/areas">
+                    <FontAwesomeIcon icon={faCalendarDays} />
+                        <span className="text_link"> Areas</span>
+                    </NavLink>
+                </li>
             </ul>
             </div>
         </nav>
