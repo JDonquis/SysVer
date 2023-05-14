@@ -25,7 +25,10 @@ class DatabaseSeeder extends Seeder
         'area_chargeds',
         'client_area_chargeds',
         'shifts',
+        'days',
         'schedules',
+        'schedule_days',
+        
 
 
         ]);
@@ -40,7 +43,9 @@ class DatabaseSeeder extends Seeder
             AreaChargedSeeder::class,
             ClientAreaChargedSeeder::class,
             ShiftSeeder::class,
+            DaysSeeder::class,
             ScheduleSeeder::class,
+            ScheduleDaysSeeder::class,
 
             
         ]);
