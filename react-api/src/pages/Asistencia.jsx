@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import Input from "../components/Input";
 import { Autocomplete, IconButton, TextField, MenuItem } from "@mui/material";
 import MUIDataTable from "mui-datatables";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -37,6 +36,10 @@ export default function Asistencia() {
         message: "",
     });
     const [all_areas, setAll_areas] = useState([]);
+    const [statusSubmit, setStatusSubmit] = useState('Guardar')
+
+
+
     const columns = [
         {
             name: "client",
@@ -104,7 +107,6 @@ export default function Asistencia() {
             const data = response.data;
             const asis = data.assistances;
             const areas = data.areas;
-            console.log(response);
             setAsistencia(asis);
             setAll_areas(areas);
         });
@@ -166,7 +168,11 @@ export default function Asistencia() {
 
             dataForDeleteUser.setSelectedRows([]);
         } catch (error) {
-            console.log(error);
+            setAlert({
+                open: true,
+                status: "Error",
+                message: `${error.response.data.Message}`,
+            });
         }
     };
 
@@ -175,7 +181,7 @@ export default function Asistencia() {
         mesA = fecha.getMonth() + 1,
         diaA = fecha.getDate();
 
-    console.log({ newAttendance });
+    // console.log({ newAttendance });
 
     const options = {
         filterType: "checkbox",
@@ -192,8 +198,13 @@ export default function Asistencia() {
                     title="Editar"
                     onClick={() => {
                         const indx = selectedRows.data[0].dataIndex;
-                        console.log(indx);
-                        setNewAttendance(asistencia[indx]);
+                        const asis = asistencia[indx];
+                        const asis_id = asis.id
+                        const code = asis.client.code;
+                        const schedule_id = asis.schedule_id
+                        const area_id = asis.schedule.area_id
+                        setNewAttendance({code, area_id ,schedule_id, id: asis_id });
+                        setStatusSubmit('Editar')
                     }}
                 >
                     <EditIcon />
@@ -219,26 +230,58 @@ export default function Asistencia() {
         e.preventDefault();
 
         try {
-            await axios
-                .post(`dashboard/assistance`, newAttendance)
+            if( statusSubmit == 'Guardar') {
+                setStatusSubmit('Guardando...')
+
+                await axios
+                    .post(`dashboard/assistance`, newAttendance)
+                    .then((response) => {
+                        console.log({ response });
+                        // setAsistencia((prev) => [...prev, client]);
+                        setAsistencia((prev) => [
+                            ...prev,
+                            response.data.assistance,
+                        ]);
+                        setNewAttendance({ code: "", area_id: "", schedule_id: "" });
+                        setAlert({
+                            open: true,
+                            status: "Exito",
+                            message: `${response.data.Message}`,
+                        });
+                        setStatusSubmit('Guardar')
+                    });
+                
+
+            }
+
+            if (statusSubmit == 'Editar') {
+                setStatusSubmit('Editando...')
+                console.log(newAttendance)
+                await axios
+                .put(`dashboard/assistance/${newAttendance.id}`, newAttendance)
                 .then((response) => {
-                    console.log({ response });
-                    // setAsistencia((prev) => [...prev, client]);
-                    setAsistencia(prev => [...prev, response.data.assistance])
+                   
+                    const asis_update = response.data.assistance
+                    
+                    setAsistencia(prev => prev.map(obj => obj.id === asis_update.id ? asis_update : obj))
+                    setAlert({
+                        open: true,
+                        status: "Exito",
+                        message: `${response.data.Message}`,
+                    });
                 });
-            setAlert({
-                open: true,
-                status: "Exito",
-                // message: `El usuario ${newUserData.name} ha sido creado`,
-            });
+                setNewAttendance({ code: "", area_id: "", schedule_id: "" });
+                setStatusSubmit('Guardar')
+                
+            }
+           
         } catch (error) {
-            // console.log(error);
+            console.log({error});
             setAlert({
                 open: true,
                 status: "Error",
-                message: `Algo salió mal`,
+                message: `${error.response.data.Message}`,
             });
-            
         }
     };
 
@@ -262,10 +305,6 @@ export default function Asistencia() {
         );
     }, [asistencia]);
 
-    let pave = all_areas.find(
-        (obj) => obj.id == newAttendance.area_id
-    )?.schedule;
-    console.log(pave);
     return (
         <>
             <form
@@ -276,7 +315,7 @@ export default function Asistencia() {
                     // shrink={true}
                     // type={"Código"}
                     label={"Código"}
-                    value={newAttendance.code}
+                    value={newAttendance?.code}
                     name={"birth_date"}
                     width={150}
                     onChange={(e) =>
@@ -292,7 +331,7 @@ export default function Asistencia() {
                     id="outlined-select-currency"
                     select
                     label="Areas"
-                    value={newAttendance.area_id?.id}
+                    value={newAttendance?.area_id}
                     defaultValue=""
                     name="turno"
                     onChange={(e) => {
@@ -313,7 +352,7 @@ export default function Asistencia() {
                     id="outlined-select-currency"
                     select
                     label="Turno"
-                    value={newAttendance?.turno_id}
+                    value={newAttendance?.schedule_id}
                     defaultValue=""
                     name="turno"
                     onChange={(e) => {
@@ -338,7 +377,7 @@ export default function Asistencia() {
                     type="submit"
                     className="bg-purple/30  px-5 rounded-md text-dark hover:bg-purple"
                 >
-                    Guardar
+                    {statusSubmit}
                 </button>
             </form>
 
