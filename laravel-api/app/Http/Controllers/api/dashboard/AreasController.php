@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Area;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
+use DB;
 
 class AreasController extends Controller
 {
@@ -22,16 +23,6 @@ class AreasController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -39,7 +30,29 @@ class AreasController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        DB::beginTransaction();
+        try {
+                $area_id = DB::table('areas')->insertGetId(['name' => $request->name, 'type_area_id' => $request->type_area_id ] );
+
+                if($request->type_area_id == 2)
+                {
+                    DB::table('area_chargeds')->insert(['area_id' => $area_id, 'name' => $request->name, 'price' => $request->price ] );    
+                }
+
+            DB::commit();
+
+            return response(["Message" => 'Cliente creado exitosamente', "client" => $client_created], Response::HTTP_OK);
+
+        }catch (Exception $e) {
+            DB::rollback();
+
+            if($e->getCode() == '23000')
+                return response(["Message" => 'No se pudo crear el cliente, verifique los datos', 'ErrorMessage' => $e->getMessage()], Response::HTTP_BAD_REQUEST);    
+            
+            return response(["Message" => 'No se pudo crear el cliente','ErrorMessage' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
+        }
+        //No gratis 
+
     }
 
     /**
