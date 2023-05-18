@@ -2,7 +2,7 @@
 @import "../components/forms.scss";
 
 .container_login {
-    overflow: hidden; 
+    overflow: hidden;
     position: relative;
     display: grid;
     grid-template-columns: 65% 35%;
@@ -10,7 +10,7 @@
     background: $blue;
     @include card-form(100vh, 100%);
     .title_and_icon {
-        display: flex !important;   
+        display: flex !important;
         align-items: center;
         gap: 25px;
         justify-content: center;
@@ -22,8 +22,7 @@
 }
 .card_form {
     position: relative;
-    @media (min-width:720px) {
-        
+    @media (min-width: 720px) {
         padding-right: 56px !important;
     }
 }
@@ -33,12 +32,12 @@
     font-size: 26px;
     padding-right: 10px;
     width: 397px;
-    transition: color cubic-bezier(0.215, 0.610, 0.355, 1);
+    transition: color cubic-bezier(0.215, 0.61, 0.355, 1);
     height: 77px;
     right: 0;
     top: calc(50% - 77px / 2 + 126.5px);
     &.disabled {
-        color: rgba(255, 255, 255, 0.664); 
+        color: rgba(255, 255, 255, 0.664);
 
         background: linear-gradient(
             270deg,
@@ -70,13 +69,21 @@
 .container_squares > div {
     position: absolute;
 
-    box-shadow: 1px 1px 28px 11px rgba(0, 0, 0, 0.25);
+    box-shadow: 1px 1px 28px 11px rgba(0, 0, 0, 0.17);
     border-radius: 3px;
-    transition: all 0.6s ease-out;
+    transition: all cubic-bezier(.2, .49, .32, .99) .45s;
 }
 .sqrBack {
-    filter: brightness(0.9);
-}
+    // filter: saturate(90%);
+    // opacity: 0.9;
+    z-index: 2;
+    &::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background-color: #069dbf2d;
+    }
+} 
 
 .sqr1 {
     width: 227px;
@@ -119,15 +126,14 @@
 }
 .sqr6 {
     width: 76px;
-    height: 219px;
+    height: 73px;
     left: 478px;
-    top: 237px;
+    top: 383px;
 
     background: #d9831a;
-    box-shadow: 1px 1px 28px 11px rgba(0, 0, 0, 0.25);
 }
 .sqr7 {
-    width: 208px;
+    width: 155px;
     height: 113px;
     left: 516px;
     top: 209px;
@@ -222,6 +228,56 @@
     top: 570px;
 
     background: #a64684;
+}
+
+.deep {
+    z-index: 1;
+    opacity: .6;
+    // filter: brightness(.8);
+    box-shadow: none !important;
+}
+.front {
+    z-index: 3; 
+}
+.sqr18 {
+    width: 145px;
+    height: 149px;
+    left: 181px;
+    top: 311px;
+
+    background: #027353;
+}
+.sqr19 {
+    width: 93px;
+    height: 86px;
+    left: 307px;
+    top: 123px;
+
+    background: #a64684;
+}
+.sqr20 {
+    width: 185px;
+    height: 189px;
+    left: 569px;
+    top: 372px;
+
+    background: #027353;
+}
+.sqr21 {
+    width: 82px;
+    height: 77px;
+    left: 765px;
+    top: 67px;
+
+    background: #a64684;
+}
+.sqr22 {
+    width: 82px;
+    height: 77px;
+    left: 696px;
+    top: 291px;
+
+    background: #d9831a;
 }
 
 .container_squares_cellphone {

@@ -59,13 +59,15 @@ export default function login() {
 
     const [frontSquaredX, setFrontSquaredX] = useState({transform: 'translateX(0)'})
     const [backSquaredX, setBackSquaredX] = useState({transform: 'translateX(0)'})
+    const [deep, setDeep] = useState({transform : 'translateX(0)'})
     const windowWidth = window.innerWidth
     useLayoutEffect(() => {
         document.onmousemove = (e) => {
             const cursorX = e.screenX
             const cursorY = e.screenY
-            setFrontSquaredX({transform: `translate(${cursorX/ 100}px, ${cursorY/50}px)`})
-            setBackSquaredX({transform: `translate(-${cursorX/ 100}px, -${cursorY/50}px)`})
+            setFrontSquaredX({transform: `translate(-${cursorX/ 40}px, -${cursorY/40}px)`})
+            setBackSquaredX({transform: `translate(-${cursorX/ 20}px, -${cursorY/20}px)`})
+            setDeep({transform: `translate(-${cursorX/ 10}px, -${cursorY/ 10}px)`})
         }
     }, [])
     // useEffect(() => {
@@ -78,24 +80,29 @@ export default function login() {
         <div className="container_login bg-blue block md:grid">
             
             {/* squares for large screen */}
-            <div className="container_squares hidden md:grid ">
+            <div className="container_squares hidden md:grid">
+              <div className="sqr18 deep" style={deep} ></div>
+              <div className="sqr19 deep" style={deep} ></div>
+              <div className="sqr20 deep" style={deep} ></div>
+              <div className="sqr21 deep" style={deep} ></div>
+              <div className="sqr22 deep" style={deep} ></div>
               <div className="sqr1 sqrBack" style={backSquaredX}></div>
-              <div className="sqr2" style={frontSquaredX}></div>
               <div className="sqr3 sqrBack" style={backSquaredX}></div>
               <div className="sqr4 sqrBack" style={backSquaredX}></div>
               <div className="sqr5 sqrBack" style={backSquaredX}></div>
               <div className="sqr6 sqrBack" style={backSquaredX}></div>
-              <div className="sqr7" style={frontSquaredX} ></div>
               <div className="sqr8 sqrBack" style={backSquaredX}></div>
-              <div className="sqr9" style={frontSquaredX} ></div>
-              <div className="sqr10" style={frontSquaredX} ></div>
-              <div className="sqr11" style={frontSquaredX} ></div>
               <div className="sqr12 sqrBack" style={backSquaredX}></div>
               <div className="sqr13 sqrBack" style={backSquaredX}></div>
-              <div className="sqr14" style={frontSquaredX} ></div>
-              <div className="sqr15" style={frontSquaredX} ></div>
-              <div className="sqr16" style={frontSquaredX} ></div>
-              <div className="sqr17" style={frontSquaredX}></div>
+              <div className="sqr17 front" style={frontSquaredX}></div>
+              <div className="sqr11 front" style={frontSquaredX} ></div>
+              <div className="sqr2 front" style={frontSquaredX}></div>
+              <div className="sqr9 front" style={frontSquaredX} ></div>
+              <div className="sqr7 front" style={frontSquaredX} ></div>
+              <div className="sqr10 front" style={frontSquaredX} ></div>
+              <div className="sqr14 front" style={frontSquaredX} ></div>
+              <div className="sqr15 front" style={frontSquaredX} ></div>
+              <div className="sqr16 front" style={frontSquaredX} ></div>
             </div>
 
             {/* squares for phone screen */} 

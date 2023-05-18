@@ -88,13 +88,38 @@ ul.link_container a {
   max-width: calc(100vw - 105px);
 }
 
-th * {
-  padding-left: 0px !important;
+th {
+  padding: 20px !important;
+  margin: 20px;
   text-transform: uppercase !important;
 }
 
 .MuiTableCell-footer {
   padding: 0 !important;
+}
+
+.css-11mde6h-MuiPaper-root {
+  background: rgba(255, 255, 255, 0.25) !important;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37) !important;
+  backdrop-filter: blur(4px) !important;
+  -webkit-backdrop-filter: blur(4px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.18) !important;
+}
+
+.tss-1dqj55d-MUIDataTableToolbarSelect-root {
+  background: transparent !important;
+}
+
+h6.MuiTypography-root {
+  color: rgb(255, 255, 255) !important;
+}
+
+tbody.MuiTableBody-root.css-apqrd9-MuiTableBody-root {
+  background-color: rgb(255, 255, 255);
+}
+
+thead, .tss-gm6zfk-MUIDataTableHeadCell-fixedHeader {
+  background-color: rgb(255, 255, 255) !important;
 }
 
 ::-webkit-scrollbar {
@@ -115,10 +140,6 @@ th * {
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
-}
-
-.Mui-focused fieldset {
-  border-color: "green" !important;
 }
 
 .glass {
@@ -344,13 +365,19 @@ input[type=file]):focus,
 
 .container_squares > div {
   position: absolute;
-  box-shadow: 1px 1px 28px 11px rgba(0, 0, 0, 0.25);
+  box-shadow: 1px 1px 28px 11px rgba(0, 0, 0, 0.17);
   border-radius: 3px;
-  transition: all 0.6s ease-out;
+  transition: all cubic-bezier(0.2, 0.49, 0.32, 0.99) 0.45s;
 }
 
 .sqrBack {
-  filter: brightness(0.9);
+  z-index: 2;
+}
+.sqrBack::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: rgba(6, 157, 191, 0.1764705882);
 }
 
 .sqr1 {
@@ -395,15 +422,14 @@ input[type=file]):focus,
 
 .sqr6 {
   width: 76px;
-  height: 219px;
+  height: 73px;
   left: 478px;
-  top: 237px;
+  top: 383px;
   background: #d9831a;
-  box-shadow: 1px 1px 28px 11px rgba(0, 0, 0, 0.25);
 }
 
 .sqr7 {
-  width: 208px;
+  width: 155px;
   height: 113px;
   left: 516px;
   top: 209px;
@@ -496,6 +522,56 @@ input[type=file]):focus,
   left: 806px;
   top: 570px;
   background: #a64684;
+}
+
+.deep {
+  z-index: 1;
+  opacity: 0.6;
+  box-shadow: none !important;
+}
+
+.front {
+  z-index: 3;
+}
+
+.sqr18 {
+  width: 145px;
+  height: 149px;
+  left: 181px;
+  top: 311px;
+  background: #027353;
+}
+
+.sqr19 {
+  width: 93px;
+  height: 86px;
+  left: 307px;
+  top: 123px;
+  background: #a64684;
+}
+
+.sqr20 {
+  width: 185px;
+  height: 189px;
+  left: 569px;
+  top: 372px;
+  background: #027353;
+}
+
+.sqr21 {
+  width: 82px;
+  height: 77px;
+  left: 765px;
+  top: 67px;
+  background: #a64684;
+}
+
+.sqr22 {
+  width: 82px;
+  height: 77px;
+  left: 696px;
+  top: 291px;
+  background: #d9831a;
 }
 
 .container_squares_cellphone .sqr1 {
