@@ -30,5 +30,4 @@ class Area extends Model
           return $this->hasMany(Schedule::class, 'area_id', 'id');
       }
 
-      
 }

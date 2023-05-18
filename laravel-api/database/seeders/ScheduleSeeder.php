@@ -26,6 +26,9 @@ class ScheduleSeeder extends Seeder
             ['start_shift_id'=>8, 'end_shift_id'=>8, 'area_id' =>1], 
             ['start_shift_id'=>9, 'end_shift_id'=>9, 'area_id' =>1],
 
+            ['start_shift_id'=>1, 'end_shift_id'=>3, 'area_id' =>2],
+            ['start_shift_id'=>3, 'end_shift_id'=>5, 'area_id' =>3],
+
          ];   
 
          DB::table('schedules')->insert($fields);
