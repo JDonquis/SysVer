@@ -18,7 +18,7 @@ class AreasController extends Controller
      */
     public function index()
     {
-        $areas = Area::with('schedule.shift_start','schedule.shift_end','schedule.days')->get();
+        $areas = Area::with('schedule.shift_start','schedule.shift_end','schedule.days','area_chargeds:id,price,area_id')->get();
         $shifts = Shift::all();
 
         return response(["areas" => $areas,'shifts' => $shifts], Response::HTTP_OK);
@@ -36,7 +36,7 @@ class AreasController extends Controller
 
         DB::beginTransaction();
         try {
-                $area_id = DB::table('areas')->insertGetId(['name' => $request->name, 'type_area_id' => $request->type_area_id ] );
+                $area_id = DB::table('areas')->insertGetId(['name' => $request->name, 'type_area_id' => $request->type_area_id, 'status' => 1 ] );
 
                 
 
@@ -71,19 +71,8 @@ class AreasController extends Controller
             
             return response(["Message" => 'No se pudo crear el area','ErrorMessage' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
         }
-        //No gratis 
+         
 
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
     }
 
     /**
@@ -117,6 +106,30 @@ class AreasController extends Controller
      */
     public function destroy($id)
     {
-        //
+        // DB::beginTransaction();
+
+        // try {
+
+            // DB::table('client_area_chargeds')->where('area_id', $id)->select();
+
+            // $area = Area::where("id",$id)->first();
+
+
+
+            // if($area->)
+
+            // DB::table('client_area_chargeds')->where('client_id', $id)->delete();
+
+        //     DB::table('clients')->where('id', $id)->delete();
+
+        //     DB::commit();
+
+        //     return response(["Message" => 'Cliente eliminado correctamente'], Response::HTTP_OK);
+
+        // }catch (Exception $e) {
+        //     DB::rollback();
+            
+        //     return response(["Message" => 'Cliente no encontrado'], Response::HTTP_BAD_REQUEST);
+        // }   
     }
 }
