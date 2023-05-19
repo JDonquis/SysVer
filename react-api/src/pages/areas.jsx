@@ -24,6 +24,7 @@ const lettersDay = [
 const eachLetterStyled = {};
 
 export default function Areas() {
+    const [areas, setAreas] = useState([]);
     const [alert, setAlert] = useState({
         open: false,
         status: "",
@@ -54,13 +55,18 @@ export default function Areas() {
                         // client.array_areas = client.areas.map((a) => a.name);
                         // client.blood_name = client.blood_types.name
                         // setUsuarios((prev) => [...prev, client]);
+                        const area = response.data.area
+                        console.log(area)
+                        setAreas(prev => [...prev, area])
                     });
                 setAlert({
                     open: true,
                     status: "Exito",
-                    message: `El usuario ha sido creado`,
+                    message: `El Area ha sido creado`,
                 });
             }
+            setOpen(false);
+
         } catch (error) {
             setAlert({
                 open: true,
@@ -69,7 +75,6 @@ export default function Areas() {
             });
         }
     };
-    const [areas, setAreas] = useState([]);
     const [tabla, setTabla] = useState();
     const [showSchedule, setShowSchedule] = useState({ show: false, data: [] });
     const columns = [
@@ -703,7 +708,7 @@ export default function Areas() {
                                                         v.id
                                                 )
                                                     ? "text-blue font-bold"
-                                                    : "opacity-40"
+                                                    : "opacity-30"
                                             }
                                         >
                                             {v.letter}
