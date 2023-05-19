@@ -702,7 +702,7 @@ export default function Areas() {
                                                         objDay.id ==
                                                         v.id
                                                 )
-                                                    ? "text-blue bold"
+                                                    ? "text-blue font-bold"
                                                     : "opacity-40"
                                             }
                                         >
