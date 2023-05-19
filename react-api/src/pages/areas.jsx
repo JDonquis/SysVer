@@ -195,6 +195,7 @@ export default function Areas() {
         document.title = "Areas";
     }, []);
 
+    console.log(showSchedule)
 
     const deleteUser = async () => {
         try {
@@ -694,9 +695,14 @@ export default function Areas() {
                                     {lettersDay.map((v, i) => (
                                         <span
                                             className={
-                                                obj.days[i] &&
-                                                obj.days[i].id == v.id
-                                                    ? "text-blue "
+                                                obj.days.some(
+                                                    (
+                                                        objDay
+                                                    ) =>
+                                                        objDay.id ==
+                                                        v.id
+                                                )
+                                                    ? "text-blue bold"
                                                     : "opacity-40"
                                             }
                                         >
