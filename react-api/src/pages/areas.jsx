@@ -10,6 +10,7 @@ import Alert from "../components/Alert";
 import Add from "@mui/icons-material/Add";
 import { Modal, ModalDialog, Button } from "@mui/joy/";
 import Input from "../components/Input";
+import "../css/pages/areas.css";
 
 const lettersDay = [
     { id: 1, letter: "L" },
@@ -20,36 +21,58 @@ const lettersDay = [
     { id: 6, letter: "S" },
 ];
 
+const eachLetterStyled = {};
+
 export default function Areas() {
+    const [alert, setAlert] = useState({
+        open: false,
+        status: "",
+        message: "",
+    });
+    useEffect(() => {
+        setTimeout(() => {
+            setAlert({ open: false, message: "", status: "" });
+        }, 3000);
+    }, [alert.open === true]);
     const [open, setOpen] = useState(false);
     const [submitStatus, setSubmitStatus] = useState("Crear area");
+    const [shifts, setShifts] = useState([]);
     // type_area 2 es pago y 1 es gratis
     const [newArea, setNewArea] = useState({
         name: "",
         type_area_id: 1,
-        schedule: [
-            {
-                shift_start: { id: 1, start: "07:00 AM.", end: "09:00 AM." },
-                shift_end: { id: 2, start: "08:00 AM.", end: "09:00 AM." },
-                days: [
-                    { id: 1, name: "Lunes" },
-                    { id: 2, name: "Martes" },
-                    { id: 5, name: "Viernes" },
-                ],
-            },
+        schedules: [
+            
         ],
-        cost: "",
+        price: "",
     });
     const handleSubmit = async (e) => {
-        e.preventDafault();
+        e.preventDefault();
         try {
-            
+            if (submitStatus === "Crear area") {
+                await axios
+                    .post(`/dashboard/area/`, newArea)
+                    .then((response) => {
+                        console.log({ response });
+                        // const client = response.data.client;
+                        // client.array_areas = client.areas.map((a) => a.name);
+                        // client.blood_name = client.blood_types.name
+                        // setUsuarios((prev) => [...prev, client]);
+                    });
+                setAlert({
+                    open: true,
+                    status: "Exito",
+                    message: `El usuario ha sido creado`,
+                });
+            }
         } catch (error) {
-            
+            setAlert({
+                open: true,
+                status: "Error",
+                message: `${error.response.data.Message}`,
+            });
         }
-        e.nativeEvent.stopImmediatePropagation();
     };
-    console.log(newArea);
     const [areas, setAreas] = useState([]);
     const [tabla, setTabla] = useState();
     const [showSchedule, setShowSchedule] = useState({ show: false, data: [] });
@@ -92,6 +115,7 @@ export default function Areas() {
             },
         },
     ];
+
     useEffect(() => {
         setTabla(
             <MUIDataTable
@@ -122,12 +146,12 @@ export default function Areas() {
                         // const asis = asistencia[indx];
                         // const asis_id = asis.id;
                         // const code = asis.client.code;
-                        // const schedule_id = asis.schedule_id;
+                        // const schedule = asis.schedule;
                         // const area_id = asis.schedule.area_id;
                         // setNewAttendance({
                         //     code,
                         //     area_id,
-                        //     schedule_id,
+                        //     schedule,
                         //     id: asis_id,
                         // });
                         // setStatusSubmit("Editar");
@@ -154,8 +178,10 @@ export default function Areas() {
     const getData = async () => {
         await axios.get("dashboard/areas").then((response) => {
             // setAll_areas(areas);
+            const data = response.data;
             console.log(response);
-            setAreas(response.data.areas);
+            setAreas(data.areas);
+            setShifts(data.shifts);
         });
     };
     // console.log(all_areas);
@@ -188,7 +214,33 @@ export default function Areas() {
         });
     }
 
-    console.log(areas);
+    function handleChangeShift(e, i, shift) {
+        const copySchedules = [...newArea.schedules];
+        copySchedules[i] = { ...copySchedules[i], [shift]: e.target.value };
+        setNewArea((prev) => ({ ...prev, schedules: copySchedules }));
+    }
+    const newAreaSize = newArea.schedules.length;
+    console.log(newAreaSize);
+    const handleCheck = (event, scheIndx) => {
+        const copySchedules = [...newArea.schedules];
+        // let updatedList = [...newArea.schedules[scheIndx].days];
+        // console.log(updatedList)
+        if (event.target.checked) {
+            if (!copySchedules[scheIndx].days) {
+                copySchedules[scheIndx].days = [{ id: event.target.value }];
+            } else {
+                copySchedules[scheIndx].days.push({ id: event.target.value });
+            }
+        } else {
+            copySchedules[scheIndx].days = copySchedules[scheIndx].days.filter(
+                (objDay) => objDay.id != event.target.value
+            );
+        }
+        setNewArea((prev) => ({ ...prev, schedules: copySchedules }));
+        // console.log(newArea)
+    };
+
+    console.log(newArea);
     return (
         <>
             <button
@@ -216,7 +268,7 @@ export default function Areas() {
                     style={{
                         overflowY: "scroll",
                         scrollbarWidth: "none",
-                        with: "800px",
+                        width: "830px",
                         minWidth: "600px",
                     }}
                 >
@@ -226,7 +278,7 @@ export default function Areas() {
                                 display: "grid",
                                 gridTemplateColumns: "1fr 1fr",
                                 height: "100%",
-                                gap: "22px",
+                                gap: "42px",
                             }}
                         >
                             <div>
@@ -297,75 +349,243 @@ export default function Areas() {
                                         onChange={(e) =>
                                             setNewArea((prev) => ({
                                                 ...prev,
-                                                cost: e.target.value,
+                                                price: e.target.value,
                                             }))
                                         }
                                         width={"100%"}
-                                        value={newArea.cost}
-                                        name={"cost"}
+                                        value={newArea.price}
+                                        name={"price"}
                                     />
                                 )}
                             </div>
                             <div>
-                                <h1>horarios</h1>
-                                <ul>
-                                    {newArea.schedule.map((sche, i) => {
+                                <p className="title">horarios</p>
+                                <ul className="horarios">
+                                    {newArea.schedules.map((sche, scheIndx) => {
                                         return (
-                                            <li>
-                                                1
-                                                <TextField
-                                                    sx={{ width: "40%" }}
-                                                    id="outlined-select-currency"
-                                                    select
-                                                    // value={newAttendance?.schedule_id}
-                                                    defaultValue=""
-                                                    name="turno"
-                                                    onChange={(e) => {
-                                                        setNewArea((prev) => ({
-                                                            ...prev,
-                                                            schedule_id:
-                                                                e.target.value,
-                                                        }));
-                                                    }}
-                                                >
-                                                    <MenuItem key={1} value={1}>
-                                                        1
-                                                    </MenuItem>
-                                                </TextField>
-                                                <TextField
-                                                    sx={{ width: "40%" }}
-                                                    id="outlined-select-currency"
-                                                    select
-                                                    // value={newAttendance?.schedule_id}
-                                                    defaultValue=""
-                                                    name="turno"
-                                                    onChange={(e) => {
-                                                        setNewAttendance(
-                                                            (prev) => ({
-                                                                ...prev,
-                                                                schedule_id:
-                                                                    e.target
-                                                                        .value,
-                                                            })
-                                                        );
-                                                    }}
-                                                >
-                                                    <MenuItem key={1} value={1}>
-                                                        1
-                                                    </MenuItem>
-                                                </TextField>
-                                                {/* {newArea} */}
-                                                {/* <button
-                                                    onnClick={(e) => {
-                                                        e.preventDafault();
-                                                        console.log("ayy");
-                                                    }}
-                                                >
-                                                    x
-                                                </button> */}
+                                            <li className="active">
+                                                <div className="number_list">{scheIndx + 1}</div>
+                                                <div className="container_selectAndLetters">
+                                                    <div className="select_container">
+                                                    <TextField
+
+                                                        id="outlined-select-currency"
+                                                        select
+                                                        value={
+                                                            newArea.schedules[
+                                                                scheIndx
+                                                            ].shift_start
+                                                        }
+                                                        defaultValue=""
+                                                        onChange={(e) =>
+                                                            handleChangeShift(
+                                                                e,
+                                                                scheIndx,
+                                                                "shift_start"
+                                                            )
+                                                        }
+                                                    >
+                                                        {shifts.map((obj) => (
+                                                            <MenuItem
+                                                                key={obj.id}
+                                                                value={obj.id}
+                                                            >
+                                                                {obj.start}
+                                                            </MenuItem>
+                                                        ))}
+                                                    </TextField>
+
+                                                    <TextField
+                                                       
+                                                        id="outlined-select-currency"
+                                                        select
+                                                        value={
+                                                            newArea.schedules[
+                                                                scheIndx
+                                                            ].shift_end
+                                                        }
+                                                        defaultValue=""
+                                                        name="turno"
+                                                        onChange={(e) =>
+                                                            handleChangeShift(
+                                                                e,
+                                                                scheIndx,
+                                                                "shift_end"
+                                                            )
+                                                        }
+                                                    >
+                                                        {shifts.map((obj) => (
+                                                            <MenuItem
+                                                                key={obj.id}
+                                                                value={obj.id}
+                                                            >
+                                                                {obj.end}
+                                                            </MenuItem>
+                                                        ))}
+                                                    </TextField>
+                                                    </div>
+                                                    <div
+                                                        
+                                                        className="lettersContainer"
+                                                    >
+                                                        {lettersDay.map(
+                                                            (v, i) => (
+                                                                <label
+                                                                    className={
+                                                                        sche.days?.some(
+                                                                            (
+                                                                                objDay
+                                                                            ) =>
+                                                                                objDay.id ==
+                                                                                v.id
+                                                                        )
+                                                                            ? "active"
+                                                                            : ""
+                                                                    }
+                                                                >
+                                                                    <input
+                                                                        value={
+                                                                            v.id
+                                                                        }
+                                                                        type="checkbox"
+                                                                        hidden
+                                                                        checked={newArea.schedules[
+                                                                            scheIndx
+                                                                        ].days?.some(
+                                                                            (
+                                                                                dayObj
+                                                                            ) =>
+                                                                                v.id ==
+                                                                                dayObj.id
+                                                                        )}
+                                                                        onChange={(
+                                                                            e
+                                                                        ) =>
+                                                                            handleCheck(
+                                                                                e,
+                                                                                scheIndx
+                                                                            )
+                                                                        }
+                                                                    />
+
+                                                                    <span>
+                                                                        {
+                                                                            v.letter
+                                                                        }
+                                                                    </span>
+                                                                </label>
+                                                            )
+                                                        )}
+                                                    </div>
+                                                </div>
+                                                <div className="close_schedule" onClick={() => setNewArea(prev => ({...prev, schedules: prev.schedules.filter((sche, i) => i != scheIndx)}))}>X</div>
                                             </li>
                                         );
                                     })}
+                                    {(newAreaSize === 0 ||
+                                        newArea.schedules[newAreaSize - 1]
+                                            .shift_end > 0 && newArea.schedules[newAreaSize - 1].days?.length > 0) && (
+                                        <li
+                                            style={ {
+                                                    opacity: ".5",
+                                                }
+                                            }
+                                            
+                                        >
+                                            <div className="number_list">{newAreaSize + 1}</div>
+                                            <div className="container_selectAndLetters">
+                                            <div className="select_container">
+
+                                                <TextField
+                                                     id="outlined-select-currency"
+                                                     select
+                                                     // value={newAttendance?.schedule}
+                                                     defaultValue=""
+                                                     onChange={(e) =>
+                                                         handleChangeShift(
+                                                             e,
+                                                             newAreaSize,
+                                                             "shift_start"
+                                                         )
+                                                     }
+                                                >
+                                                    {shifts.map((obj) => (
+                                                        <MenuItem
+                                                            key={obj.id}
+                                                            value={obj.id}
+                                                        >
+                                                            {obj.start}
+                                                        </MenuItem>
+                                                    ))}
+                                                </TextField>
+                                                <TextField
+                                                   
+                                                    id="outlined-select-currency"
+                                                    select
+                                                    // value={newAttendance?.schedule}
+                                                    defaultValue=""
+                                                    onChange={(e) =>
+                                                        handleChangeShift(
+                                                            e,
+                                                            newAreaSize,
+                                                            "shift_end"
+                                                        )
+                                                    }
+                                                >
+                                                    {shifts.map((obj) => (
+                                                        <MenuItem
+                                                            key={obj.id}
+                                                            value={obj.id}
+                                                        >
+                                                            {obj.end}
+                                                        </MenuItem>
+                                                    ))}
+                                                </TextField>
+                                                </div>
+                                                <div
+                                                    className="lettersContainer"
+                                                >
+                                                    {lettersDay.map((v, i) => (
+                                                        <label
+                                                            className={
+                                                                newArea.schedules[
+                                                                    newAreaSize
+                                                                ]?.days?.some(
+                                                                    (objDay) =>
+                                                                        objDay.id ==
+                                                                        v.id
+                                                                )
+                                                                    ? "active"
+                                                                    : ""
+                                                            }
+                                                        >
+                                                            <input
+                                                                value={v.id}
+                                                                type="checkbox"
+                                                                hidden
+                                                                checked={newArea.schedules[
+                                                                    newAreaSize
+                                                                ]?.days?.some(
+                                                                    (dayObj) =>
+                                                                        v.id ==
+                                                                        dayObj.id
+                                                                )}
+                                                                onChange={(e) =>
+                                                                    handleCheck(
+                                                                        e,
+                                                                        newAreaSize
+                                                                    )
+                                                                }
+                                                            />
+
+                                                            <span>{v.letter}</span>
+                                                        </label>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                            <div className="close_schedule">X</div>
+                                        </li>
+                                    )}
                                 </ul>
                             </div>
                         </div>
@@ -378,7 +598,7 @@ export default function Areas() {
                             /> */}
 
                         <button
-                             type="submit"
+                            type="submit"
                             style={{
                                 width: "100%",
                                 background: "#A64684",
@@ -402,29 +622,36 @@ export default function Areas() {
                     <ul>
                         {showSchedule.data.map((obj) => (
                             <li>
-                                <b className="block text-blue">
+                                <b className="">
                                     {obj.shift_start.start}{" "}
                                     <span className="text-purple">-</span>{" "}
                                     {obj.shift_end.end}
                                 </b>
                                 {/* {getDays(obj.days)} */}
-                                <div className="flex gap-3 mb-2 justify-center border-b border-white/20">
-                                    {lettersDay.map((v, i) =>
-                                        obj.days[i] &&
-                                        obj.days[i].id == v.id ? (
-                                            <span>{v.letter}</span>
-                                        ) : (
-                                            <span className="opacity-50">
-                                                {v.letter}
-                                            </span>
-                                        )
-                                    )}
+                                <div className="flex gap-3 mb-2 justify-center border-b w-full border-white/20">
+                                    {lettersDay.map((v, i) => (
+                                        <span
+                                            className={
+                                                obj.days[i] &&
+                                                obj.days[i].id == v.id
+                                                    ? "text-blue "
+                                                    : "opacity-40"
+                                            }
+                                        >
+                                            {v.letter}
+                                        </span>
+                                    ))}
                                 </div>
                             </li>
                         ))}
                     </ul>
                 </div>
             )}
+            <Alert
+                open={alert.open}
+                status={alert.status}
+                message={alert.message}
+            />
         </>
     );
 }
