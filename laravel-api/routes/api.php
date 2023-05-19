@@ -43,5 +43,6 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth:sanctum']], functi
     // Areas
     Route::get('areas',[AreasController::class,'index']);
     Route::post('areas',[AreasController::class,'store']);
+    Route::delete('areas/{id}',[AreasController::class,'destroy']);
 
 });
