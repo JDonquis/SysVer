@@ -46,12 +46,12 @@ class AreasController extends Controller
                 
                 foreach ($request->schedules as $schedule) {
 
-                    $s = DB::table('schedules')->insertGetId(['start_shift_id' => $schedule['start_shift_id'], 'end_shift_id' => $schedule['end_shift_id'], 'area_id' => $area_id ] );
+                    $s = DB::table('schedules')->insertGetId(['start_shift_id' => $schedule['shift_start'], 'end_shift_id' => $schedule['shift_end'], 'area_id' => $area_id ] );
 
                     foreach ($schedule['days'] as $day)
                     {   
 
-                        DB::table('schedule_days')->insert(['day_id' => $day, 'schedule_id' => $s ] );
+                        DB::table('schedule_days')->insert(['day_id' => $day['id'], 'schedule_id' => $s ] );
                         
                     }
 
