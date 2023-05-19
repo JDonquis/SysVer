@@ -47,7 +47,7 @@ export default function Areas() {
         try {
             if (submitStatus === "Crear area") {
                 await axios
-                    .post(`/dashboard/area/`, newArea)
+                    .post(`/dashboard/areas/`, newArea)
                     .then((response) => {
                         console.log({ response });
                         // const client = response.data.client;
