@@ -138,7 +138,7 @@ export default function Areas() {
                 <IconButton
                     title="Editar"
                     onClick={() => {
-                        // const indx = selectedRows.data[0].dataIndex;
+                        const indx = selectedRows.data[0].dataIndex;
                         // const asis = asistencia[indx];
                         // const asis_id = asis.id;
                         // const code = asis.client.code;
