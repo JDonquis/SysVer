@@ -15,9 +15,9 @@ class AreaSeeder extends Seeder
     {
         $fields = [
 
-            ['name' => 'Gimnasio','type_area_id' => 2],
-            ['name' => 'Artes Marciales','type_area_id' => 1],
-            ['name' => 'Yoga','type_area_id' => 1],
+            ['name' => 'Gimnasio','type_area_id' => 2, 'status' => 1],
+            ['name' => 'Artes Marciales','type_area_id' => 1, 'status' => 1],
+            ['name' => 'Yoga','type_area_id' => 1, 'status' => 1],
 
          ];   
 

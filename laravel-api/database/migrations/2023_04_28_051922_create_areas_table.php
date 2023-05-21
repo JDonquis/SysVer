@@ -17,6 +17,7 @@ class CreateAreasTable extends Migration
             $table->id();
             $table->string("name",30);
             $table->foreignId("type_area_id")->constrained()->onDelete("restrict")->onUpdate("cascade");
+            $table->integer("status");
         });
     }
 

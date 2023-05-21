@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\AreaCharged;
 use App\Models\Day;
 use App\Models\Schedule;
 use App\Models\User;
@@ -20,14 +21,24 @@ class Area extends Model
 
     protected $hidden = ['pivot'];
 
-      public function users()
-      {
-          return $this->belongsToMany(User::class,'user_areas');
-      }
+      // public function users()
+      // {
+      //     return $this->belongsToMany(User::class,'user_areas');
+      // }
 
       public function schedule()
       {
           return $this->hasMany(Schedule::class, 'area_id', 'id');
+      }
+
+      public function area_chargeds()
+      {
+          return $this->hasMany(AreaCharged::class, 'area_id','id');
+      }
+
+      public function price()
+      {
+          return $this->hasMany(AreaCharged::class, 'area_id','id')->select(['price']);
       }
 
 }
