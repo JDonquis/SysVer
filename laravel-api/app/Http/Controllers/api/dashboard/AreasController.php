@@ -140,11 +140,13 @@ class AreasController extends Controller
                     
                 }
 
-                DB::table('schedules')->where('area_id',$id)->whereNotIn('id',$schedule_ids)->delete();                    
+                DB::table('schedules')->where('area_id',$id)->whereNotIn('id',$schedule_ids)->delete();
+
+                $area = Area::where('id',$id)->with('schedule.shift_start','schedule.shift_end','schedule.days','area_chargeds:id,price,area_id')->first();                    
                 
                 DB::commit();
 
-                return response(["Message" => 'Area actualizada exitosamente'], Response::HTTP_OK);
+                return response(["Message" => 'Area actualizada exitosamente', 'area' => $area], Response::HTTP_OK);
 
         }catch (Exception $e) {
             DB::rollback();
