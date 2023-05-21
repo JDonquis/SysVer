@@ -74,11 +74,10 @@ export default function Areas() {
                         // client.array_areas = client.areas.map((a) => a.name);
                         // client.blood_name = client.blood_types.name
                         // setUsuarios((prev) => [...prev, client]);
-                        const area = response.data.area;
-                        console.log(area);
+                        const areaUpdated = response.data.area;
                         setAreas((prev) =>
                             prev.map((area) =>
-                                area.id === newArea.id ? newArea : area
+                                area.id === newArea.id ? areaUpdated : area
                             )
                         );
                     });
@@ -171,7 +170,7 @@ export default function Areas() {
                         const name = area.name;
                         const schedule = area.schedule;
                         const type_area_id = area.type_area_id;
-                        const price = area.area_chargeds[0]?.price;
+                        const price = area.area_chargeds?.[0]?.price;
                         console.log({ schedule });
                         // console.log(indx)
 
@@ -299,6 +298,7 @@ export default function Areas() {
         setNewArea((prev) => ({ ...prev, schedule: copySchedule }));
         // console.log(newArea)
     };
+    console.log({areas})
 
     console.log(newArea);
     return (
