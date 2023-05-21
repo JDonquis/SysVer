@@ -339,7 +339,7 @@ export default function Areas() {
                         minWidth: "600px",
                     }}
                 >
-                    <form onSubmit={handleSubmit} className="w-full h-full">
+                    <form onSubmit={handleSubmit} className="w-full h-full areas">
                         <div
                             style={{
                                 display: "grid",

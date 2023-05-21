@@ -189,7 +189,7 @@ thead, .tss-gm6zfk-MUIDataTableHeadCell-fixedHeader {
   transition: all 0.2s ease;
   position: absolute;
   right: -5px;
-  font-size: 25px;
+  font-size: 35px !important;
   filter: drop-shadow(0px 2px 4px rgba(0, 0, 0, 0.45));
   top: 9px;
   color: whitesmoke;

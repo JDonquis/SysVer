@@ -2,9 +2,11 @@ import { Link, NavLink } from "react-router-dom";
 import { useEffect, useState } from "react";
 import "../css/layouts/nav.css";
 import logoCircle_blue from "../assets/img/logoCircle_blue.png";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUsers, faClipboardUser, faCalendarDays, faPlay } from "@fortawesome/free-solid-svg-icons";
-
+import PeopleIcon from '@mui/icons-material/People';
+import EditCalendarIcon from '@mui/icons-material/EditCalendar';
+import PermContactCalendarIcon from '@mui/icons-material/PermContactCalendar';
+import SportsGymnasticsIcon from '@mui/icons-material/SportsGymnastics';
+import DoubleArrowIcon from '@mui/icons-material/DoubleArrow';
 export default function nav(props) {
     const [menuStatus, setMenuStatus] = useState(true)
 
@@ -29,29 +31,30 @@ export default function nav(props) {
                     SysVer
                 </p>
             </Link>
-            <FontAwesomeIcon icon={faPlay} className="arrowIcon" onClick={() => setMenuStatus(prev => !prev )} />
+            <DoubleArrowIcon className="arrowIcon" onClick={() => setMenuStatus(prev => !prev )} />
             <ul className="link_container">
                 <li>
                     <NavLink to="/dashboard/usuarios">
-                        <FontAwesomeIcon icon={faUsers} />
+                        <PeopleIcon />
                         <span className="text_link"> Usuarios</span>
                     </NavLink>
                 </li>
                 <li>
                     <NavLink to="/dashboard/personal">
-                        <FontAwesomeIcon icon={faClipboardUser} />
+                        <PermContactCalendarIcon />
                         <span className="text_link"> Personal</span>
                     </NavLink>
                 </li>
                 <li>
                     <NavLink to="/dashboard/asistencia">
-                    <FontAwesomeIcon icon={faCalendarDays} />
+                    <EditCalendarIcon />
+
                         <span className="text_link"> Asistencia</span>
                     </NavLink>
                 </li>
                 <li>
                     <NavLink to="/dashboard/areas">
-                    <FontAwesomeIcon icon={faCalendarDays} />
+                    <SportsGymnasticsIcon />
                         <span className="text_link"> Areas</span>
                     </NavLink>
                 </li>

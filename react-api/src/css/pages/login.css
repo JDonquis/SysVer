@@ -69,6 +69,7 @@ ul.link_container a {
 .dashboard_container {
   overflow: hidden;
   display: flex;
+  min-height: 100vh;
 }
 .dashboard_container .main_dashboard {
   flex: auto;
