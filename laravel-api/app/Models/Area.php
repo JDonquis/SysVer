@@ -16,7 +16,9 @@ class Area extends Model
     protected $table = 'areas';
 
     protected $fillable = [
-        'name'
+        'name',
+        'status',
+        'type_area_id'
     ];
 
     protected $hidden = ['pivot'];
