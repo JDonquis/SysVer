@@ -40,7 +40,7 @@ export default function Areas() {
     const [newArea, setNewArea] = useState({
         name: "",
         type_area_id: 1,
-        schedules: [], 
+        schedule: [], 
         price: "",  
     });
     const handleSubmit = async (e) => {
@@ -49,6 +49,25 @@ export default function Areas() {
             if (submitStatus === "Crear area") {
                 await axios
                     .post(`/dashboard/areas/`, newArea)
+                    .then((response) => {
+                        console.log({ response });
+                        // const client = response.data.client;
+                        // client.array_areas = client.areas.map((a) => a.name);
+                        // client.blood_name = client.blood_types.name
+                        // setUsuarios((prev) => [...prev, client]);
+                        const area = response.data.area
+                        console.log(area)
+                        setAreas(prev => [...prev, area])
+                    });
+                setAlert({
+                    open: true,
+                    status: "Exito",
+                    message: `El Area ha sido creado`,
+                });
+            }
+            if( submitStatus === "Editar"){
+                await axios
+                    .put(`/dashboard/areas/${newArea.id}`, newArea)
                     .then((response) => {
                         console.log({ response });
                         // const client = response.data.client;
@@ -144,17 +163,26 @@ export default function Areas() {
                     title="Editar"
                     onClick={() => {
                         const indx = selectedRows.data[0].dataIndex;
-                        // const id =
-                        // const name =
-                        // const schedule = 
-                        // const type_area_id =
-                        // setNewAttendance({
-                        //     code,
-                        //     area_id,
-                        //     schedule,
-                        //     id: asis_id,
-                        // });
-                        // setStatusSubmit("Editar");
+                        const area = areas[indx]
+                        const id = area.id
+                        const name = area.name
+                        const schedule = area.schedule
+                        const type_area_id = area.type_area_id
+                        const price = area.area_chargeds[0]?.price
+                        console.log({schedule})
+                        // console.log(indx)
+
+                        setNewArea({
+                        
+                            id,
+                            name,
+                            schedule,
+                            type_area_id,
+                            price: price || '',
+                            
+                        });
+                        setOpen(true)
+                        setSubmitStatus("Editar");
                     }}
                 >
                     <EditIcon />
@@ -199,7 +227,6 @@ export default function Areas() {
         document.title = "Areas";
     }, []);
 
-    console.log(showSchedule)
 
     const deleteUser = async () => {
         try {
@@ -250,28 +277,28 @@ export default function Areas() {
     }
 
     function handleChangeShift(e, i, shift) {
-        const copySchedules = [...newArea.schedules];
-        copySchedules[i] = { ...copySchedules[i], [shift]: e.target.value };
-        setNewArea((prev) => ({ ...prev, schedules: copySchedules }));
+        const copySchedule = [...newArea.schedule];
+        copySchedule[i] = { ...copySchedule[i], [shift]: e.target.value };
+        setNewArea((prev) => ({ ...prev, schedule: copySchedule }));
     }
-    const newAreaSize = newArea.schedules.length;
-    console.log(newAreaSize);
+    const newAreaSize = newArea.schedule?.length;
+
     const handleCheck = (event, scheIndx) => {
-        const copySchedules = [...newArea.schedules];
-        // let updatedList = [...newArea.schedules[scheIndx].days];
+        const copySchedule = [...newArea.schedule];
+        // let updatedList = [...newArea.schedule[scheIndx].days];
         // console.log(updatedList)
         if (event.target.checked) {
-            if (!copySchedules[scheIndx].days) {
-                copySchedules[scheIndx].days = [{ id: event.target.value }];
+            if (!copySchedule[scheIndx].days) {
+                copySchedule[scheIndx].days = [{ id: event.target.value }];
             } else {
-                copySchedules[scheIndx].days.push({ id: event.target.value });
+                copySchedule[scheIndx].days.push({ id: event.target.value });
             }
         } else {
-            copySchedules[scheIndx].days = copySchedules[scheIndx].days.filter(
+            copySchedule[scheIndx].days = copySchedule[scheIndx].days.filter(
                 (objDay) => objDay.id != event.target.value
             );
         }
-        setNewArea((prev) => ({ ...prev, schedules: copySchedules }));
+        setNewArea((prev) => ({ ...prev, schedule: copySchedule }));
         // console.log(newArea)
     };
 
@@ -281,11 +308,16 @@ export default function Areas() {
             <button
                 className="mb-7 border py-2 px-3 rounded-md glass duration-100 text-white hover:bg-purple"
                 onClick={() => {
-                    // if (submitStatus === "Editar") {
-                    //     setNewUserData({});
-                    // }
+                    if (submitStatus === "Editar") {
+                        setNewArea({
+                            name: "",
+                            type_area_id: 1,
+                            schedule: [], 
+                            price: "",  
+                        });
+                    }
                     setOpen(true);
-                    // setSubmitStatus("Inscribir");
+                    setSubmitStatus("Crear area");
                 }}
             >
                 <Add className="mr-2" />
@@ -396,7 +428,7 @@ export default function Areas() {
                             <div>
                                 <p className="title">horarios</p>
                                 <ul className="horarios">
-                                    {newArea.schedules.map((sche, scheIndx) => {
+                                    {newArea.schedule?.map((sche, scheIndx) => {
                                         return (
                                             <li className="active">
                                                 <div className="number_list">
@@ -409,16 +441,16 @@ export default function Areas() {
                                                             select
                                                             value={
                                                                 newArea
-                                                                    .schedules[
+                                                                    .schedule[
                                                                     scheIndx
-                                                                ].shift_start
+                                                                ].start_shift_id
                                                             }
                                                             defaultValue=""
                                                             onChange={(e) =>
                                                                 handleChangeShift(
                                                                     e,
                                                                     scheIndx,
-                                                                    "shift_start"
+                                                                    "start_shift_id"
                                                                 )
                                                             }
                                                         >
@@ -445,9 +477,9 @@ export default function Areas() {
                                                             select
                                                             value={
                                                                 newArea
-                                                                    .schedules[
+                                                                    .schedule[
                                                                     scheIndx
-                                                                ].shift_end
+                                                                ].end_shift_id
                                                             }
                                                             defaultValue=""
                                                             name="turno"
@@ -455,7 +487,7 @@ export default function Areas() {
                                                                 handleChangeShift(
                                                                     e,
                                                                     scheIndx,
-                                                                    "shift_end"
+                                                                    "end_shift_id"
                                                                 )
                                                             }
                                                         >
@@ -499,7 +531,7 @@ export default function Areas() {
                                                                         }
                                                                         type="checkbox"
                                                                         hidden
-                                                                        checked={newArea.schedules[
+                                                                        checked={newArea.schedule[
                                                                             scheIndx
                                                                         ].days?.some(
                                                                             (
@@ -516,9 +548,16 @@ export default function Areas() {
                                                                                 scheIndx
                                                                             )
                                                                         }
+                                                                        
                                                                     />
 
-                                                                    <span>
+                                                                    <span onSelect={(
+                                                                            e
+                                                                        ) =>
+                                                                            handleCheck(
+                                                                                e,
+                                                                                scheIndx
+                                                                            )}>
                                                                         {
                                                                             v.letter
                                                                         }
@@ -533,8 +572,8 @@ export default function Areas() {
                                                     onClick={() =>
                                                         setNewArea((prev) => ({
                                                             ...prev,
-                                                            schedules:
-                                                                prev.schedules.filter(
+                                                            schedule:
+                                                                prev.schedule.filter(
                                                                     (sche, i) =>
                                                                         i !=
                                                                         scheIndx
@@ -548,9 +587,9 @@ export default function Areas() {
                                         );
                                     })}
                                     {(newAreaSize === 0 ||
-                                        (newArea.schedules[newAreaSize - 1]
-                                            .shift_end > 0 &&
-                                            newArea.schedules[newAreaSize - 1]
+                                        ( newArea.schedule[newAreaSize - 1]
+                                            .end_shift_id > 0 &&
+                                            newArea.schedule[newAreaSize - 1]
                                                 .days?.length > 0)) && (
                                         <li
                                             style={{
@@ -571,7 +610,7 @@ export default function Areas() {
                                                             handleChangeShift(
                                                                 e,
                                                                 newAreaSize,
-                                                                "shift_start"
+                                                                "start_shift_id"
                                                             )
                                                         }
                                                     >
@@ -593,7 +632,7 @@ export default function Areas() {
                                                             handleChangeShift(
                                                                 e,
                                                                 newAreaSize,
-                                                                "shift_end"
+                                                                "end_shift_id"
                                                             )
                                                         }
                                                     >
@@ -611,7 +650,7 @@ export default function Areas() {
                                                     {lettersDay.map((v, i) => (
                                                         <label
                                                             className={
-                                                                newArea.schedules[
+                                                                newArea.schedule[
                                                                     newAreaSize
                                                                 ]?.days?.some(
                                                                     (objDay) =>
@@ -626,7 +665,7 @@ export default function Areas() {
                                                                 value={v.id}
                                                                 type="checkbox"
                                                                 hidden
-                                                                checked={newArea.schedules[
+                                                                checked={newArea.schedule[
                                                                     newAreaSize
                                                                 ]?.days?.some(
                                                                     (dayObj) =>
