@@ -96,6 +96,7 @@ class AreasController extends Controller
                 
                 $id_schedule = 0;
                 $schedule_ids = array();
+                $day_ids = array();
                 foreach ($request->schedule as $schedule) 
                 {
 
@@ -122,6 +123,7 @@ class AreasController extends Controller
                     {
                         foreach ($schedule['days'] as $day)
                         {   
+                            array_push($day_ids, $day['id']);
 
                             DB::table('schedule_days')->updateOrInsert(
 
@@ -132,15 +134,13 @@ class AreasController extends Controller
 
                             
                         }    
+
+                        DB::table('schedule_days')->where('schedule_id',$id_schedule)->whereNotIn('day_id',$day_ids)->delete();
                     }
                     
+                }
 
-                    // $deletedIds = DB::table('schedules')->where('area_id', $id)->whereNotIn('id', $schedule_ids)->pluck('id')->toArray();
-                    
-                    DB::table('schedules')->where('area_id',$id)->whereNotIn('id',$schedule_ids)->delete();
-
-                    // DB::table('schedule_days')->whereIn('schedule_id',$deletedIds)->delete();
-                }                    
+                DB::table('schedules')->where('area_id',$id)->whereNotIn('id',$schedule_ids)->delete();                    
                 
                 DB::commit();
 
@@ -164,30 +164,20 @@ class AreasController extends Controller
      */
     public function destroy($id)
     {
-        // DB::beginTransaction();
+        DB::beginTransaction();
 
-        // try {
+        try {
 
-            // DB::table('client_area_chargeds')->where('area_id', $id)->select();
+            DB::table('areas')->where('area_id', $id)->update(['status' => 0]);
 
-            // $area = Area::where("id",$id)->first();
+            DB::commit();
 
+            return response(["Message" => 'Area eliminada correctamente'], Response::HTTP_OK);
 
-
-            // if($area->)
-
-            // DB::table('client_area_chargeds')->where('client_id', $id)->delete();
-
-        //     DB::table('clients')->where('id', $id)->delete();
-
-        //     DB::commit();
-
-        //     return response(["Message" => 'Cliente eliminado correctamente'], Response::HTTP_OK);
-
-        // }catch (Exception $e) {
-        //     DB::rollback();
+        }catch (Exception $e) {
+            DB::rollback();
             
-        //     return response(["Message" => 'Cliente no encontrado'], Response::HTTP_BAD_REQUEST);
-        // }   
+            return response(["Message" => 'Area no encontrada'], Response::HTTP_BAD_REQUEST);
+        }   
     }
 }
