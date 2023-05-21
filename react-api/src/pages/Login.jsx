@@ -85,7 +85,8 @@ export default function login() {
               <div className="sqr19 deep" style={deep} ></div>
               <div className="sqr20 deep" style={deep} ></div>
               <div className="sqr21 deep" style={deep} ></div>
-              <div className="sqr22 deep" style={deep} ></div>
+              <div className="sqr27 deep" style={deep} ></div>
+              <div className="sqr24 deep" style={deep} ></div>
               <div className="sqr1 sqrBack" style={backSquaredX}></div>
               <div className="sqr3 sqrBack" style={backSquaredX}></div>
               <div className="sqr4 sqrBack" style={backSquaredX}></div>
@@ -94,6 +95,7 @@ export default function login() {
               <div className="sqr8 sqrBack" style={backSquaredX}></div>
               <div className="sqr12 sqrBack" style={backSquaredX}></div>
               <div className="sqr13 sqrBack" style={backSquaredX}></div>
+              <div className="sqr22 sqrBack" style={backSquaredX}></div>
               <div className="sqr17 front" style={frontSquaredX}></div>
               <div className="sqr11 front" style={frontSquaredX} ></div>
               <div className="sqr2 front" style={frontSquaredX}></div>
@@ -103,6 +105,9 @@ export default function login() {
               <div className="sqr14 front" style={frontSquaredX} ></div>
               <div className="sqr15 front" style={frontSquaredX} ></div>
               <div className="sqr16 front" style={frontSquaredX} ></div>
+              <div className="sqr23 front" style={frontSquaredX} ></div>
+              <div className="sqr25 front" style={frontSquaredX} ></div>
+              <div className="sqr26 front" style={frontSquaredX} ></div>
             </div>
 
             {/* squares for phone screen */} 
@@ -133,9 +138,9 @@ export default function login() {
 
                     <span>
                         <input
-                            type="text" 
+                            type="text"  
                             data-type="DNI"
-                            id="DNI" 
+                            id="ins_DNI" 
                             name="DNI"
                             value={ci}
                             onChange={(e) => setCI(e.target.value)}
@@ -155,7 +160,7 @@ export default function login() {
                         
                     </span>
                 </div>
-                    <input type="submit" className={`btn_submit mt-3  pt-3 disabled position-md-absolute ${ci.trim().length > 6 && password.trim().length > 1 ? 'active' : 'disabled'}` } value="INICIAR &#x25B8;" />
+                    <input type="submit" className={`btn_submit mt-3  pt-3 pb-1 disabled position-md-absolute ${ci.trim().length > 6 && password.trim().length > 1 ? 'active' : 'disabled'}` } value="INICIAR &#x25B8;" />
                 </form>
             </div>
         </div>

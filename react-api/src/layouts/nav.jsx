@@ -7,6 +7,7 @@ import EditCalendarIcon from '@mui/icons-material/EditCalendar';
 import PermContactCalendarIcon from '@mui/icons-material/PermContactCalendar';
 import SportsGymnasticsIcon from '@mui/icons-material/SportsGymnastics';
 import DoubleArrowIcon from '@mui/icons-material/DoubleArrow';
+// import PointOfSaleIcon from '@mui/icons-material/PointOfSale';
 export default function nav(props) {
     const [menuStatus, setMenuStatus] = useState(true)
 
@@ -58,6 +59,13 @@ export default function nav(props) {
                         <span className="text_link"> Areas</span>
                     </NavLink>
                 </li>
+                {/* <li>
+                    <NavLink to="/dashboard/pagos">
+                    <PointOfSaleIcon />
+                        <span className="text_link"> Pagos</span>
+                    </NavLink>
+                </li> */}
+                
             </ul>
             </div>
         </nav>
