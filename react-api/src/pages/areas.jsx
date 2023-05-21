@@ -30,9 +30,9 @@ export default function Areas() {
         status: "",
         message: "",
     });
-    
+
     const [modalConfirm, setModalConfirm] = useState(false);
-    
+
     const [open, setOpen] = useState(false);
     const [submitStatus, setSubmitStatus] = useState("Crear area");
     const [shifts, setShifts] = useState([]);
@@ -40,8 +40,8 @@ export default function Areas() {
     const [newArea, setNewArea] = useState({
         name: "",
         type_area_id: 1,
-        schedule: [], 
-        price: "",  
+        schedule: [],
+        price: "",
     });
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -55,9 +55,9 @@ export default function Areas() {
                         // client.array_areas = client.areas.map((a) => a.name);
                         // client.blood_name = client.blood_types.name
                         // setUsuarios((prev) => [...prev, client]);
-                        const area = response.data.area
-                        console.log(area)
-                        setAreas(prev => [...prev, area])
+                        const area = response.data.area;
+                        console.log(area);
+                        setAreas((prev) => [...prev, area]);
                     });
                 setAlert({
                     open: true,
@@ -65,7 +65,7 @@ export default function Areas() {
                     message: `El Area ha sido creado`,
                 });
             }
-            if( submitStatus === "Editar"){
+            if (submitStatus === "Editar") {
                 await axios
                     .put(`/dashboard/areas/${newArea.id}`, newArea)
                     .then((response) => {
@@ -74,9 +74,13 @@ export default function Areas() {
                         // client.array_areas = client.areas.map((a) => a.name);
                         // client.blood_name = client.blood_types.name
                         // setUsuarios((prev) => [...prev, client]);
-                        const area = response.data.area
-                        console.log(area)
-                        setAreas(prev => [...prev, area])
+                        const area = response.data.area;
+                        console.log(area);
+                        setAreas((prev) =>
+                            prev.map((area) =>
+                                area.id === newArea.id ? newArea : area
+                            )
+                        );
                     });
                 setAlert({
                     open: true,
@@ -85,7 +89,6 @@ export default function Areas() {
                 });
             }
             setOpen(false);
-
         } catch (error) {
             setAlert({
                 open: true,
@@ -163,25 +166,23 @@ export default function Areas() {
                     title="Editar"
                     onClick={() => {
                         const indx = selectedRows.data[0].dataIndex;
-                        const area = areas[indx]
-                        const id = area.id
-                        const name = area.name
-                        const schedule = area.schedule
-                        const type_area_id = area.type_area_id
-                        const price = area.area_chargeds[0]?.price
-                        console.log({schedule})
+                        const area = areas[indx];
+                        const id = area.id;
+                        const name = area.name;
+                        const schedule = area.schedule;
+                        const type_area_id = area.type_area_id;
+                        const price = area.area_chargeds[0]?.price;
+                        console.log({ schedule });
                         // console.log(indx)
 
                         setNewArea({
-                        
                             id,
                             name,
                             schedule,
                             type_area_id,
-                            price: price || '',
-                            
+                            price: price || "",
                         });
-                        setOpen(true)
+                        setOpen(true);
                         setSubmitStatus("Editar");
                     }}
                 >
@@ -227,7 +228,6 @@ export default function Areas() {
         document.title = "Areas";
     }, []);
 
-
     const deleteUser = async () => {
         try {
             const id = areas[dataForDelete.indx].id;
@@ -239,9 +239,7 @@ export default function Areas() {
                 status: "Exito",
                 message: `La area ha sido Eliminada`,
             });
-            setAreas((prev) =>
-                prev.filter((eachU) => eachU.id != id)
-            );
+            setAreas((prev) => prev.filter((eachU) => eachU.id != id));
 
             dataForDelete.setSelectedRows([]);
         } catch (error) {
@@ -252,7 +250,7 @@ export default function Areas() {
             });
         }
     };
-        
+
     const [listOfdays, setListOfDats] = useState();
 
     function getDays(days) {
@@ -312,8 +310,8 @@ export default function Areas() {
                         setNewArea({
                             name: "",
                             type_area_id: 1,
-                            schedule: [], 
-                            price: "",  
+                            schedule: [],
+                            price: "",
                         });
                     }
                     setOpen(true);
@@ -339,7 +337,10 @@ export default function Areas() {
                         minWidth: "600px",
                     }}
                 >
-                    <form onSubmit={handleSubmit} className="w-full h-full areas">
+                    <form
+                        onSubmit={handleSubmit}
+                        className="w-full h-full areas"
+                    >
                         <div
                             style={{
                                 display: "grid",
@@ -548,16 +549,18 @@ export default function Areas() {
                                                                                 scheIndx
                                                                             )
                                                                         }
-                                                                        
                                                                     />
 
-                                                                    <span onSelect={(
+                                                                    <span
+                                                                        onSelect={(
                                                                             e
                                                                         ) =>
                                                                             handleCheck(
                                                                                 e,
                                                                                 scheIndx
-                                                                            )}>
+                                                                            )
+                                                                        }
+                                                                    >
                                                                         {
                                                                             v.letter
                                                                         }
@@ -587,7 +590,7 @@ export default function Areas() {
                                         );
                                     })}
                                     {(newAreaSize === 0 ||
-                                        ( newArea.schedule[newAreaSize - 1]
+                                        (newArea.schedule[newAreaSize - 1]
                                             .end_shift_id > 0 &&
                                             newArea.schedule[newAreaSize - 1]
                                                 .days?.length > 0)) && (
@@ -739,11 +742,8 @@ export default function Areas() {
                                         <span
                                             className={
                                                 obj.days.some(
-                                                    (
-                                                        objDay
-                                                    ) =>
-                                                        objDay.id ==
-                                                        v.id
+                                                    (objDay) =>
+                                                        objDay.id == v.id
                                                 )
                                                     ? "text-blue font-bold"
                                                     : "opacity-30"
@@ -763,7 +763,7 @@ export default function Areas() {
                 status={alert.status}
                 message={alert.message}
             />
-             <ConfirmModal
+            <ConfirmModal
                 closeModal={() => {
                     setModalConfirm(false);
                     // setRowSelected([])
