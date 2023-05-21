@@ -92,8 +92,11 @@ class AreasController extends Controller
 
 
                 if($request->type_area_id == 2)
-                    DB::table('area_chargeds')->insert(['area_id' => $id, 'name' => $request->name, 'price' => $request->price ] );                    
+                    DB::table('area_chargeds')->insert(['area_id' => $id, 'name' => $request->name, 'price' => $request->price ] ); 
                 
+                else                   
+                    DB::table('area_chargeds')->where('area_id',$id)->delete();
+
                 $id_schedule = 0;
                 $schedule_ids = array();
                 $day_ids = array();
@@ -170,7 +173,7 @@ class AreasController extends Controller
 
         try {
 
-            DB::table('areas')->where('area_id', $id)->update(['status' => 0]);
+            DB::table('areas')->where('id', $id)->update(['status' => 0]);
 
             DB::commit();
 
