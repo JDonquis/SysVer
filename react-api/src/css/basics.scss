@@ -68,9 +68,10 @@ ul.link_container {
 .dashboard_container {
     overflow: hidden;
     display: flex;
+    min-height: 100vh;
     // gap: 20px;
-    .main_dashboard {
-        flex: auto;
+    .main_dashboard {  
+        flex: auto; 
         padding: 20px;
         background: rgb(255, 255, 255);
         background: linear-gradient(-50deg, hwb(320 94% 0%) 0%, #003b58 100%);

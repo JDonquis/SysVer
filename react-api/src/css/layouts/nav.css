@@ -69,6 +69,7 @@ ul.link_container a {
 .dashboard_container {
   overflow: hidden;
   display: flex;
+  min-height: 100vh;
 }
 .dashboard_container .main_dashboard {
   flex: auto;
@@ -154,7 +155,6 @@ thead, .tss-gm6zfk-MUIDataTableHeadCell-fixedHeader {
 }
 
 .left_nav {
-  height: 100vh;
   background: rgba(6, 157, 191, 0.089);
   min-width: 250px;
   max-width: 250px;

@@ -40,8 +40,8 @@ export default function Areas() {
     const [newArea, setNewArea] = useState({
         name: "",
         type_area_id: 1,
-        schedules: [],
-        price: "",
+        schedules: [], 
+        price: "",  
     });
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -144,11 +144,10 @@ export default function Areas() {
                     title="Editar"
                     onClick={() => {
                         const indx = selectedRows.data[0].dataIndex;
-                        // const asis = asistencia[indx];
-                        // const asis_id = asis.id;
-                        // const code = asis.client.code;
-                        // const schedule = asis.schedule;
-                        // const area_id = asis.schedule.area_id;
+                        // const id =
+                        // const name =
+                        // const schedule = 
+                        // const type_area_id =
                         // setNewAttendance({
                         //     code,
                         //     area_id,
