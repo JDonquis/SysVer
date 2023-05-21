@@ -315,6 +315,8 @@ export default function Usuarios() {
 
         try {
             if (submitStatus === "Inscribir") {
+                setSubmitStatus("cargando...");
+
                 await axios
                     .post(`/dashboard/clients/`, newUserData)
                     .then((response) => {
@@ -329,6 +331,8 @@ export default function Usuarios() {
                     status: "Exito",
                     message: `El usuario ${newUserData.name} ha sido creado`,
                 });
+                setSubmitStatus("Inscribir");
+
             }
             if (submitStatus === "Editar") {
                 setSubmitStatus("cargando...");

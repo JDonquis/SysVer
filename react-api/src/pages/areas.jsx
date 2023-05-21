@@ -47,6 +47,8 @@ export default function Areas() {
         e.preventDefault();
         try {
             if (submitStatus === "Crear area") {
+                setSubmitStatus("Creando area...");
+
                 await axios
                     .post(`/dashboard/areas/`, newArea)
                     .then((response) => {
@@ -64,8 +66,12 @@ export default function Areas() {
                     status: "Exito",
                     message: `El Area ha sido creado`,
                 });
+                setSubmitStatus("Crear area");
+
             }
             if (submitStatus === "Editar") {
+                setSubmitStatus("Editando...");
+
                 await axios
                     .put(`/dashboard/areas/${newArea.id}`, newArea)
                     .then((response) => {
@@ -86,6 +92,8 @@ export default function Areas() {
                     status: "Exito",
                     message: `El Area ha sido creado`,
                 });
+                setSubmitStatus("Editar");
+
             }
             setOpen(false);
         } catch (error) {
@@ -358,6 +366,7 @@ export default function Areas() {
                                             name: e.target.value,
                                         }))
                                     }
+                                    required={true}
                                     value={newArea.name}
                                     width={"100%"}
                                     name={"name"}
@@ -423,6 +432,7 @@ export default function Areas() {
                                         width={"100%"}
                                         value={newArea.price}
                                         name={"price"}
+                                        required={true}
                                     />
                                 )}
                             </div>
@@ -483,6 +493,7 @@ export default function Areas() {
                                                                 ].end_shift_id
                                                             }
                                                             defaultValue=""
+                                                            disabled={ !(newArea.schedule[scheIndx]?.start_shift_id > 0)}
                                                             name="turno"
                                                             onChange={(e) =>
                                                                 handleChangeShift(
@@ -501,10 +512,12 @@ export default function Areas() {
                                                                         value={
                                                                             obj.id
                                                                         }
+                                                                        disabled={newArea.schedule[scheIndx]?.start_shift_id  >= obj.id+1}
                                                                     >
                                                                         {
                                                                             obj.end
                                                                         }
+
                                                                     </MenuItem>
                                                                 )
                                                             )}
@@ -631,6 +644,7 @@ export default function Areas() {
                                                         select
                                                         // value={newAttendance?.schedule}
                                                         defaultValue=""
+                                                        disabled={ !(newArea.schedule[newAreaSize]?.start_shift_id > 0)}
                                                         onChange={(e) =>
                                                             handleChangeShift(
                                                                 e,

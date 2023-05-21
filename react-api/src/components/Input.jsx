@@ -27,7 +27,7 @@ const Input = memo((props) => {
             color="primary"
             inputProps={{ reandOnly: props.readOnly, minLength: props.minLength, maxLength: props.maxLength }}
             InputLabelProps={{ shrink: props.shrink }}
-            
+            required={props.required || false}
         />
     );
 });
