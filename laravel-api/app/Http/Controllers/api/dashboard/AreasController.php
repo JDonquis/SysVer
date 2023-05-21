@@ -18,7 +18,7 @@ class AreasController extends Controller
      */
     public function index()
     {
-        $areas = Area::with('schedule.shift_start','schedule.shift_end','schedule.days','area_chargeds:id,price,area_id')->get();
+        $areas = Area::where('status',1)->with('schedule.shift_start','schedule.shift_end','schedule.days','area_chargeds:id,price,area_id')->get();
         $shifts = Shift::all();
 
         return response(["areas" => $areas,'shifts' => $shifts], Response::HTTP_OK);
