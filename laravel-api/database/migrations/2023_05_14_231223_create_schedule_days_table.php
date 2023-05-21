@@ -16,7 +16,7 @@ class CreateScheduleDaysTable extends Migration
         Schema::create('schedule_days', function (Blueprint $table) {
             $table->id();
             $table->foreignId("day_id")->constrained()->onDelete("restrict")->onUpdate("cascade");
-            $table->foreignId("schedule_id")->constrained()->onDelete("restrict")->onUpdate("cascade");
+            $table->foreignId("schedule_id")->constrained()->onDelete("cascade")->onUpdate("cascade");
         });
     }
 
