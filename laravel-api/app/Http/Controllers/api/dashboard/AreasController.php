@@ -131,7 +131,7 @@ class AreasController extends Controller
                             DB::table('schedule_days')->updateOrInsert(
 
                             ['day_id' => $day['id'], 'schedule_id'=>$id_schedule],
-                            ['day_id'=> $day['id'],'schedule_id'=>$id_schedule]
+                            ['day_id'=> $day['id']]
                              
                             );
 
@@ -139,6 +139,8 @@ class AreasController extends Controller
                         }    
 
                         DB::table('schedule_days')->where('schedule_id',$id_schedule)->whereNotIn('day_id',$day_ids)->delete();
+
+                        $day_ids = array();
                     }
                     
                 }
