@@ -25,6 +25,7 @@ const eachLetterStyled = {};
 
 export default function Areas() {
     const [areas, setAreas] = useState([]);
+    const [schedulesSelected, setSchedulesSelected] = useState([]);
     const [alert, setAlert] = useState({
         open: false,
         status: "",
@@ -67,7 +68,6 @@ export default function Areas() {
                     message: `El Area ha sido creado`,
                 });
                 setSubmitStatus("Crear area");
-
             }
             if (submitStatus === "Editar") {
                 setSubmitStatus("Editando...");
@@ -90,10 +90,9 @@ export default function Areas() {
                 setAlert({
                     open: true,
                     status: "Exito",
-                    message: `El Area ha sido creado`,
+                    message: `El Area ha sido Editada `,
                 });
                 setSubmitStatus("Editar");
-
             }
             setOpen(false);
         } catch (error) {
@@ -285,6 +284,12 @@ export default function Areas() {
         const copySchedule = [...newArea.schedule];
         copySchedule[i] = { ...copySchedule[i], [shift]: e.target.value };
         setNewArea((prev) => ({ ...prev, schedule: copySchedule }));
+
+        const copyScheSelected = [...schedulesSelected]
+        copyScheSelected[i] =  [copySchedule[i]?.start_shift_id, copySchedule[i]?.end_shift_id]
+        console.log(copyScheSelected)
+        setSchedulesSelected(copyScheSelected)
+
     }
     const newAreaSize = newArea.schedule?.length;
 
@@ -306,8 +311,8 @@ export default function Areas() {
         setNewArea((prev) => ({ ...prev, schedule: copySchedule }));
         // console.log(newArea)
     };
-    console.log({areas})
-
+    console.log({ areas });
+console.log({schedulesSelected})
     console.log(newArea);
     return (
         <>
@@ -493,15 +498,25 @@ export default function Areas() {
                                                                 ].end_shift_id
                                                             }
                                                             defaultValue=""
-                                                            disabled={ !(newArea.schedule[scheIndx]?.start_shift_id > 0)}
+                                                            disabled={
+                                                                !(
+                                                                    newArea
+                                                                        .schedule[
+                                                                        scheIndx
+                                                                    ]
+                                                                        ?.start_shift_id >
+                                                                    0
+                                                                )
+                                                            }
                                                             name="turno"
-                                                            onChange={(e) =>
+                                                            onChange={(e) => {
                                                                 handleChangeShift(
                                                                     e,
                                                                     scheIndx,
                                                                     "end_shift_id"
-                                                                )
-                                                            }
+                                                                );
+                                                                // setSchedulesSelected(prev => [...prev, [newArea.schedule[scheIndx]?.start_shift_id, e.target.value]])
+                                                            }}
                                                         >
                                                             {shifts.map(
                                                                 (obj) => (
@@ -512,12 +527,19 @@ export default function Areas() {
                                                                         value={
                                                                             obj.id
                                                                         }
-                                                                        disabled={newArea.schedule[scheIndx]?.start_shift_id  >= obj.id+1}
+                                                                        disabled={
+                                                                            newArea
+                                                                                .schedule[
+                                                                                scheIndx
+                                                                            ]
+                                                                                ?.start_shift_id >=
+                                                                            obj.id +
+                                                                                1 || schedulesSelected.some(arr => arr[0] == newArea.schedule[scheIndx]?.start_shift_id && arr[1] == obj.id)
+                                                                        }
                                                                     >
                                                                         {
                                                                             obj.end
                                                                         }
-
                                                                     </MenuItem>
                                                                 )
                                                             )}
@@ -564,16 +586,7 @@ export default function Areas() {
                                                                         }
                                                                     />
 
-                                                                    <span
-                                                                        onSelect={(
-                                                                            e
-                                                                        ) =>
-                                                                            handleCheck(
-                                                                                e,
-                                                                                scheIndx
-                                                                            )
-                                                                        }
-                                                                    >
+                                                                    <span>
                                                                         {
                                                                             v.letter
                                                                         }
@@ -644,7 +657,16 @@ export default function Areas() {
                                                         select
                                                         // value={newAttendance?.schedule}
                                                         defaultValue=""
-                                                        disabled={ !(newArea.schedule[newAreaSize]?.start_shift_id > 0)}
+                                                        disabled={
+                                                            !(
+                                                                newArea
+                                                                    .schedule[
+                                                                    newAreaSize
+                                                                ]
+                                                                    ?.start_shift_id >
+                                                                0
+                                                            )
+                                                        }
                                                         onChange={(e) =>
                                                             handleChangeShift(
                                                                 e,
