@@ -40,6 +40,9 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth:sanctum']], functi
     Route::put('assistance/{id}',[AssistanceController::class,'update']);
     Route::delete('assistance/{id}',[AssistanceController::class,'destroy']);
 
+    // Historial of assistances
+    Route::get('historial/assistance',[AssistanceController::class,'historial']);
+
     // Areas
     Route::get('areas',[AreasController::class,'index']);
     Route::post('areas',[AreasController::class,'store']);
