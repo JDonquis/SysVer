@@ -17,7 +17,8 @@ class CreateHistorialAssistancesTable extends Migration
             $table->id();
             $table->foreignId("client_id")->constrained()->onDelete("restrict")->onUpdate("cascade");
             $table->foreignId("schedule_id")->constrained()->onDelete("restrict")->onUpdate("cascade");
-            $table->timestamps();
+            $table->date('created_at');
+            $table->date('updated_at');
         });
     }
 
