@@ -27,6 +27,8 @@ export default function Historial_de_asistencia() {
     }, []);
     const options = {
         filterType: "checkbox",
+        selectableRows: "none",
+
     };
 
     const columns = [
@@ -42,7 +44,7 @@ export default function Historial_de_asistencia() {
                 },
             },
         },
-        
+
         {
             name: "client",
             label: "Código",
