@@ -159,4 +159,20 @@ class AssistanceController extends Controller
         $latest = HistorialAssistance::where('client_id',$client_id->id)->latest()->with('schedule.area','schedule.shift_start','schedule.shift_end')->first();
         return response(["latest" => $latest], Response::HTTP_OK);
     }
+
+    /**
+     * History of assistance.
+     *
+     * 
+     * @return \Illuminate\Http\Response
+     */
+     public function historial()
+    {
+        $assistances = HistorialAssistance::with('schedule.area','schedule.shift_start','schedule.shift_end','client')->get();
+        $areas = Area::with('schedule.shift_start','schedule.shift_end')->get();
+
+        return response(["areas" => $areas, 'assistances' => $assistances], Response::HTTP_OK);    
+    }
+
+
 }
