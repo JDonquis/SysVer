@@ -10,7 +10,6 @@ export default function Historial_de_asistencia() {
         try {
 
             await axios.get("dashboard/historial/assistance").then((response) => {
-                console.log(response)
                 const asis = response.data.assistances;
                 setAsistencias(asis);
     
