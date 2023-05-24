@@ -169,9 +169,8 @@ class AssistanceController extends Controller
      public function historial()
     {
         $assistances = HistorialAssistance::with('schedule.area','schedule.shift_start','schedule.shift_end','client')->get();
-        $areas = Area::with('schedule.shift_start','schedule.shift_end')->get();
-
-        return response(["areas" => $areas, 'assistances' => $assistances], Response::HTTP_OK);    
+        
+        return response(['assistances' => $assistances], Response::HTTP_OK);    
     }
 
 
