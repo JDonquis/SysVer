@@ -265,7 +265,7 @@ thead, .tss-gm6zfk-MUIDataTableHeadCell-fixedHeader {
 }
 .container_login .card_form .cont_input_label label.focus_valid,
 .container_login .card_form span label.focus_valid {
-  transform: translateY(-27px);
+  transform: translateY(-25px);
   color: #a64684;
   font-weight: bold;
   font-size: 21px;

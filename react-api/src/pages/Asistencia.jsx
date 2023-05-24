@@ -319,23 +319,11 @@ export default function Asistencia() {
             all_areas.find((obj) => obj.id === newAttendance.area_id)?.schedule
         );
 
-        // setTimeout(() => {
-        //     if (scheduleOfThisArea.length === 1) {
-        //         setNewAttendance((prev) => ({
-        //             ...prev,
-        //             schedule_id: scheduleOfThisArea[0].id,
-        //         }));
-        //     }
-        // }, 100);
+    
     }, [newAttendance]);
 
 
-    const turnos = [
-        { id: 1, name: "1" },
-        { id: 2, name: "2" },
-        { id: 3, name: "3" },
-        { id: 4, name: "4" },
-    ];
+    
 
     const [tabla, setTabla] = useState();
     useEffect(() => {

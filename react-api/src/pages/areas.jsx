@@ -27,7 +27,7 @@ export default function Areas() {
     const [areas, setAreas] = useState([]);
     const [schedulesSelected, setSchedulesSelected] = useState([]);
     const [alert, setAlert] = useState({
-        open: false,
+        open: false, 
         status: "",
         message: "",
     });
@@ -53,13 +53,7 @@ export default function Areas() {
                 await axios
                     .post(`/dashboard/areas/`, newArea)
                     .then((response) => {
-                        console.log({ response });
-                        // const client = response.data.client;
-                        // client.array_areas = client.areas.map((a) => a.name);
-                        // client.blood_name = client.blood_types.name
-                        // setUsuarios((prev) => [...prev, client]);
                         const area = response.data.area;
-                        console.log(area);
                         setAreas((prev) => [...prev, area]);
                     });
                 setAlert({
@@ -75,11 +69,6 @@ export default function Areas() {
                 await axios
                     .put(`/dashboard/areas/${newArea.id}`, newArea)
                     .then((response) => {
-                        console.log({ response });
-                        // const client = response.data.client;
-                        // client.array_areas = client.areas.map((a) => a.name);
-                        // client.blood_name = client.blood_types.name
-                        // setUsuarios((prev) => [...prev, client]);
                         const areaUpdated = response.data.area;
                         setAreas((prev) =>
                             prev.map((area) =>
@@ -175,11 +164,10 @@ export default function Areas() {
                         const area = areas[indx];
                         const id = area.id;
                         const name = area.name;
-                        const schedule = area.schedule;
+                        const schedule = [...area.schedule];
                         const type_area_id = area.type_area_id;
                         const price = area.area_chargeds?.[0]?.price;
                         console.log({ schedule });
-                        // console.log(indx)
 
                         setNewArea({
                             id,
@@ -217,14 +205,11 @@ export default function Areas() {
     }, [alert.open === true]);
     const getData = async () => {
         await axios.get("dashboard/areas").then((response) => {
-            // setAll_areas(areas);
             const data = response.data;
-            console.log(response);
             setAreas(data.areas);
             setShifts(data.shifts);
         });
     };
-    // console.log(all_areas);
     const [dataForDelete, setDataForDelete] = useState({
         indx: "",
         setSelectedRows: () => {},
@@ -257,46 +242,39 @@ export default function Areas() {
         }
     };
 
-    const [listOfdays, setListOfDats] = useState();
-
-    function getDays(days) {
-        // console.log(days)
-
-        lettersDay.forEach((v, i) => {
-            if (days[i]) {
-                console.log("ready");
-                // console.log(days[i].id);
-                // return <b>{v.letter}</b>
-                return "1";
-            } else {
-                console.log("undifined");
-                // return '<'span className="opacity-40">{v.letter}</span>;
-                return "2";
-            }
-            // v.id == days[i].id ? (
-            <b>{v.letter}</b>;
-            // ) : (
-            // )
-        });
-    }
-
+    useEffect(() => {
+      console.log(areas)
+    }, [areas])
+    
     function handleChangeShift(e, i, shift) {
         const copySchedule = [...newArea.schedule];
         copySchedule[i] = { ...copySchedule[i], [shift]: e.target.value };
         setNewArea((prev) => ({ ...prev, schedule: copySchedule }));
 
-        const copyScheSelected = [...schedulesSelected]
-        copyScheSelected[i] =  [copySchedule[i]?.start_shift_id, copySchedule[i]?.end_shift_id]
-        console.log(copyScheSelected)
-        setSchedulesSelected(copyScheSelected)
-
     }
+
+    useEffect(() => {
+        if(newArea.schedule.length > 0) {
+            setSchedulesSelected( newArea.schedule.map(obj => [obj?.start_shift_id, obj?.end_shift_id]))
+        }
+    }, [newArea])
+    
+    useEffect(() => {
+        if(open === false && submitStatus === "Editar") {
+            setNewArea({
+                name: "",
+                type_area_id: 1,
+                schedule: [],
+                price: "",
+            });
+        }
+    }, [open])
+
     const newAreaSize = newArea.schedule?.length;
 
     const handleCheck = (event, scheIndx) => {
         const copySchedule = [...newArea.schedule];
         // let updatedList = [...newArea.schedule[scheIndx].days];
-        // console.log(updatedList)
         if (event.target.checked) {
             if (!copySchedule[scheIndx].days) {
                 copySchedule[scheIndx].days = [{ id: event.target.value }];
@@ -309,11 +287,11 @@ export default function Areas() {
             );
         }
         setNewArea((prev) => ({ ...prev, schedule: copySchedule }));
-        // console.log(newArea)
     };
+
     console.log({ areas });
-console.log({schedulesSelected})
-    console.log(newArea);
+// console.log({schedulesSelected})
+//     console.log(newArea);
     return (
         <>
             <button
@@ -578,7 +556,7 @@ console.log({schedulesSelected})
                                                                         )}
                                                                         onChange={(
                                                                             e
-                                                                        ) =>
+                                                                        ) =>  
                                                                             handleCheck(
                                                                                 e,
                                                                                 scheIndx
@@ -711,12 +689,7 @@ console.log({schedulesSelected})
                                                                         v.id ==
                                                                         dayObj.id
                                                                 )}
-                                                                onChange={(e) =>
-                                                                    handleCheck(
-                                                                        e,
-                                                                        newAreaSize
-                                                                    )
-                                                                }
+                                                                readOnly
                                                             />
 
                                                             <span>

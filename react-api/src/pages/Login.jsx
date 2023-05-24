@@ -80,7 +80,7 @@ export default function login() {
         <div className="container_login bg-blue block md:grid">
             
             {/* squares for large screen */}
-            <div className="container_squares hidden md:grid">
+            <div className="container_squares hidden md:grid relative left-14">
               <div className="sqr18 deep" style={deep} ></div>
               <div className="sqr19 deep" style={deep} ></div>
               <div className="sqr20 deep" style={deep} ></div>

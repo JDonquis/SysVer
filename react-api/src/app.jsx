@@ -5,6 +5,7 @@ import Dashboard from "./pages/Dashboard";
 import Asistencia from "./pages/Asistencia";
 import Personal from "./pages/Personal";
 import Areas from "./pages/areas";
+import Historial_de_asistencia from "./pages/Historial_de_asistencia"
 import { useState } from "react";
 
 export default function app() {
@@ -26,6 +27,7 @@ export default function app() {
                         <Route path="/personal" element={<Personal />}></Route>
                         <Route path="/areas" element={<Areas />}></Route>
                         <Route path="/asistencia" element={<Asistencia />}></Route>
+                        <Route path="/historial_de_asistencia" element={<Historial_de_asistencia />}></Route>
                     </Routes>
                     </div>
                 </main>

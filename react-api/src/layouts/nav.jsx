@@ -65,7 +65,12 @@ export default function nav(props) {
                         <span className="text_link"> Pagos</span>
                     </NavLink>
                 </li> */}
-                
+                <li>
+                    <NavLink to="/dashboard/historial_de_asistencia">
+                    <SportsGymnasticsIcon />
+                        <span className="text_link"> Historial de asistencia</span>
+                    </NavLink>
+                </li>
             </ul>
             </div>
         </nav>
