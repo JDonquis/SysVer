@@ -9,7 +9,7 @@ export default function Historial_de_asistencia() {
     const getData = async () => {
         try {
 
-            await axios.get("historial/assistance").then((response) => {
+            await axios.get("dashboard/historial/assistance").then((response) => {
                 console.log(response)
                 const asis = response.data.assistances;
                 setAsistencias(asis);
@@ -30,6 +30,19 @@ export default function Historial_de_asistencia() {
     };
 
     const columns = [
+        {
+            name: "schedule",
+            label: "Dia",
+            options: {
+                filter: true,
+                customBodyRender: (value) => {
+                    return (
+                        value.shift_start.start + " - " + value.shift_end.end
+                    );
+                },
+            },
+        },
+        
         {
             name: "client",
             label: "Código",
@@ -82,6 +95,7 @@ export default function Historial_de_asistencia() {
                 },
             },
         },
+        
     ]
 
     useEffect(() => {
