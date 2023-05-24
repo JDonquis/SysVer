@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import MUIDataTable from "mui-datatables";
-import { styled } from "@mui/material/styles";
 import axios from "../api/axios";
 
 export default function Historial_de_asistencia() {
@@ -97,6 +96,7 @@ export default function Historial_de_asistencia() {
 
     return (
         <>
+            <p>nota: aquí se muestran las asistencias </p>
             {tabla}
         </>
     );
