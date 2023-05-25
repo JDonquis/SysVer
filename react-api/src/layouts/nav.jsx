@@ -8,6 +8,7 @@ import PermContactCalendarIcon from '@mui/icons-material/PermContactCalendar';
 import SportsGymnasticsIcon from '@mui/icons-material/SportsGymnastics';
 import DoubleArrowIcon from '@mui/icons-material/DoubleArrow';
 // import PointOfSaleIcon from '@mui/icons-material/PointOfSale';
+import ListAltIcon from '@mui/icons-material/ListAlt';
 export default function nav(props) {
     const [menuStatus, setMenuStatus] = useState(true)
 
@@ -50,7 +51,13 @@ export default function nav(props) {
                     <NavLink to="/dashboard/asistencia">
                     <EditCalendarIcon />
 
-                        <span className="text_link"> Asistencia</span>
+                        <span className="text_link"> Asistencia de hoy</span>
+                    </NavLink>
+                </li>
+                <li>
+                    <NavLink to="/dashboard/historial_de_asistencia">
+                    <ListAltIcon />
+                        <span className="text_link"> Historial de asistencia</span>
                     </NavLink>
                 </li>
                 <li>
@@ -65,12 +72,7 @@ export default function nav(props) {
                         <span className="text_link"> Pagos</span>
                     </NavLink>
                 </li> */}
-                <li>
-                    <NavLink to="/dashboard/historial_de_asistencia">
-                    <SportsGymnasticsIcon />
-                        <span className="text_link"> Historial de asistencia</span>
-                    </NavLink>
-                </li>
+                
             </ul>
             </div>
         </nav>
