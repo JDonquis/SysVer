@@ -155,7 +155,8 @@ thead, .tss-gm6zfk-MUIDataTableHeadCell-fixedHeader {
 }
 
 .d-flex2 {
-  display: flex;
+  display: grid;
   justify-content: space-between;
   gap: 30px;
+  grid-template-columns: repeat(2, 1fr);
 }/*# sourceMappingURL=basics.css.map */

@@ -73,7 +73,7 @@ export default function login() {
         document.onmousemove = (e) => {
             const cursorX = e.screenX
             const cursorY = e.screenY
-            setViñetaPosition({top: `${cursorY - 1100}px`, left: `${cursorX - 1500}px`})
+            setViñetaPosition({top: `${cursorY - 1100}px`, left: `${cursorX - 3000}px`})
             // const valueX = cursorX <= half ? -
             // const valueY
             setFrontSquaredX({boxShadow: `${(halfX - cursorX) / 25}px ${(halfY - cursorY) / 15}px 29px 4px rgba(0, 0, 0, 0.15)`, transform: `translate(-${cursorX/ 40}px, -${cursorY/40}px) perspective(1000px) rotateY(${(cursorX - halfX)/ 37}deg) rotateX(${(halfY - cursorY)/ 18}deg)`})
@@ -84,7 +84,7 @@ export default function login() {
     // useEffect(() => {
     //   if ()
     useEffect(() => {
-        setViñetaPosition({top: `${halfY - 900}px`, left: `${windowWidth - 1500}px`})
+        setViñetaPosition({top: `${halfY - 900}px`, left: `${windowWidth - 3000}px`})
         // const valueX = windowWidth <= half ? -
         // const valueY
         setFrontSquaredX({boxShadow: `${(halfX - windowWidth) / 25}px ${(halfY - halfY) / 15}px 24px 4px rgba(0, 0, 0, 0.15)`, transform: `translate(-${windowWidth/ 40}px, -${halfY/40}px) perspective(1000px) rotateY(${(windowWidth - halfX)/ 37}deg) rotateX(${(halfY - halfY)/ 18}deg)`})

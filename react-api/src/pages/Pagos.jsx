@@ -284,7 +284,6 @@ export default function Pagos() {
                             label={"Código del usuario"}
                             value={newPayment?.code}
                             name={"birth_date"}
-                            width={150}
                             // onBlur={getLastAttended}
                             onChange={(e) =>
                                 setNewPayment((prev) => ({
@@ -314,13 +313,13 @@ export default function Pagos() {
                             ))}
                         </Input>
                         </div>
-                       
+                       <br />
                          <Input
                             
                             label={"Monto en Dolares"}
                             value={newPayment?.code}
                             name={"birth_date"}
-                            width={150}
+                            width={350}
                             // onBlur={getLastAttended}
                             onChange={(e) =>
                                 setNewPayment((prev) => ({
@@ -329,13 +328,15 @@ export default function Pagos() {
                                 }))
                             }
                         />
+                        <br />
+                        <br />
                         <Input
                             // shrink={true}
                             // type={"Código"}
                             label={"Monto en Bolívares"}
                             value={newPayment?.code}
                             name={"birth_date"}
-                            width={150}
+                            width={350}
                             // onBlur={getLastAttended}
                             onChange={(e) =>
                                 setNewPayment((prev) => ({
@@ -354,7 +355,7 @@ export default function Pagos() {
                                 }))
                             }
                         >
-                            <p>Método de pago: </p>
+                            <p style={{ marginTop: "20px", opacity: ".7" }}>Método de pago: </p>
                             <label htmlFor="Pago_móvil" 
                             style={{
                                 display: "block",

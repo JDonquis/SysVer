@@ -155,6 +155,13 @@ thead, .tss-gm6zfk-MUIDataTableHeadCell-fixedHeader {
   color: white !important;
 }
 
+.d-flex2 {
+  display: grid;
+  justify-content: space-between;
+  gap: 30px;
+  grid-template-columns: repeat(2, 1fr);
+}
+
 .container_login {
   overflow: hidden;
   position: relative;
@@ -838,7 +845,7 @@ input {
 .viñeta {
   position: absolute;
   z-index: 1000;
-  width: 3000px;
+  width: 6000px;
   height: 2000px;
   top: 0;
   left: 0;
