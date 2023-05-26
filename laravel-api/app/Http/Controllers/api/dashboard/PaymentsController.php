@@ -20,7 +20,7 @@ class PaymentsController extends Controller
     public function index()
     {
         $payments = Payment::with('client_area.client','client_area.area')->get();
-        $areas = AreaCharged::with('schedule.shift_start','schedule.shift_end')->get();
+        $areas = AreaCharged::all();
 
         return response(["areas" => $areas, 'payments' => $payments], Response::HTTP_OK);    
     }
