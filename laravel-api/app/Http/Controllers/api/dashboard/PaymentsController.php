@@ -9,7 +9,7 @@ use App\Models\Payment;
 use App\Models\PaymentMethod;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
-
+use DB;
 
 class PaymentsController extends Controller
 {
@@ -90,6 +90,20 @@ class PaymentsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        DB::beginTransaction();
+
+        try {
+
+            DB::table('payments')->where('id', $id)->delete();
+
+            DB::commit();
+
+            return response(["Message" => 'Pago eliminado correctamente'], Response::HTTP_OK);
+
+        }catch (Exception $e) {
+            DB::rollback();
+            
+            return response(["Message" => 'Pago no encontrada'], Response::HTTP_BAD_REQUEST);
+        }  
     }
 }
