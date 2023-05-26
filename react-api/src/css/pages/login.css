@@ -850,6 +850,6 @@ input {
   top: 0;
   left: 0;
   background: rgb(0, 0, 0);
-  background: radial-gradient(circle, rgba(0, 0, 0, 0) 13%, rgba(0, 0, 0, 0.8295693277) 95%);
+  background: radial-gradient(circle, rgba(0, 0, 0, 0) 6%, rgba(0, 0, 0, 0.8295693277) 55%);
   pointer-events: none;
 }/*# sourceMappingURL=login.css.map */
