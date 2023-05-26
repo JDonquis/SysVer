@@ -1,3 +1,4 @@
+@charset "UTF-8";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -237,7 +238,7 @@ thead, .tss-gm6zfk-MUIDataTableHeadCell-fixedHeader {
   position: relative;
   display: block;
   width: 100%;
-  margin-bottom: 40px;
+  margin-bottom: 30px;
 }
 .container_login .card_form .cont_input_label:hover,
 .container_login .card_form span:hover {
@@ -268,7 +269,7 @@ thead, .tss-gm6zfk-MUIDataTableHeadCell-fixedHeader {
   transform: translateY(-25px);
   color: #a64684;
   font-weight: bold;
-  font-size: 21px;
+  font-size: 18px;
 }
 @media (min-width: 400px) {
   .container_login .card_form .d-grid {
@@ -321,11 +322,45 @@ input[type=file]):focus,
   justify-content: center;
   margin-top: 115px;
 }
+.container_login .title_and_icon > * {
+  position: relative;
+  left: 0;
+  animation: normal 1s opacityToRight backwards ease;
+}
+.container_login .background_icon {
+  animation-delay: 1s;
+  z-index: 2;
+}
+.container_login h1 {
+  animation-delay: 1.5s !important;
+  letter-spacing: 1px;
+}
 
 .icon {
   max-width: 70px;
 }
 
+input {
+  animation: normal 1.5s widthCero backwards ease;
+  animation-delay: 0.2s;
+  overflow: clip;
+}
+
+@keyframes opacityToRight {
+  from {
+    opacity: 0;
+    left: -60px;
+  }
+}
+@keyframes widthCero {
+  0% {
+    width: 0px;
+    opacity: 0;
+  }
+  30% {
+    opacity: 1;
+  }
+}
 .card_form {
   position: relative;
   max-width: 300px;
@@ -342,16 +377,16 @@ input[type=file]):focus,
   font-size: 26px;
   padding-right: 10px;
   width: 397px;
-  transition: color cubic-bezier(0.215, 0.61, 0.355, 1);
+  animation-delay: 1s;
   right: 0;
-  top: calc(50% - 38.5px + 126.5px);
+  top: calc(50% - 32.5px + 126.5px);
 }
 .btn_submit.disabled {
   color: rgba(255, 255, 255, 0.664);
   background: linear-gradient(270deg, #57adc0, rgba(87, 173, 192, 0.208333), rgba(87, 173, 192, 0));
 }
 .btn_submit.active {
-  color: #331628;
+  color: rgba(245, 245, 245, 0.788);
   background: linear-gradient(270deg, #a64684 11.92%, #a64684 54.62%, #069dbf 101.65%);
 }
 .btn_submit.active.active:hover {
@@ -366,10 +401,10 @@ input[type=file]):focus,
 
 .container_squares > div {
   position: absolute;
-  box-shadow: 1px 1px 28px 11px rgba(0, 0, 0, 0.1);
+  box-shadow: 1px 1px 28px 11px rgba(0, 0, 0, 0.2);
   border-radius: 3px;
   transition: all cubic-bezier(0.2, 0.49, 0.32, 0.99) 0.45s;
-  animation: normal 1s squaresAnimation backwards cubic-bezier(0.2, 0.49, 0.32, 0.99);
+  animation: normal 1.2s squaresAnimation backwards cubic-bezier(0.2, 0.49, 0.32, 0.99);
 }
 
 .container_squares > div:nth-child(1) {
@@ -482,7 +517,7 @@ input[type=file]):focus,
 
 @keyframes squaresAnimation {
   from {
-    top: -260px;
+    top: -360px;
   }
 }
 .sqrBack {
@@ -508,6 +543,7 @@ input[type=file]):focus,
   height: 133px;
   left: 340px;
   top: 0px;
+  transform: perspective(1000px) rotateX(40deg);
   background: #d9831a;
 }
 
@@ -642,7 +678,6 @@ input[type=file]):focus,
 .deep {
   z-index: 1;
   opacity: 0.6;
-  box-shadow: none !important;
 }
 
 .front {
@@ -799,4 +834,15 @@ input[type=file]):focus,
   40%, 60% {
     transform: translate3d(4px, 0, 0);
   }
+}
+.viñeta {
+  position: absolute;
+  z-index: 1000;
+  width: 3000px;
+  height: 2000px;
+  top: 0;
+  left: 0;
+  background: rgb(0, 0, 0);
+  background: radial-gradient(circle, rgba(0, 0, 0, 0) 13%, rgba(0, 0, 0, 0.8295693277) 95%);
+  pointer-events: none;
 }/*# sourceMappingURL=login.css.map */
