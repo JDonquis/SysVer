@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Area;
 use App\Models\AreaCharged;
 use App\Models\Payment;
+use App\Models\PaymentMethod;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -20,9 +21,10 @@ class PaymentsController extends Controller
     public function index()
     {
         $payments = Payment::with('client_area.client','client_area.area')->get();
+        $methods = PaymentMethod::all();
         $areas = AreaCharged::all();
 
-        return response(["areas" => $areas, 'payments' => $payments], Response::HTTP_OK);    
+        return response(["areas" => $areas, 'payments' => $payments,'methods' => $methods], Response::HTTP_OK);    
     }
 
     /**
