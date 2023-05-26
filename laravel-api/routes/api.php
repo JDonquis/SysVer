@@ -53,4 +53,5 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth:sanctum']], functi
 
     // Payments
     Route::get('payments',[PaymentsController::class,'index']);
+    Route::delete('payments/{id}',[PaymentsController::class,'destroy']);
 });
