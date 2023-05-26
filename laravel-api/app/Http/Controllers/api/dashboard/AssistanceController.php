@@ -12,6 +12,7 @@ use DB;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
+
 class AssistanceController extends Controller
 {
     /**
@@ -172,6 +173,5 @@ class AssistanceController extends Controller
         
         return response(['assistances' => $assistances], Response::HTTP_OK);    
     }
-
 
 }

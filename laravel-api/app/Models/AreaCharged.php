@@ -18,5 +18,9 @@ class AreaCharged extends Model
 
     protected $hidden = ['pivot'];
 
+      public function schedule()
+      {
+          return $this->hasMany(Schedule::class, 'area_id', 'id');
+      }
 
 }
