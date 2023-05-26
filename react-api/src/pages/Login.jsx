@@ -146,7 +146,7 @@ export default function login() {
 
 
             <div className="card_form">
-                <form onSubmit={handleLogin}>
+                <form onSubmit={handleLogin} className="login">
                 
                     <span className="title_and_icon">
                         <div className="background_icon">

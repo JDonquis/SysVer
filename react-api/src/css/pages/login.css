@@ -342,12 +342,10 @@ input[type=file]):focus,
   animation-delay: 1.5s !important;
   letter-spacing: 1px;
 }
-
-.icon {
+.container_login .icon {
   max-width: 70px;
 }
-
-input {
+.container_login input {
   animation: normal 1.5s widthCero backwards ease;
   animation-delay: 0.2s;
   overflow: clip;
@@ -850,6 +848,6 @@ input {
   top: 0;
   left: 0;
   background: rgb(0, 0, 0);
-  background: radial-gradient(circle, rgba(0, 0, 0, 0) 6%, rgba(0, 0, 0, 0.8295693277) 55%);
+  background: radial-gradient(circle, rgba(0, 0, 0, 0) 8%, rgba(0, 0, 0, 0.8295693277) 55%);
   pointer-events: none;
 }/*# sourceMappingURL=login.css.map */
