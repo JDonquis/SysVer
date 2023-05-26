@@ -28,6 +28,7 @@ class DatabaseSeeder extends Seeder
         'days',
         'schedules',
         'schedule_days',
+        'payment_methods',
         
 
 
@@ -46,6 +47,7 @@ class DatabaseSeeder extends Seeder
             DaysSeeder::class,
             ScheduleSeeder::class,
             ScheduleDaysSeeder::class,
+            PaymentMethod::class,
 
             
         ]);

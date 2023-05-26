@@ -4,6 +4,7 @@ use App\Http\Controllers\api\LoginController;
 use App\Http\Controllers\api\dashboard\AreasController;
 use App\Http\Controllers\api\dashboard\AssistanceController;
 use App\Http\Controllers\api\dashboard\ClientController;
+use App\Http\Controllers\api\dashboard\PaymentsController;
 use App\Http\Controllers\api\dashboard\UsersController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -42,6 +43,7 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth:sanctum']], functi
 
     // Historial of assistances
     Route::get('historial/assistance',[AssistanceController::class,'historial']);
+    // Route::get('historial/assistance/test',[AssistanceController::class,'test']);
 
     // Areas
     Route::get('areas',[AreasController::class,'index']);
@@ -49,4 +51,6 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth:sanctum']], functi
     Route::put('areas/{id}',[AreasController::class,'update']);
     Route::delete('areas/{id}',[AreasController::class,'destroy']);
 
+    // Payments
+    Route::get('payments',[PaymentsController::class,'index']);
 });

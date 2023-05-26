@@ -41,13 +41,5 @@ class HistorialAssistance extends Model
         return $this->belongsTo(Schedule::class,'schedule_id','id');
     }
 
-    // public function getCreatedAtAttribute($date)
-    // {
-    //     return $date->format('Y-m-d');
-    // }
-
-    // public function getUpdatedAtAttribute($date)
-    // {
-    //     return $date->format('Y-m-d');
-    // }
+ 
 }
