@@ -17,7 +17,8 @@ class PaymentMethod extends Seeder
          $fields = [
 
             ['name' => 'Pago movil'],
-            ['name' => 'Efectivo'],
+            ['name' => 'Efectivo dolares'],
+            ['name' => 'Efectivo bolivares'],
             ['name' => 'Transferencia'],
         
          ];   
