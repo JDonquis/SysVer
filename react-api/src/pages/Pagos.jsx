@@ -12,44 +12,12 @@ import Alert from "../components/Alert";
 import Input from "../components/Input";
 import TransparentButton from "../components/TransparentButton";
 
-const columns = [
-    {
-        name: "code",
-        label: "Código",
-        options: {
-            filter: false,
-        },
-    },
+let fecha = new Date(),
+añoA = fecha.getFullYear(),
+mesA = fecha.getMonth() + 1,
+diaA = fecha.getDate();
 
-    {
-        name: "name",
-        label: "Nombres",
-        options: {
-            filter: false,
-        },
-    },
-    {
-        name: "last_name",
-        label: "Apellidos",
-        options: {
-            filter: false,
-        },
-    },
-    {
-        name: "area",
-        label: "Area",
-        options: {
-            filter: false,
-        },
-    },
-    {
-        name: "area",
-        label: "Monto",
-        options: {
-            filter: false,
-        },
-    },
-];
+
 
 export default function Pagos() {
     const [alert, setAlert] = useState({
@@ -60,7 +28,7 @@ export default function Pagos() {
 
     const [modalConfirm, setModalConfirm] = useState(false);
     const [all_areas, setAll_areas] = useState([]);
-
+    const [payments, setPayments] = useState()
     const [open, setOpen] = useState(false);
     const [submitStatus, setSubmitStatus] = useState("Registrar");
     const [newPayment, setNewPayment] = useState({
@@ -69,6 +37,54 @@ export default function Pagos() {
         area_id: "",
         payment_method_id: "",
     });
+    const columns = [
+        {
+            name: "client_area",
+            label: "Código",
+            options: {
+                filter: false,
+                customBodyRender: (value, tableMeta) => {
+                    return value.client.code;
+                },
+            },
+        },
+        {
+            name: "client_area",
+            label: "Nombre",
+            options: {
+                filter: false,
+                customBodyRender: (value, tableMeta) => {
+                    return value.client.name;
+                },
+            },
+        },
+        {
+            name: "client_area",
+            label: "Apellido",
+            options: {
+                filter: false,
+                customBodyRender: (value, tableMeta) => {
+                    return value.client.last_name;
+                },
+            },
+        },
+        {
+            name: "client_area",
+            label: "Area",
+            options: {
+                customBodyRender: (value, tableMeta) => {
+                    return value.area.name;
+                },
+            },
+        },
+        {
+            name: "amount",
+            label: "Monto ($)",
+            options: {
+                filter: false,
+            },
+        },
+    ];
 
     useEffect(() => {
         setTimeout(() => {
@@ -78,8 +94,11 @@ export default function Pagos() {
     const getData = async () => {
         await axios.get("dashboard/payments").then((response) => {
             const data = response.data;
+            console.log(data)
+            setPayments(data.payments)
         });
     };
+    console.log(payments)
     const [dataForDelete, setDataForDelete] = useState({
         indx: "",
         setSelectedRows: () => {},
@@ -94,6 +113,32 @@ export default function Pagos() {
         // copySchedule[i] = { ...copySchedule[i], [shift]: e.target.value };
         // setnewPayment((prev) => ({ ...prev, schedule: copySchedule }));
     }
+
+    const deleteData = async () => {
+        try {
+            const id = payments[dataForDelete.indx].id;
+            // const code = usuarios[dataForDelete.indx].code;
+            await axios.delete(`dashboard/payments/${id}`);
+
+            setAlert({
+                open: true,
+                status: "Exito",
+                message: `El pago fué eliminado`,
+            });
+            setPayments((prev) =>
+                prev.filter((eachU) => eachU.id != id)
+            );
+
+            dataForDelete.setSelectedRows([]);
+        } catch (error) {
+            setAlert({
+                open: true,
+                status: "Error",
+                message: `${error.response.data.Message}`,
+            });
+        }
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         console.log(newPayment);
@@ -135,7 +180,7 @@ export default function Pagos() {
                     )
                 );
             }
-            setnewPayment({});
+            setNewPayment({});
             setOpen(false);
         } catch (error) {
             // console.log(error);
@@ -147,6 +192,72 @@ export default function Pagos() {
             setSubmitStatus(() => (newPayment.id > 0 ? "Editar" : "Registrar"));
         }
     };
+
+    const options = {
+        filterType: "checkbox",
+        responsive: "vertical",
+        selectableRowsOnClick: true,
+        // selectableRowsOnClick: true,
+        selectableRowsHideCheckboxes: true,
+        selectableRows: "single",
+        // rowsSelected:rowSelected,
+        fixedHeader: true,
+        customToolbarSelect: (selectedRows, displayData, setSelectedRows) => (
+            <div>
+                <IconButton
+                    title="Editar"
+                    onClick={() => {
+                        const indx = selectedRows.data[0].dataIndex;
+                        const asis = payments[indx];
+                        const asis_id = asis.id;
+                        const code = asis.client.code;
+                        const schedule_id = asis.schedule_id;
+                        const area_id = asis.schedule.area_id;
+                        setNewPayment({
+                            code,
+                            area_id,
+                            schedule_id,
+                            id: asis_id,
+                        });
+                        setStatusSubmit("Editar");
+                    }}
+                >
+                    <EditIcon />
+                </IconButton>
+
+                <IconButton
+                    title="Eliminar"
+                    onClick={() => {
+                        setModalConfirm(true);
+                        setDataForDelete({
+                            indx: selectedRows.data[0].dataIndex,
+                            setSelectedRows: setSelectedRows,
+                        });
+                    }}
+                >
+                    <DeleteIcon />
+                </IconButton>
+            </div>
+        ),
+    };
+
+
+    const [tabla, setTabla] = useState();
+    useEffect(() => {
+        setTabla(
+            <MUIDataTable
+                isRowSelectable={true}
+                title={`Pagos de hoy ${diaA}/${mesA}/${añoA}`}
+                data={payments}
+                columns={columns}
+                options={options}
+            />
+        );
+    }, [payments]);
+
+
+
+
     return (
         <>
             <TransparentButton
@@ -173,6 +284,7 @@ export default function Pagos() {
                             label={"Código del usuario"}
                             value={newPayment?.code}
                             name={"birth_date"}
+                            width={150}
                             // onBlur={getLastAttended}
                             onChange={(e) =>
                                 setNewPayment((prev) => ({
@@ -343,6 +455,23 @@ export default function Pagos() {
                     </form>
                 </ModalDialog>
             </Modal>
+
+            {tabla}
+
+            <Alert
+                open={alert.open}
+                status={alert.status}
+                message={alert.message}
+            />
+
+            <ConfirmModal
+                closeModal={() => {
+                    setModalConfirm(false);
+                    // setRowSelected([])
+                }}
+                isOpen={modalConfirm}
+                aceptFunction={() => deleteData()}
+            />
         </>
     );
 }
