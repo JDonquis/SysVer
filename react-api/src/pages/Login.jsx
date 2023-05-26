@@ -1,5 +1,5 @@
 
-import React, { useEffect, useLayoutEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState, useRef } from "react";
 import "../css/pages/login.css";
 import circleLogo from "../assets/img/circleLogo.png";
 import {Link, useNavigate} from 'react-router-dom'
@@ -10,6 +10,9 @@ export default function login() {
     const [ci, setCI] = useState('')
     const [password, setPassword] = useState('')
     const navigate = useNavigate()
+    const ciInput = useRef('ciInput')
+
+    
 
     const handleLogin = async (e) => {
         e.preventDefault()
@@ -53,32 +56,49 @@ export default function login() {
             }
         })
 
-
+        setTimeout(() => {
+            ciInput.current.focus()
+        }, 900);
         
     }, [])
 
     const [frontSquaredX, setFrontSquaredX] = useState({transform: 'translateX(0)'})
     const [backSquaredX, setBackSquaredX] = useState({transform: 'translateX(0)'})
+    const [viñetaPosition, setViñetaPosition] = useState()
     const [deep, setDeep] = useState({transform : 'translateX(0)'})
     const windowWidth = window.innerWidth
+    const halfX = windowWidth/2
+    const halfY = window.innerHeight/2 + 90
     useLayoutEffect(() => {
         document.onmousemove = (e) => {
             const cursorX = e.screenX
             const cursorY = e.screenY
-            setFrontSquaredX({transform: `translate(-${cursorX/ 40}px, -${cursorY/40}px)`})
-            setBackSquaredX({transform: `translate(-${cursorX/ 20}px, -${cursorY/20}px)`})
-            setDeep({transform: `translate(-${cursorX/ 10}px, -${cursorY/ 10}px)`})
+            setViñetaPosition({top: `${cursorY - 1100}px`, left: `${cursorX - 1500}px`})
+            // const valueX = cursorX <= half ? -
+            // const valueY
+            setFrontSquaredX({boxShadow: `${(halfX - cursorX) / 25}px ${(halfY - cursorY) / 15}px 29px 4px rgba(0, 0, 0, 0.15)`, transform: `translate(-${cursorX/ 40}px, -${cursorY/40}px) perspective(1000px) rotateY(${(cursorX - halfX)/ 37}deg) rotateX(${(halfY - cursorY)/ 18}deg)`})
+            setBackSquaredX({boxShadow:`${(halfX - cursorX) / 35}px ${(halfY - cursorY) / 25}px 24px 4px rgba(0, 0, 0, 0.2)` , transform: `translate(-${cursorX/ 20}px, -${cursorY/20}px) perspective(1000px) rotateY(${(cursorX - halfX)/ 40}deg) rotateX(${(halfY - cursorY)/ 20}deg)`})
+            setDeep({boxShadow: `${(halfX - cursorX) / 40}px ${(halfY - cursorY) / 30}px 20px 1px rgba(0, 0, 0, 0.3)`, transform: `translate(-${cursorX/ 10}px, -${cursorY/ 10}px) perspective(1000px) rotateY(${(cursorX - halfX)/ 40}deg) rotateX(${(halfY - cursorY)/ 20}deg)`})
         }
     }, [])
     // useEffect(() => {
     //   if ()
+    useEffect(() => {
+        setViñetaPosition({top: `${halfY - 900}px`, left: `${windowWidth - 1500}px`})
+        // const valueX = windowWidth <= half ? -
+        // const valueY
+        setFrontSquaredX({boxShadow: `${(halfX - windowWidth) / 25}px ${(halfY - halfY) / 15}px 24px 4px rgba(0, 0, 0, 0.15)`, transform: `translate(-${windowWidth/ 40}px, -${halfY/40}px) perspective(1000px) rotateY(${(windowWidth - halfX)/ 37}deg) rotateX(${(halfY - halfY)/ 18}deg)`})
+        setBackSquaredX({boxShadow:`${(halfX - windowWidth) / 35}px ${(halfY - halfY) / 25}px 24px 4px rgba(0, 0, 0, 0.2)` , transform: `translate(-${windowWidth/ 20}px, -${halfY/20}px) perspective(1000px) rotateY(${(windowWidth - halfX)/ 40}deg) rotateX(${(halfY - halfY)/ 20}deg)`})
+        setDeep({boxShadow: `${(halfX - windowWidth) / 40}px ${(halfY - halfY) / 30}px 20px 1px rgba(0, 0, 0, 0.3)`, transform: `translate(-${windowWidth/ 10}px, -${halfY/ 10}px) perspective(1000px) rotateY(${(windowWidth - halfX)/ 40}deg) rotateX(${(halfY - halfY)/ 20}deg)`})
     
+    }, [])
+   
     
     // }, [ci || password])
     
     return (
         <div className="container_login bg-blue block md:grid">
-            
+            <div className="viñeta" style={viñetaPosition}></div>
             {/* squares for large screen */}
             <div className="container_squares hidden md:grid relative left-14">
               <div className="sqr18 deep" style={deep} ></div>
@@ -144,11 +164,12 @@ export default function login() {
                             name="DNI"
                             value={ci}
                             onChange={(e) => setCI(e.target.value)}
+                            ref={ciInput}
                         />
-                        <label htmlFor="ins_DNI">CI: </label>
+                        <label htmlFor="ins_DNI">C.I </label>
                     </span>
                     <span>
-                        <input
+                        <input 
                             type="password"
                             id="psw"
                             name="phone_s"
@@ -156,11 +177,11 @@ export default function login() {
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                         />
-                        <label htmlFor="psw">Contraseña: </label>
+                        <label htmlFor="psw">Contraseña </label>
                         
                     </span>
                 </div>
-                    <input type="submit" className={`btn_submit mt-3  pt-3 pb-1 disabled position-md-absolute ${ci.trim().length > 6 && password.trim().length > 1 ? 'active' : 'disabled'}` } value="INICIAR &#x25B8;" />
+                    <input type="submit" className={`rounded-xl btn_submit mt-3  pt-3 pb-1 disabled position-md-absolute ${ci.trim().length > 6 && password.trim().length > 1 ? 'active' : 'disabled'}` } value="INICIAR &#x25B8;" />
                 </form>
             </div>
         </div>

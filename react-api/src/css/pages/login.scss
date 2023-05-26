@@ -3,7 +3,7 @@
 
 .container_login {
     overflow: hidden;
-    position: relative; 
+    position: relative;
     display: grid;
     grid-template-columns: 65% 35%;
     height: 100vh;
@@ -14,17 +14,50 @@
         align-items: center;
         gap: 25px;
         justify-content: center;
-        margin-top: 115px;
+        margin-top: 115px; 
+        & > * {
+            position: relative;
+            left: 0;
+            animation: normal 1s opacityToRight  backwards ease;
+        }
+    }
+    .background_icon {
+        animation-delay: 1s;  
+        z-index: 2; 
+    }
+    h1 {
+        animation-delay: 1.5s !important;
+        letter-spacing: 1px;
     }
 }
 .icon {
     max-width: 70px;
 }
+input {
+    animation: normal 1.5s widthCero  backwards ease;
+    animation-delay: .2s;
+    overflow: clip;
+}
+@keyframes opacityToRight { 
+    from {
+        opacity: 0;
+        left: -60px;
+    }
+}
+@keyframes widthCero {
+    0% {
+        width: 0px;
+        opacity: 0;
+    }
+    30% {
+        opacity: 1;
+    }
+}
 .card_form {
-    position: relative; 
+    position: relative;
     max-width: 300px;
     @media (min-width: 720px) {
-        padding-right: 56px !important;  
+        padding-right: 56px !important;
     }
 }
 .btn_submit {
@@ -33,22 +66,23 @@
     font-size: 26px;
     padding-right: 10px;
     width: 397px;
-    transition: color cubic-bezier(0.215, 0.61, 0.355, 1);
+    animation-delay: 1s;
+
     // height: 77px;
     right: 0;
-    top: calc(50% - 77px / 2 + 126.5px);
+    top: calc(50% - 65px / 2 + 126.5px);
     &.disabled {
         color: rgba(255, 255, 255, 0.664);
 
         background: linear-gradient(
-            270deg, 
+            270deg,
             #57adc0,
-            rgba(87, 173, 192, 0.208333),
+            rgba(87, 173, 192, 0.208333), 
             rgba(87, 173, 192, 0)
         );
-    }
+    } 
     &.active {
-        color: #331628;
+        color: rgba(245, 245, 245, 0.788);
 
         background: linear-gradient(
             270deg,
@@ -67,28 +101,29 @@
 .body_form {
     margin-top: 40px;
 }
-.container_squares > div {
-    position: absolute;
-
-    box-shadow: 1px 1px 28px 11px rgba(0, 0, 0, 0.1);
-    border-radius: 3px;
-    transition: all cubic-bezier(0.2, 0.49, 0.32, 0.99) 0.45s;
-    animation: normal 1s squaresAnimation backwards cubic-bezier(0.2, 0.49, 0.32, 0.99);
+.container_squares {
+    & > div {
+        position: absolute;
+        box-shadow: 1px 1px 28px 11px rgba(0, 0, 0, 0.2);
+        border-radius: 3px;
+        transition: all cubic-bezier(0.2, 0.49, 0.32, 0.99) 0.45s;
+        animation: normal 1.2s squaresAnimation backwards
+            cubic-bezier(0.2, 0.49, 0.32, 0.99);
+    }
 }
+ 
 @for $i from 1 through 27 {
     .container_squares > div {
-      
-      // :nth-child(1-9) 
-      &:nth-child(#{$i}) {
-        
-        // Delay the animation. Delay increases as items loop.
-        animation-delay: $i * (1s / 18);
-      }
+        // :nth-child(1-9)
+        &:nth-child(#{$i}) { 
+            // Delay the animation. Delay increases as items loop.
+            animation-delay: $i * (1s / 18);
+        }
     }
-  }
+}
 @keyframes squaresAnimation {
     from {
-        top: -260px;
+        top: -360px;
     }
 }
 .sqrBack {
@@ -115,7 +150,7 @@
     height: 133px;
     left: 340px;
     top: 0px;
-
+    transform: perspective(1000px) rotateX(40deg);
     background: #d9831a;
 }
 .sqr3 {
@@ -252,7 +287,7 @@
     z-index: 1;
     opacity: 0.6;
     // filter: brightness(.8);´
-    box-shadow: none !important;
+    // box-shadow: none !important;
 }
 .front {
     z-index: 3;
@@ -425,4 +460,18 @@
     60% {
         transform: translate3d(4px, 0, 0);
     }
+}
+.viñeta {
+    position: absolute;
+    z-index: 1000;
+    width: 3000px;
+    height: 2000px;
+    top: 0;
+    left: 0;
+    // background: radial-gradient(ellipse at center, rgba(0,0,0,0) 35%, rgba(0,0,0,0.7));
+    // background: rgb(0,0,0);
+    // background: rgb(0,0,0);
+    background: rgb(0,0,0);
+background: radial-gradient(circle, rgba(0,0,0,0) 13%, rgba(0,0,0,0.8295693277310925) 95%);
+    pointer-events: none;
 }

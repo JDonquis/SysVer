@@ -502,19 +502,7 @@ export default function Usuarios() {
                                 name={"email"}
                                 onChange={handleChange}
                             /> 
-                            {/* <Input  
-                                key={4}
-                                label={"Edad"} 
-                                // InputProps={{
-                                //     readOnly: true,
-                                // }}
-                                readOnly={true}
-                                value={newUserData.age}
-                                shrink={newUserData.age > 0 ? true : false}
-                                //     shrink: newUserData.age > 0 ? true : false,
-                                // }}
-                                // variant="outlined"
-                            /> */}
+                  
                         </div>
 
                         <div style={divFlex}>
