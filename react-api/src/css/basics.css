@@ -152,4 +152,10 @@ thead, .tss-gm6zfk-MUIDataTableHeadCell-fixedHeader {
 }
 .glass * {
   color: white !important;
+}
+
+.d-flex2 {
+  display: flex;
+  justify-content: space-between;
+  gap: 30px;
 }/*# sourceMappingURL=basics.css.map */

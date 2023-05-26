@@ -36,95 +36,17 @@ const columns = [
         },
     },
     {
-        name: "ci",
-        label: "Ci",
+        name: "area",
+        label: "Area",
         options: {
             filter: false,
         },
     },
     {
-        name: "birth_date",
-        label: "F. de nacimiento",
+        name: "area",
+        label: "Monto",
         options: {
             filter: false,
-        },
-    },
-    {
-        name: "age",
-        label: "Edad",
-        options: {
-            filter: false,
-        },
-    },
-    {
-        name: "sex",
-        label: "Sexo",
-    },
-    {
-        name: "weight",
-        label: "Peso",
-        options: {
-            filter: false,
-        },
-    },
-    {
-        name: "height",
-        label: "altura",
-        options: {
-            filter: false,
-        },
-    },
-    {
-        name: "blood_name",
-        label: "T. de sangre",
-    },
-    {
-        name: "address",
-        label: "Dirección",
-        options: {
-            filter: false,
-        },
-    },
-    {
-        name: "phone_number",
-        label: "Nro de. teléfono",
-        options: {
-            filter: false,
-        },
-    },
-    {
-        name: "email",
-        label: "Correo",
-        options: {
-            filter: false,
-        },
-    },
-    {
-        name: "collaboration",
-        label: "Colaboración",
-        options: {
-            filter: true,
-            filterOptions: {
-                names: ["Nada"],
-            },
-            customBodyRender: (value) => {
-                return value.trim().length > 0 ? (
-                    value
-                ) : (
-                    <div style={{ color: "#afafaf" }}>Nada</div>
-                );
-                // return <div className="text-dark"> {value.trim() !== 'a' ? value : 'Nada'}</div>;
-            },
-        },
-    },
-    {
-        name: "array_areas",
-        label: "Areas",
-        options: {
-            customBodyRender: (value, tableMeta) => {
-                // console.log({value, tableMeta})
-                return <div>{value.map((area) => `${area} `)}</div>;
-            },
         },
     },
 ];
@@ -137,10 +59,16 @@ export default function Pagos() {
     });
 
     const [modalConfirm, setModalConfirm] = useState(false);
+    const [all_areas, setAll_areas] = useState([]);
 
     const [open, setOpen] = useState(false);
     const [submitStatus, setSubmitStatus] = useState("Registrar");
-    const [newPayment, setNewPayment] = useState([]);
+    const [newPayment, setNewPayment] = useState({
+        code: "",
+        amount: "",
+        area_id: "",
+        payment_method_id: "",
+    });
 
     useEffect(() => {
         setTimeout(() => {
@@ -221,7 +149,10 @@ export default function Pagos() {
     };
     return (
         <>
-            <TransparentButton text="Registrar pago" />
+            <TransparentButton
+                text="Registrar pago"
+                clickButtonF={() => setOpen(true)}
+            />
             <Modal
                 open={open}
                 onClose={() => setOpen(false)}
@@ -234,36 +165,102 @@ export default function Pagos() {
                     style={{ overflowY: "scroll", scrollbarWidth: "none" }}
                 >
                     <form onSubmit={handleSubmit} className="w-full">
+                        
+                        <div className="d-flex2">
                         <Input
-                            shrink={true}
-                            type={"date"}
-                            label={"Fecha de nacimiento"}
-                            value={newPayment.birth_date}
+                            // shrink={true}
+                            // type={"Código"}
+                            label={"Código del usuario"}
+                            value={newPayment?.code}
                             name={"birth_date"}
-                            onChange={handleChange}
+                            // onBlur={getLastAttended}
+                            onChange={(e) =>
+                                setNewPayment((prev) => ({
+                                    ...prev,
+                                    code: e.target.value,
+                                }))
+                            }
                         />
+                         <Input
+                            id="outlined-select-currency"
+                            select
+                            label="Areas"
+                            value={newPayment?.area_id}
+                            defaultValue=""
+                            name="turno"
+                            onChange={(e) => {
+                                setNewPayment((prev) => ({
+                                    ...prev,
+                                    area_id: e.target.value,
+                                }));
+                            }}
+                        >
+                            {all_areas.map((option) => (
+                                <MenuItem key={option.id} value={option.id}>
+                                    {option.name}
+                                </MenuItem>
+                            ))}
+                        </Input>
+                        </div>
+                       
+                         <Input
+                            
+                            label={"Monto en Dolares"}
+                            value={newPayment?.code}
+                            name={"birth_date"}
+                            width={150}
+                            // onBlur={getLastAttended}
+                            onChange={(e) =>
+                                setNewPayment((prev) => ({
+                                    ...prev,
+                                    code: e.target.value,
+                                }))
+                            }
+                        />
+                        <Input
+                            // shrink={true}
+                            // type={"Código"}
+                            label={"Monto en Bolívares"}
+                            value={newPayment?.code}
+                            name={"birth_date"}
+                            width={150}
+                            // onBlur={getLastAttended}
+                            onChange={(e) =>
+                                setNewPayment((prev) => ({
+                                    ...prev,
+                                    code: e.target.value,
+                                }))
+                            }
+                        />
+
+                        
                         <div
                             onChange={(e) =>
                                 setNewPayment((prev) => ({
                                     ...prev,
-                                    type_payment_id: e.target.value,
+                                    payment_method_id: e.target.value,
                                 }))
                             }
                         >
-                            <label htmlFor="gratis">
+                            <p>Método de pago: </p>
+                            <label htmlFor="Pago_móvil" 
+                            style={{
+                                display: "block",
+                                marginBottom: "10px",
+                            }}>
                                 <input
                                     type="radio"
-                                    name="type_area_id"
-                                    id="gratis"
+                                    name="payment_method_id"
+                                    id="Pago_móvil"
                                     value={1}
-                                    checked={newPayment.type_area_id == 1}
+                                    checked={newPayment.payment_method_id == 1}
                                 />
                                 <span style={{ marginLeft: "10px" }}>
-                                    Gratis
+                                    Pago móvil
                                 </span>
                             </label>
                             <label
-                                htmlFor="pago"
+                                htmlFor="transferencia"
                                 style={{
                                     display: "block",
                                     marginBottom: "10px",
@@ -271,17 +268,62 @@ export default function Pagos() {
                             >
                                 <input
                                     type="radio"
-                                    name="type_area_id"
-                                    id="pago"
-                                    checked={newPayment.type_area_id == 2}
+                                    name="payment_method_id"
+                                    id="transferencia"
+                                    checked={newPayment.payment_method_id == 2}
                                     value={2}
                                 />
                                 <span
                                     className="text-purple"
                                     style={{ marginLeft: "10px" }}
                                 >
-                                    Pago
+                                    Transferencia
                                 </span>
+                                
+                            </label>
+                            <label
+                                htmlFor="efecDolar"
+                                style={{
+                                    display: "block",
+                                    marginBottom: "10px",
+                                }}
+                            >
+                                <input
+                                    type="radio"
+                                    name="payment_method_id"
+                                    id="efecDolar"
+                                    checked={newPayment.payment_method_id == 3}
+                                    value={3}
+                                />
+                                <span
+                                    className="text-purple"
+                                    style={{ marginLeft: "10px" }}
+                                >
+                                    efectivo en Dolar $
+                                </span>
+                                
+                            </label>
+                            <label
+                                htmlFor="efecBoli"
+                                style={{
+                                    display: "block",
+                                    marginBottom: "10px",
+                                }}
+                            >
+                                <input
+                                    type="radio"
+                                    name="payment_method_id"
+                                    id="efecBoli"
+                                    checked={newPayment.payment_method_id == 4}
+                                    value={4}
+                                />
+                                <span
+                                    className="text-purple"
+                                    style={{ marginLeft: "10px" }}
+                                >
+                                    efectivo en Bolivares (Bs)
+                                </span>
+                                
                             </label>
                         </div>
                         <button
