@@ -18,7 +18,6 @@ mesA = fecha.getMonth() + 1,
 diaA = fecha.getDate();
 
 
-
 export default function Pagos() {
     const [alert, setAlert] = useState({
         open: false,
@@ -37,6 +36,7 @@ export default function Pagos() {
         area_id: "",
         payment_method_id: "",
     });
+    const [methods, setMethods] = useState([])
     const columns = [
         {
             name: "client_area",
@@ -92,13 +92,33 @@ export default function Pagos() {
         }, 3000);
     }, [alert.open === true]);
     const getData = async () => {
+        // axios.defaults.baseURL= 'http://localhost:8000/api  '
+
         await axios.get("dashboard/payments").then((response) => {
             const data = response.data;
             console.log(data)
             setPayments(data.payments)
+            setMethods(data.methods)
         });
     };
-    console.log(payments)
+
+    const [tasaDolar, setTasaDolar] = useState()
+    const urlExchange = `dollar`
+    const getEquivalent = async () => {
+        const apiExchange = axios.create({
+            baseURL: 'https://venecodollar.vercel.app/api/v1/dollar'
+        })
+        try {
+
+            await apiExchange.get('').then((response) => {
+                console.log(response)
+            });
+        }
+        catch(error){
+            console.log(error)
+        }
+    };
+    // console.log(payments)
     const [dataForDelete, setDataForDelete] = useState({
         indx: "",
         setSelectedRows: () => {},
@@ -106,6 +126,7 @@ export default function Pagos() {
     useEffect(() => {
         getData();
         document.title = "Pagos";
+        getEquivalent()
     }, []);
 
     function handleChange(e, i, shift) {
@@ -295,7 +316,7 @@ export default function Pagos() {
                          <Input
                             id="outlined-select-currency"
                             select
-                            label="Areas"
+                            label="Area"
                             value={newPayment?.area_id}
                             defaultValue=""
                             name="turno"
@@ -320,11 +341,11 @@ export default function Pagos() {
                             value={newPayment?.code}
                             name={"birth_date"}
                             width={350}
-                            // onBlur={getLastAttended}
+                            onBlur={getEquivalent}
                             onChange={(e) =>
                                 setNewPayment((prev) => ({
                                     ...prev,
-                                    code: e.target.value,
+                                    amount: e.target.value,
                                 }))
                             }
                         />
@@ -341,7 +362,7 @@ export default function Pagos() {
                             onChange={(e) =>
                                 setNewPayment((prev) => ({
                                     ...prev,
-                                    code: e.target.value,
+                                    amountBs: e.target.value,
                                 }))
                             }
                         />
@@ -356,88 +377,25 @@ export default function Pagos() {
                             }
                         >
                             <p style={{ marginTop: "20px", opacity: ".7" }}>Método de pago: </p>
-                            <label htmlFor="Pago_móvil" 
-                            style={{
-                                display: "block",
-                                marginBottom: "10px",
-                            }}>
-                                <input
-                                    type="radio"
-                                    name="payment_method_id"
-                                    id="Pago_móvil"
-                                    value={1}
-                                    checked={newPayment.payment_method_id == 1}
-                                />
-                                <span style={{ marginLeft: "10px" }}>
-                                    Pago móvil
-                                </span>
-                            </label>
-                            <label
-                                htmlFor="transferencia"
+                            {methods.map((objMethods, i) => (
+                                <label htmlFor={`Pago${i}`} 
                                 style={{
                                     display: "block",
                                     marginBottom: "10px",
-                                }}
-                            >
-                                <input
-                                    type="radio"
-                                    name="payment_method_id"
-                                    id="transferencia"
-                                    checked={newPayment.payment_method_id == 2}
-                                    value={2}
-                                />
-                                <span
-                                    className="text-purple"
-                                    style={{ marginLeft: "10px" }}
-                                >
-                                    Transferencia
-                                </span>
-                                
-                            </label>
-                            <label
-                                htmlFor="efecDolar"
-                                style={{
-                                    display: "block",
-                                    marginBottom: "10px",
-                                }}
-                            >
-                                <input
-                                    type="radio"
-                                    name="payment_method_id"
-                                    id="efecDolar"
-                                    checked={newPayment.payment_method_id == 3}
-                                    value={3}
-                                />
-                                <span
-                                    className="text-purple"
-                                    style={{ marginLeft: "10px" }}
-                                >
-                                    efectivo en Dolar $
-                                </span>
-                                
-                            </label>
-                            <label
-                                htmlFor="efecBoli"
-                                style={{
-                                    display: "block",
-                                    marginBottom: "10px",
-                                }}
-                            >
-                                <input
-                                    type="radio"
-                                    name="payment_method_id"
-                                    id="efecBoli"
-                                    checked={newPayment.payment_method_id == 4}
-                                    value={4}
-                                />
-                                <span
-                                    className="text-purple"
-                                    style={{ marginLeft: "10px" }}
-                                >
-                                    efectivo en Bolivares (Bs)
-                                </span>
-                                
-                            </label>
+                                }}>
+                                    <input
+                                        type="radio"
+                                        name="payment_method_id"
+                                        id={`Pago${i}`}
+                                        value={objMethods.id}
+                                        checked={newPayment.payment_method_id == objMethods.id}
+                                    />
+                                    <span style={{ marginLeft: "10px" }}>
+                                       {objMethods.name}
+                                    </span>
+                                </label>
+                            ))}
+                           
                         </div>
                         <button
                             type="submit"
