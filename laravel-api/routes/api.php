@@ -6,6 +6,7 @@ use App\Http\Controllers\api\dashboard\AssistanceController;
 use App\Http\Controllers\api\dashboard\ClientController;
 use App\Http\Controllers\api\dashboard\PaymentsController;
 use App\Http\Controllers\api\dashboard\UsersController;
+use App\Http\Controllers\api\external\DollarController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -54,4 +55,7 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth:sanctum']], functi
     // Payments
     Route::get('payments',[PaymentsController::class,'index']);
     Route::delete('payments/{id}',[PaymentsController::class,'destroy']);
+
+    // External APIs  
+    Route::get('dollar',[DollarController::class,'index']);
 });
