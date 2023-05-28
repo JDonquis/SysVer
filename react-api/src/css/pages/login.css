@@ -158,7 +158,7 @@ thead, .tss-gm6zfk-MUIDataTableHeadCell-fixedHeader {
 .d-flex2 {
   display: grid;
   justify-content: space-between;
-  gap: 30px;
+  gap: 0px 30px;
   grid-template-columns: repeat(2, 1fr);
 }
 
@@ -526,6 +526,7 @@ input[type=file]):focus,
   }
 }
 .sqrBack {
+  filter: blur(1px);
   z-index: 2;
 }
 .sqrBack::after {
@@ -683,6 +684,7 @@ input[type=file]):focus,
 .deep {
   z-index: 1;
   opacity: 0.6;
+  filter: blur(2px);
 }
 
 .front {

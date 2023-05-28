@@ -127,7 +127,7 @@
     }
 }
 .sqrBack {
-    // filter: saturate(90%);
+    filter: blur(1px);
     // opacity: 0.9;
     z-index: 2;
     &::after {
@@ -286,8 +286,9 @@
 .deep {
     z-index: 1;
     opacity: 0.6;
+    filter: blur(2px)
     // filter: brightness(.8);´
-    // box-shadow: none !important;
+    // box-shadow: none !important; 
 }
 .front {
     z-index: 3;

@@ -1,0 +1,12 @@
+label.btn_radio {
+    background: #f5f5f5;
+    padding: 3px;
+    padding-top: 5px;
+    border-radius: 4px;
+    &:hover, &.active {
+        cursor: pointer;
+        background: #069DBF;
+        color: whitesmoke;
+    }
+
+}

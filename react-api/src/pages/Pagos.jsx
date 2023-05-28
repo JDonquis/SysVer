@@ -11,12 +11,12 @@ import ConfirmModal from "../components/ConfimModal";
 import Alert from "../components/Alert";
 import Input from "../components/Input";
 import TransparentButton from "../components/TransparentButton";
+import '../css/pages/pagos.css'
 
 let fecha = new Date(),
-añoA = fecha.getFullYear(),
-mesA = fecha.getMonth() + 1,
-diaA = fecha.getDate();
-
+    añoA = fecha.getFullYear(),
+    mesA = fecha.getMonth() + 1,
+    diaA = fecha.getDate();
 
 export default function Pagos() {
     const [alert, setAlert] = useState({
@@ -27,16 +27,17 @@ export default function Pagos() {
 
     const [modalConfirm, setModalConfirm] = useState(false);
     const [all_areas, setAll_areas] = useState([]);
-    const [payments, setPayments] = useState()
+    const [payments, setPayments] = useState();
     const [open, setOpen] = useState(false);
     const [submitStatus, setSubmitStatus] = useState("Registrar");
     const [newPayment, setNewPayment] = useState({
         code: "",
         amount: "",
+        amountBs: "",
         area_id: "",
         payment_method_id: "",
     });
-    const [methods, setMethods] = useState([])
+    const [methods, setMethods] = useState([]);
     const columns = [
         {
             name: "client_area",
@@ -86,6 +87,10 @@ export default function Pagos() {
         },
     ];
 
+    function convert(from, to) {
+        return;
+    }
+
     useEffect(() => {
         setTimeout(() => {
             setAlert({ open: false, message: "", status: "" });
@@ -96,26 +101,22 @@ export default function Pagos() {
 
         await axios.get("dashboard/payments").then((response) => {
             const data = response.data;
-            console.log(data)
-            setPayments(data.payments)
-            setMethods(data.methods)
+            console.log(data);
+            setPayments(data.payments);
+            setMethods(data.methods);
+            setAll_areas(data.areas)
         });
     };
-
-    const [tasaDolar, setTasaDolar] = useState()
-    const urlExchange = `dollar`
+console.log(all_areas)
+    const [tasaDolar, setTasaDolar] = useState();
+    const urlExchange = `dollar`;
     const getEquivalent = async () => {
-        const apiExchange = axios.create({
-            baseURL: 'https://venecodollar.vercel.app/api/v1/dollar'
-        })
         try {
-
-            await apiExchange.get('').then((response) => {
-                console.log(response)
+            await axios.get("dashboard/dollar").then((response) => {
+                setTasaDolar(response.data.Data.entities[0].info.dollar);
             });
-        }
-        catch(error){
-            console.log(error)
+        } catch (error) {
+            console.log(error);
         }
     };
     // console.log(payments)
@@ -126,7 +127,7 @@ export default function Pagos() {
     useEffect(() => {
         getData();
         document.title = "Pagos";
-        getEquivalent()
+        getEquivalent();
     }, []);
 
     function handleChange(e, i, shift) {
@@ -146,9 +147,7 @@ export default function Pagos() {
                 status: "Exito",
                 message: `El pago fué eliminado`,
             });
-            setPayments((prev) =>
-                prev.filter((eachU) => eachU.id != id)
-            );
+            setPayments((prev) => prev.filter((eachU) => eachU.id != id));
 
             dataForDelete.setSelectedRows([]);
         } catch (error) {
@@ -169,13 +168,12 @@ export default function Pagos() {
                 setSubmitStatus("cargando...");
 
                 await axios
-                    .post(`/dashboard/clients/`, newPayment)
+                    .post(`/dashboard/payments/`, newPayment)
                     .then((response) => {
                         console.log({ response });
-                        const client = response.data.client;
-                        client.array_areas = client.areas.map((a) => a.name);
-                        client.blood_name = client.blood_types.name;
-                        setUsuarios((prev) => [...prev, client]);
+                        const payment = response.data.payment;
+
+                        setPayments((prev) => [...prev, payment]);
                     });
                 setAlert({
                     open: true,
@@ -187,7 +185,7 @@ export default function Pagos() {
             if (submitStatus === "Editar") {
                 setSubmitStatus("cargando...");
                 await axios
-                    .put(`/dashboard/clients/${newPayment.id}`, newPayment)
+                    .put(`/dashboard/payments/${newPayment.id}`, newPayment)
                     .then((response) => {
                         setAlert({
                             open: true,
@@ -195,7 +193,7 @@ export default function Pagos() {
                             message: `${newPayment.name} ha sido editado`,
                         });
                     });
-                setUsuarios((prev) =>
+                setPayments((prev) =>
                     prev.map((user) =>
                         user.id === newPayment.id ? newPayment : user
                     )
@@ -262,7 +260,6 @@ export default function Pagos() {
         ),
     };
 
-
     const [tabla, setTabla] = useState();
     useEffect(() => {
         setTabla(
@@ -276,8 +273,7 @@ export default function Pagos() {
         );
     }, [payments]);
 
-
-
+    console.log({ newPayment });
 
     return (
         <>
@@ -297,55 +293,57 @@ export default function Pagos() {
                     style={{ overflowY: "scroll", scrollbarWidth: "none" }}
                 >
                     <form onSubmit={handleSubmit} className="w-full">
-                        
                         <div className="d-flex2">
-                        <Input
-                            // shrink={true}
-                            // type={"Código"}
-                            label={"Código del usuario"}
-                            value={newPayment?.code}
-                            name={"birth_date"}
-                            // onBlur={getLastAttended}
-                            onChange={(e) =>
-                                setNewPayment((prev) => ({
-                                    ...prev,
-                                    code: e.target.value,
-                                }))
-                            }
-                        />
-                         <Input
-                            id="outlined-select-currency"
-                            select
-                            label="Area"
-                            value={newPayment?.area_id}
-                            defaultValue=""
-                            name="turno"
-                            onChange={(e) => {
-                                setNewPayment((prev) => ({
-                                    ...prev,
-                                    area_id: e.target.value,
-                                }));
-                            }}
-                        >
-                            {all_areas.map((option) => (
-                                <MenuItem key={option.id} value={option.id}>
-                                    {option.name}
-                                </MenuItem>
-                            ))}
-                        </Input>
+                            <Input
+                                // shrink={true}
+                                // type={"Código"}
+                                label={"Código del usuario"}
+                                value={newPayment?.code}
+                                name={"birth_date"}
+                                // onBlur={getLastAttended}
+                                onChange={(e) =>
+                                    setNewPayment((prev) => ({
+                                        ...prev,
+                                        code: e.target.value,
+                                    }))
+                                }
+                            />
+                            <TextField
+                                id="outlined-select-currency"
+                                select
+                                label="Area"
+                                value={newPayment?.area_id}
+                                defaultValue=""
+                                name="turno"
+
+                                onChange={(e) => {
+                                    setNewPayment((prev) => ({
+                                        ...prev,
+                                        area_id: e.target.value,
+                                    }));
+                                }}
+                            >
+                                {all_areas.map((option) => (
+                                    <MenuItem key={option.id} value={option.id}>
+                                        {option.name}
+                                    </MenuItem>
+                                ))}
+                            </TextField>
                         </div>
-                       <br />
-                         <Input
-                            
-                            label={"Monto en Dolares"}
-                            value={newPayment?.code}
+                        <br />
+                        <Input
+                            label={"Monto en Dolares ($)"}
+                            value={newPayment?.amount}
                             name={"birth_date"}
                             width={350}
-                            onBlur={getEquivalent}
+                            // onBlur={getEquivalent}
                             onChange={(e) =>
                                 setNewPayment((prev) => ({
                                     ...prev,
                                     amount: e.target.value,
+                                    amountBs: (
+                                        e.target.value * tasaDolar
+                                    ).toFixed(2),
                                 }))
                             }
                         />
@@ -354,20 +352,23 @@ export default function Pagos() {
                         <Input
                             // shrink={true}
                             // type={"Código"}
-                            label={"Monto en Bolívares"}
-                            value={newPayment?.code}
+                            label={"Monto en Bolívares (Bs)"}
+                            value={newPayment?.amountBs}
                             name={"birth_date"}
                             width={350}
                             // onBlur={getLastAttended}
+                            // shrink={newPayment.amount.length > 0 || newPayment.amountBs.length > 0}
                             onChange={(e) =>
                                 setNewPayment((prev) => ({
                                     ...prev,
                                     amountBs: e.target.value,
+                                    amount: (
+                                        e.target.value / tasaDolar
+                                    ).toFixed(2),
                                 }))
                             }
                         />
 
-                        
                         <div
                             onChange={(e) =>
                                 setNewPayment((prev) => ({
@@ -376,26 +377,42 @@ export default function Pagos() {
                                 }))
                             }
                         >
-                            <p style={{ marginTop: "20px", opacity: ".7" }}>Método de pago: </p>
-                            {methods.map((objMethods, i) => (
-                                <label htmlFor={`Pago${i}`} 
+                            <p
                                 style={{
-                                    display: "block",
-                                    marginBottom: "10px",
-                                }}>
-                                    <input
-                                        type="radio"
-                                        name="payment_method_id"
-                                        id={`Pago${i}`}
-                                        value={objMethods.id}
-                                        checked={newPayment.payment_method_id == objMethods.id}
-                                    />
-                                    <span style={{ marginLeft: "10px" }}>
-                                       {objMethods.name}
-                                    </span>
-                                </label>
-                            ))}
-                           
+                                    margin: "24px 0 15px 0",
+                                    opacity: ".7",
+                                }}
+                            >
+                                Método de pago:
+                            </p>
+                            <div className="d-flex2 mb-5">
+                                {methods.map((objMethods, i) => (
+                                    <label
+                                        htmlFor={`Pago${i}`}
+                                        style={{
+                                            display: "block",
+                                            marginBottom: "8px",
+                                        }}
+                                        className={`btn_radio ${newPayment.payment_method_id ==
+                                            objMethods.id? 'active': ''}`}
+                                    >
+                                        <input
+                                            type="radio"
+                                            name="payment_method_id"
+                                            id={`Pago${i}`}
+                                            value={objMethods.id}
+                                            hidden
+                                            checked={
+                                                newPayment.payment_method_id ==
+                                                objMethods.id
+                                            }
+                                        />
+                                        <span style={{ marginLeft: "10px" }}>
+                                            {objMethods.name}
+                                        </span>
+                                    </label>
+                                ))}
+                            </div>
                         </div>
                         <button
                             type="submit"
