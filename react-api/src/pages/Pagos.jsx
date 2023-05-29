@@ -104,7 +104,6 @@ export default function Pagos() {
             console.log(data);
             setPayments(data.payments);
             setMethods(data.methods);
-            setAll_areas(data.areas)
         });
     };
 
@@ -285,13 +284,35 @@ export default function Pagos() {
         );
     }, [payments]);
 
+    const getClientInfo = async () => {
+        try {
+            await axios.get(`dashboard/clients/${newAttendance.code}/areas`).then((response) => {
+                console.log({response})
+            // setAll_areas(data.areas)
+
+            //    const area_id = response.data.latest.schedule.area.id
+            //    const schedule_id = response.data.latest.schedule_id
+            //    setNewAttendance(prev => ({...prev, area_id, schedule_id}))
+            });
+
+           
+
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     console.log({ newPayment });
 
     return (
         <>
             <TransparentButton
                 text="Registrar pago"
-                clickButtonF={() => setOpen(true)}
+                clickButtonF={() => {
+                    setOpen(true)
+                    setSubmitStatus("Crear area");
+                    setNewPayment({})
+                }}
             />
             <Modal
                 open={open}
@@ -320,6 +341,7 @@ export default function Pagos() {
                                         code: e.target.value,
                                     }))
                                 }
+                                onBlur={getClientInfo}
                             />
                             <TextField
                                 id="outlined-select-currency"
