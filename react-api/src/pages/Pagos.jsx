@@ -188,11 +188,17 @@ export default function Pagos() {
                 await axios
                     .put(`/dashboard/payments/${newPayment.id}`, newPayment)
                     .then((response) => {
-                        setAlert({
-                            open: true,
-                            status: "Exito",
-                            message: `${newPayment.name} ha sido editado`,
-                        });
+                        const paymentUpdate = response.data.payment;
+                        setPayments((prev) =>
+                            prev.map((oldPayment) =>
+                                payment.id === newPayment.id ? paymentUpdate : oldPayment
+                            )
+                        );
+                    });
+                    setAlert({
+                        open: true,
+                        status: "Exito",
+                        message: `${newPayment.name} ha sido editado`,
                     });
                 setPayments((prev) =>
                     prev.map((user) =>
