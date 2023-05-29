@@ -51,7 +51,7 @@
         transition: all .3s cubic-bezier(0.445, 0.05, 0.55, 0.95);
         padding-left: 25px;
         font-size: 15px;
-        
+        white-space: nowrap;
         a {
             text-decoration: none;
             display: flex;

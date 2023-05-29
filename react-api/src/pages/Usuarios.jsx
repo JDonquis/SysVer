@@ -450,6 +450,7 @@ export default function Usuarios() {
                         <div style={divFlex}>
                             <Input
                                 label={"Nombres/s"}
+                                required
                                 key={0}
                                 onChange={handleChange}
                                 value={newUserData.name}
@@ -458,6 +459,7 @@ export default function Usuarios() {
 
                             <Input
                                 label={"Apellidos/s"}
+                                required
                                 key={1}
                                 onChange={handleChange}
                                 value={newUserData.last_name}
@@ -467,6 +469,7 @@ export default function Usuarios() {
                         <div style={divFlex}>
                             <Input
                                 label={"Cédula"}
+                                required
                                 key={2}
                                 minLength={6}
                                 maxLength={10}
@@ -476,6 +479,7 @@ export default function Usuarios() {
                             />
                             <Input
                                 label={"Nro de teléfono"}
+                                required
                                 type={"tel"}
                                 key={3}
                                 minLength={10}
@@ -491,6 +495,7 @@ export default function Usuarios() {
                                 shrink={true}
                                 type={"date"}
                                 label={"Fecha de nacimiento"}
+                                required
                                 value={newUserData.birth_date}
                                 name={"birth_date"}
                                 onChange={handleChange}
@@ -498,6 +503,7 @@ export default function Usuarios() {
                              <Input
                                 type={"email"}
                                 label={"Correo"}
+                                required
                                 value={newUserData.email}
                                 name={"email"}
                                 onChange={handleChange}
@@ -510,6 +516,7 @@ export default function Usuarios() {
                                 key={5}
                                 id={"outlined-textarea"}
                                 label={"Dirección"}
+                                required
                                 multiline
                                 value={newUserData.address}
                                 name={"address"}
@@ -519,6 +526,7 @@ export default function Usuarios() {
                                 key={6}
                                 id={"outlined-textarea"}
                                 label={"Colaboración"}
+                                required
                                 multiline
                                 value={newUserData.collaboration}
                                 name={"collaboration"}
@@ -601,6 +609,7 @@ export default function Usuarios() {
                             value={newUserData.areas}
                             options={all_areas_db}
                             getOptionLabel={(all_areas_db) => all_areas_db.name}
+                            required
                             defaultValue={newUserData.array_areas}
                             isOptionEqualToValue={(option, value) =>
                                 option.id === value.id

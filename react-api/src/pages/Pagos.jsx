@@ -107,9 +107,9 @@ export default function Pagos() {
             setAll_areas(data.areas)
         });
     };
-console.log(all_areas)
-    const [tasaDolar, setTasaDolar] = useState();
-    const urlExchange = `dollar`;
+
+    const [tasaDolar, setTasaDolar] = useState(false);
+
     const getEquivalent = async () => {
         try {
             await axios.get("dashboard/dollar").then((response) => {
@@ -117,6 +117,7 @@ console.log(all_areas)
             });
         } catch (error) {
             console.log(error);
+            
         }
     };
     // console.log(payments)
@@ -178,7 +179,7 @@ console.log(all_areas)
                 setAlert({
                     open: true,
                     status: "Exito",
-                    message: `El usuario ${newPayment.name} ha sido creado`,
+                    message: `El pago ha ha sido registrado`,
                 });
                 setSubmitStatus("Registrar");
             }
@@ -228,17 +229,22 @@ console.log(all_areas)
                     onClick={() => {
                         const indx = selectedRows.data[0].dataIndex;
                         const asis = payments[indx];
+                        console.log(asis)
                         const asis_id = asis.id;
-                        const code = asis.client.code;
-                        const schedule_id = asis.schedule_id;
-                        const area_id = asis.schedule.area_id;
+                        const code = asis.client_area.client.code;
+                        const area_id = asis.client_area.area.id;
+                        const amount = asis.amount;
+                        const payment_method_id = asis.payment_method_id;
                         setNewPayment({
                             code,
                             area_id,
-                            schedule_id,
                             id: asis_id,
+                            amount,
+                            amountBs: amount * tasaDolar,
+                            payment_method_id
                         });
-                        setStatusSubmit("Editar");
+                        setSubmitStatus("Editar");
+                        setOpen(true)
                     }}
                 >
                     <EditIcon />
@@ -300,6 +306,7 @@ console.log(all_areas)
                                 label={"Código del usuario"}
                                 value={newPayment?.code}
                                 name={"birth_date"}
+                                required
                                 // onBlur={getLastAttended}
                                 onChange={(e) =>
                                     setNewPayment((prev) => ({
@@ -311,6 +318,7 @@ console.log(all_areas)
                             <TextField
                                 id="outlined-select-currency"
                                 select
+                                required
                                 label="Area"
                                 value={newPayment?.area_id}
                                 defaultValue=""
@@ -336,6 +344,8 @@ console.log(all_areas)
                             value={newPayment?.amount}
                             name={"birth_date"}
                             width={350}
+                            required
+
                             // onBlur={getEquivalent}
                             onChange={(e) =>
                                 setNewPayment((prev) => ({
@@ -349,25 +359,30 @@ console.log(all_areas)
                         />
                         <br />
                         <br />
-                        <Input
-                            // shrink={true}
-                            // type={"Código"}
-                            label={"Monto en Bolívares (Bs)"}
-                            value={newPayment?.amountBs}
-                            name={"birth_date"}
-                            width={350}
-                            // onBlur={getLastAttended}
-                            // shrink={newPayment.amount.length > 0 || newPayment.amountBs.length > 0}
-                            onChange={(e) =>
-                                setNewPayment((prev) => ({
-                                    ...prev,
-                                    amountBs: e.target.value,
-                                    amount: (
-                                        e.target.value / tasaDolar
-                                    ).toFixed(2),
-                                }))
-                            }
-                        />
+                        {tasaDolar ?  (
+
+                            <Input
+                                // shrink={true}
+                                // type={"Código"}
+                                label={"Monto en Bolívares (Bs)"}
+                                value={newPayment?.amountBs}
+                                name={"birth_date"}
+                                width={350}
+                                // onBlur={getLastAttended}
+                                // shrink={newPayment.amount.length > 0 || newPayment.amountBs.length > 0}
+                                onChange={(e) =>
+                                    setNewPayment((prev) => ({
+                                        ...prev,
+                                        amountBs: e.target.value,
+                                        amount: (
+                                            e.target.value / tasaDolar
+                                        ).toFixed(2),
+                                    }))
+                                }
+                            />
+                        ) : <p  style={{
+                            opacity: ".7",
+                        }}>Conectese a internet para ver el equivalente en bolivares </p> }
 
                         <div
                             onChange={(e) =>
@@ -380,7 +395,7 @@ console.log(all_areas)
                             <p
                                 style={{
                                     margin: "24px 0 15px 0",
-                                    opacity: ".7",
+                                    opacity: ".9",
                                 }}
                             >
                                 Método de pago:
