@@ -7,6 +7,7 @@ use App\Models\Area;
 use App\Models\AreaCharged;
 use App\Models\BloodType;
 use App\Models\Client;
+use App\Models\ClientAreaCharged;
 use DB;
 use Exception;
 use Illuminate\Http\Request;
@@ -145,10 +146,23 @@ class ClientController extends Controller
         }   
     }
 
-    public function get_data_payment_client($code)
-    {
-        $client = Client::where('code',$code)->with('areas','credit','client_area.delayed')->first();
+    public function get_data_payment_client($code,$area_id)
+    {   
+        $c = Client::select('id')->where('code',$code)->first();
+
+        $area = AreaCharged::where('area_id',$area_id)->first();
+
+
+
+        $client = ClientAreaCharged::where('client_id',$c->id)->where('area_charged_id',$area->id)->with('client.credit','delayed')->first();
 
         return $client;
+    }
+
+    public function get_areas_client($code)
+    {
+        $client = Client::select('id')->where('code',$code)->with('areas')->first();
+
+        return response(["client_areas" => $client ], Response::HTTP_OK);
     }
 }

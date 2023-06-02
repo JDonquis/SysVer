@@ -24,15 +24,7 @@ class Payment extends Model
         return $this->belongsTo(ClientAreaCharged::class,'client_area_charged_id','id');
     }
 
-    // public function calculate_credit_client()
-    // {
-    //     return $this->belongsTo(ClientAreaCharged::class,'client_area_charged_id','id');
-    // }
 
-    // public function client_area()
-    // {
-    //     return $this->belongsTo(ClientAreaCharged::class,'client_area_charged_id','id');
-    // }
 
 
 

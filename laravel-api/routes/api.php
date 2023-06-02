@@ -34,7 +34,8 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth:sanctum']], functi
     Route::post('clients',[ClientController::class,'store']);
     Route::put('clients/{id}',[ClientController::class,'update']);
     Route::delete('clients/{id}',[ClientController::class,'destroy']);
-    Route::get('clients/{code}/areas/delayed/credit',[ClientController::class,'get_data_payment_client']);
+    Route::get('clients/{code}/areas',[ClientController::class,'get_areas_client']);
+    Route::get('clients/{code}/{area_id}/delayed/credit',[ClientController::class,'get_data_payment_client']);
 
     // Assistances
     Route::get('assistance',[AssistanceController::class,'index']);
