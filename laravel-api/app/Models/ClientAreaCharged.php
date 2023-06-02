@@ -31,6 +31,6 @@ class ClientAreaCharged extends Model
 
     public function delayed()
     {
-          return $this->hasMany(DelayedClient::class,'client_area_charged_id','id');
+          return $this->hasOne(DelayedClient::class,'client_area_charged_id','id');
     }
 }
