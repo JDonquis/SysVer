@@ -5,11 +5,14 @@ namespace App\Http\Controllers\api\dashboard;
 use App\Http\Controllers\Controller;
 use App\Models\Area;
 use App\Models\AreaCharged;
+use App\Models\Client;
+use App\Models\ClientAreaCharged;
 use App\Models\Payment;
 use App\Models\PaymentMethod;
+use DB;
+use Exception;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
-use DB;
 
 class PaymentsController extends Controller
 {
@@ -27,15 +30,6 @@ class PaymentsController extends Controller
         return response(["areas" => $areas, 'payments' => $payments,'methods' => $methods], Response::HTTP_OK);    
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -45,30 +39,43 @@ class PaymentsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        DB::beginTransaction();
+
+        try {
+            
+            $client = Client::where('code',$request->code)->first();
+            if(!$client)
+                throw new Exception('No se encontró ningún cliente con el código proporcionado');
+
+            $area = AreaCharged::where('area_id',$request->area_id)->first();
+            if(!$area)
+                throw new Exception('No se encontró ningún area');
+
+            $client_area = ClientAreaCharged::where('area_charged_id',$area->area_id)->where('client_id',$client->id)->first();
+            if(!$client_area)
+                throw new Exception('El cliente no esta inscrito a esta area');
+
+            
+            $payment_id = DB::table('payments')->insertGetId(['client_area_charged_id' => $client_area->id, 'payment_method_id' => $request->payment_method_id, 'amount' => $request->amount ]);
+
+
+            $payment = Payment::where('id',$payment_id)->with('client_area.client','client_area.area')->first();
+
+            DB::commit();
+
+            return response(["payment" => $payment], Response::HTTP_OK);
+
+        }catch(Exception $e) {
+          
+          DB::rollback();  
+
+          return response(["error" => $e->getMessage()], Response::HTTP_BAD_REQUEST);
+        }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
+    
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
+    
 
     /**
      * Update the specified resource in storage.
@@ -79,7 +86,38 @@ class PaymentsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        DB::beginTransaction();
+
+        try {
+            
+            $client = Client::where('code',$request->code)->first();
+            if(!$client)
+                throw new Exception('No se encontró ningún cliente con el código proporcionado');
+
+            $area = AreaCharged::where('area_id',$request->area_id)->first();
+            if(!$area)
+                throw new Exception('No se encontró ningún area');
+
+            $client_area = ClientAreaCharged::where('area_charged_id',$area->area_id)->where('client_id',$client->id)->first();
+            if(!$client_area)
+                throw new Exception('El cliente no esta inscrito a esta area');
+
+            
+            $payment_id = DB::table('payments')->where('id',$id)->update(['client_area_charged_id' => $client_area->id, 'payment_method_id' => $request->payment_method_id, 'amount' => $request->amount ]);
+
+
+            $payment = Payment::where('id',$payment_id)->with('client_area.client','client_area.area')->first();
+
+            DB::commit();
+
+            return response(["payment" => $payment], Response::HTTP_OK);
+
+        }catch(Exception $e) {
+          
+          DB::rollback();  
+
+          return response(["error" => $e->getMessage()], Response::HTTP_BAD_REQUEST);
+        }
     }
 
     /**
