@@ -57,5 +57,23 @@ class Client extends Model
       public function client_area()
       {
           return $this->hasMany(ClientAreaCharged::class,'client_id','id');
-      }      
+      }
+
+      // public function calculate_credit_client($client,$area,$amount,$action)
+      // {
+      //     $credit = CreditClient::where("client_id",$id_client)->first();
+
+      //     // Client does a pay
+      //     if($action == 1)
+      //     {
+      //       $result = $area->price - $amount;
+      //       $credit-
+
+      //     }
+      // }
+
+      // public function client_area()
+      // {
+      //     return $this->belongsTo(ClientAreaCharged::class,'client_area_charged_id','id');
+      // }      
 }
