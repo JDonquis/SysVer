@@ -144,4 +144,11 @@ class ClientController extends Controller
             return response(["Message" => 'Cliente no encontrado'], Response::HTTP_BAD_REQUEST);
         }   
     }
+
+    public function get_data_payment_client($code)
+    {
+        $client = Client::where('code',$code)->with('areas','credit','client_area.delayed')->first();
+
+        return $client;
+    }
 }

@@ -17,6 +17,7 @@ class CreateDelayedClientsTable extends Migration
             $table->id();
             $table->foreignId("client_area_charged_id")->constrained()->onDelete("cascade")->onUpdate("cascade");
             $table->integer('days_late');
+            $table->integer('amount');
             $table->timestamps();
         });
     }

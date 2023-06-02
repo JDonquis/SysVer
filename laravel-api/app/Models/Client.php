@@ -2,6 +2,9 @@
 
 namespace App\Models;
 
+use App\Models\ClientAreaCharged;
+use App\Models\CreditClient;
+use App\Models\DelayedClient;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -46,5 +49,13 @@ class Client extends Model
           return $this->belongsToMany(AreaCharged::class,'client_area_chargeds');
       }
 
+      public function credit()
+      {
+          return $this->hasMany(CreditClient::class,'client_id','id');
+      }
 
+      public function client_area()
+      {
+          return $this->hasMany(ClientAreaCharged::class,'client_id','id');
+      }      
 }
