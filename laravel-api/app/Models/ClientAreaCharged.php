@@ -28,4 +28,9 @@ class ClientAreaCharged extends Model
     {
         return $this->belongsTo(AreaCharged::class,'area_charged_id','id');
     }
+
+    public function delayed()
+    {
+          return $this->hasMany(DelayedClient::class,'client_area_charged_id','id');
+    }
 }

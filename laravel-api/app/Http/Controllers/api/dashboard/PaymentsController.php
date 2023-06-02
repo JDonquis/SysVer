@@ -144,4 +144,7 @@ class PaymentsController extends Controller
             return response(["Message" => 'Pago no encontrada'], Response::HTTP_BAD_REQUEST);
         }  
     }
+
+
 }
+
