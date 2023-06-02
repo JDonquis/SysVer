@@ -20,6 +20,7 @@ const Input = memo((props) => {
             variant={"outlined"}
             label={props.label}
             onChange={(e) => props.onChange(e)}
+            {...props}
             value={props.value}
             name={props.name}
             sx={{ width: props.width || 223 , borderColor: '#069DBF',}}

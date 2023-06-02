@@ -8,4 +8,8 @@ label.btn_radio:hover, label.btn_radio.active {
   cursor: pointer;
   background: #069DBF;
   color: whitesmoke;
+}
+
+.infoCredit_container {
+  background: red !important;
 }/*# sourceMappingURL=pagos.css.map */

@@ -11,7 +11,7 @@ import ConfirmModal from "../components/ConfimModal";
 import Alert from "../components/Alert";
 import Input from "../components/Input";
 import TransparentButton from "../components/TransparentButton";
-import '../css/pages/pagos.css'
+import "../css/pages/pagos.css";
 
 let fecha = new Date(),
     añoA = fecha.getFullYear(),
@@ -116,7 +116,6 @@ export default function Pagos() {
             });
         } catch (error) {
             console.log(error);
-            
         }
     };
     // console.log(payments)
@@ -188,18 +187,20 @@ export default function Pagos() {
                     .put(`/dashboard/payments/${newPayment.id}`, newPayment)
                     .then((response) => {
                         const paymentUpdate = response.data.payment;
-                        console.log(paymentUpdate)
+                        console.log(paymentUpdate);
                         setPayments((prev) =>
                             prev.map((oldPayment) =>
-                                oldPayment.id === newPayment.id ? paymentUpdate : oldPayment
+                                oldPayment.id === newPayment.id
+                                    ? paymentUpdate
+                                    : oldPayment
                             )
                         );
                     });
-                    setAlert({
-                        open: true,
-                        status: "Exito",
-                        message: `${newPayment.name} ha sido editado`,
-                    });
+                setAlert({
+                    open: true,
+                    status: "Exito",
+                    message: `${newPayment.name} ha sido editado`,
+                });
                 setPayments((prev) =>
                     prev.map((user) =>
                         user.id === newPayment.id ? newPayment : user
@@ -235,7 +236,7 @@ export default function Pagos() {
                     onClick={() => {
                         const indx = selectedRows.data[0].dataIndex;
                         const asis = payments[indx];
-                        console.log(asis)
+                        console.log(asis);
                         const asis_id = asis.id;
                         const code = asis.client_area.client.code;
                         const area_id = asis.client_area.area.id;
@@ -247,10 +248,12 @@ export default function Pagos() {
                             id: asis_id,
                             amount,
                             amountBs: amount * tasaDolar,
-                            payment_method_id
+                            payment_method_id,
                         });
                         setSubmitStatus("Editar");
-                        setOpen(true)
+                        setOpen(true);
+
+                        getUserData(code);
                     }}
                 >
                     <EditIcon />
@@ -285,23 +288,41 @@ export default function Pagos() {
         );
     }, [payments]);
 
-    const getUserData = async () => {
+    const getUserData = async (code) => {
+        console.log("ayyyy");
         try {
-            await axios.get(`dashboard/clients/${newAttendance.code}/areas`).then((response) => {
-                console.log({response})
-            // setAll_areas(data.areas)
+            await axios
+                .get(`dashboard/clients/${code}/areas/delayed/credit`)
+                .then((response) => {
+                    console.log({ response });
+                    setAll_areas(response.data.areas);
 
-            //    const area_id = response.data.latest.schedule.area.id
-            //    const schedule_id = response.data.latest.schedule_id
-            //    setNewAttendance(prev => ({...prev, area_id, schedule_id}))
-            });
-
-           
-
+                    //    const area_id = response.data.latest.schedule.area.id
+                    //    const schedule_id = response.data.latest.schedule_id
+                    //    setNewAttendance(prev => ({...prev, area_id, schedule_id}))
+                });
         } catch (error) {
-            console.log(error)
+            console.log(error);
         }
-    }
+    };
+
+    const getCreditsInfo = async (area) => {
+        console.log("ayyyy");
+        try {
+            await axios
+                .get(`dashboard/clients/${code}/areas/delayed/credit`)
+                .then((response) => {
+                    console.log({ response });
+                    setAll_areas(response.data.areas);
+
+                    //    const area_id = response.data.latest.schedule.area.id
+                    //    const schedule_id = response.data.latest.schedule_id
+                    //    setNewAttendance(prev => ({...prev, area_id, schedule_id}))
+                });
+        } catch (error) { 
+            console.log(error);
+        }
+    };
 
     console.log({ newPayment });
 
@@ -310,9 +331,9 @@ export default function Pagos() {
             <TransparentButton
                 text="Registrar pago"
                 clickButtonF={() => {
-                    setOpen(true)
+                    setOpen(true);
                     setSubmitStatus("Crear area");
-                    setNewPayment({})
+                    setNewPayment({});
                 }}
             />
             <Modal
@@ -333,9 +354,9 @@ export default function Pagos() {
                                 // type={"Código"}
                                 label={"Código del usuario"}
                                 value={newPayment?.code}
-                                name={"birth_date"}
+                                name={"código"}
                                 required
-                                onBlur={getUserData}
+                                onBlur={() => getUserData(newPayment?.code)}
                                 onChange={(e) =>
                                     setNewPayment((prev) => ({
                                         ...prev,
@@ -350,8 +371,8 @@ export default function Pagos() {
                                 label="Area"
                                 value={newPayment?.area_id}
                                 defaultValue=""
+                                onBlur={getCreditsInfo}
                                 name="turno"
-
                                 onChange={(e) => {
                                     setNewPayment((prev) => ({
                                         ...prev,
@@ -367,50 +388,57 @@ export default function Pagos() {
                             </TextField>
                         </div>
                         <br />
-                        <Input
-                            label={"Monto en Dolares ($)"}
-                            value={newPayment?.amount}
-                            name={"birth_date"}
-                            width={350}
-                            required
-
-                            // onBlur={getEquivalent}
-                            onChange={(e) =>
-                                setNewPayment((prev) => ({
-                                    ...prev,
-                                    amount: e.target.value,
-                                    amountBs: (
-                                        e.target.value * tasaDolar
-                                    ).toFixed(2),
-                                }))
-                            }
-                        />
-                        <br />
-                        <br />
-                        {tasaDolar ?  (
-
+                        <div className="infoCredit_container">
                             <Input
-                                // shrink={true}
-                                // type={"Código"}
-                                label={"Monto en Bolívares (Bs)"}
-                                value={newPayment?.amountBs}
+                                label={"Monto en Dolares ($)"}
+                                value={newPayment?.amount}
                                 name={"birth_date"}
                                 width={350}
-                                // onBlur={getLastAttended}
-                                // shrink={newPayment.amount.length > 0 || newPayment.amountBs.length > 0}
+                                required
+                                // onBlur={getEquivalent}
                                 onChange={(e) =>
                                     setNewPayment((prev) => ({
                                         ...prev,
-                                        amountBs: e.target.value,
-                                        amount: (
-                                            e.target.value / tasaDolar
+                                        amount: e.target.value,
+                                        amountBs: (
+                                            e.target.value * tasaDolar
                                         ).toFixed(2),
                                     }))
                                 }
                             />
-                        ) : <p  style={{
-                            opacity: ".7",
-                        }}>Conectese a internet para ver el equivalente en bolivares </p> }
+                            <br />
+                            <br />
+                            {tasaDolar ? (
+                                <Input
+                                    // shrink={true}
+                                    // type={"Código"}
+                                    label={"Monto en Bolívares (Bs)"}
+                                    value={newPayment?.amountBs}
+                                    name={"birth_date"}
+                                    width={350}
+                                    // onBlur={getLastAttended}
+                                    // shrink={newPayment.amount.length > 0 || newPayment.amountBs.length > 0}
+                                    onChange={(e) =>
+                                        setNewPayment((prev) => ({
+                                            ...prev,
+                                            amountBs: e.target.value,
+                                            amount: (
+                                                e.target.value / tasaDolar
+                                            ).toFixed(2),
+                                        }))
+                                    }
+                                />
+                            ) : (
+                                <p
+                                    style={{
+                                        opacity: ".7",
+                                    }}
+                                >
+                                    Conectese a internet para ver el equivalente
+                                    en bolivares{" "}
+                                </p>
+                            )}
+                        </div>
 
                         <div
                             onChange={(e) =>
@@ -436,8 +464,12 @@ export default function Pagos() {
                                             display: "block",
                                             marginBottom: "8px",
                                         }}
-                                        className={`btn_radio ${newPayment.payment_method_id ==
-                                            objMethods.id? 'active': ''}`}
+                                        className={`btn_radio ${
+                                            newPayment.payment_method_id ==
+                                            objMethods.id
+                                                ? "active"
+                                                : ""
+                                        }`}
                                     >
                                         <input
                                             type="radio"
