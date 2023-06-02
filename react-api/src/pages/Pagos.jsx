@@ -24,7 +24,7 @@ export default function Pagos() {
         status: "",
         message: "",
     });
-
+    const [creditInfo, setCreditInfo] = useState({})
     const [modalConfirm, setModalConfirm] = useState(false);
     const [all_areas, setAll_areas] = useState([]);
     const [payments, setPayments] = useState();
@@ -134,7 +134,7 @@ export default function Pagos() {
         // copySchedule[i] = { ...copySchedule[i], [shift]: e.target.value };
         // setnewPayment((prev) => ({ ...prev, schedule: copySchedule }));
     }
-
+    console.log(creditInfo)
     const deleteData = async () => {
         try {
             const id = payments[dataForDelete.indx].id;
@@ -289,13 +289,12 @@ export default function Pagos() {
     }, [payments]);
 
     const getUserData = async (code) => {
-        console.log("ayyyy");
         try {
             await axios
-                .get(`dashboard/clients/${code}/areas/delayed/credit`)
+                .get(`dashboard/clients/${code}/areas`)
                 .then((response) => {
-                    console.log({ response });
-                    setAll_areas(response.data.areas);
+                    setAll_areas(response.data.client_areas.areas);
+                    console.log(response.data.client_areas.areas);
 
                     //    const area_id = response.data.latest.schedule.area.id
                     //    const schedule_id = response.data.latest.schedule_id
@@ -306,20 +305,15 @@ export default function Pagos() {
         }
     };
 
-    const getCreditsInfo = async (area) => {
-        console.log("ayyyy");
+    const getCreditsInfo = async (code, area_id) => {
         try {
             await axios
-                .get(`dashboard/clients/${code}/areas/delayed/credit`)
+                .get(`dashboard/clients/${code}/${area_id}/delayed/credit`)
                 .then((response) => {
-                    console.log({ response });
-                    setAll_areas(response.data.areas);
-
-                    //    const area_id = response.data.latest.schedule.area.id
-                    //    const schedule_id = response.data.latest.schedule_id
-                    //    setNewAttendance(prev => ({...prev, area_id, schedule_id}))
+                    console.log(response.data);
+                    setCreditInfo(response.data)
                 });
-        } catch (error) { 
+        } catch (error) {
             console.log(error);
         }
     };
@@ -332,7 +326,7 @@ export default function Pagos() {
                 text="Registrar pago"
                 clickButtonF={() => {
                     setOpen(true);
-                    setSubmitStatus("Crear area");
+                    setSubmitStatus("Registrar");
                     setNewPayment({});
                 }}
             />
@@ -354,6 +348,8 @@ export default function Pagos() {
                                 // type={"Código"}
                                 label={"Código del usuario"}
                                 value={newPayment?.code}
+                                width={300}
+
                                 name={"código"}
                                 required
                                 onBlur={() => getUserData(newPayment?.code)}
@@ -371,7 +367,12 @@ export default function Pagos() {
                                 label="Area"
                                 value={newPayment?.area_id}
                                 defaultValue=""
-                                onBlur={getCreditsInfo}
+                                onBlur={() =>
+                                    getCreditsInfo(
+                                        newPayment.code,
+                                        newPayment.area_id
+                                    )
+                                }
                                 name="turno"
                                 onChange={(e) => {
                                     setNewPayment((prev) => ({
@@ -388,56 +389,64 @@ export default function Pagos() {
                             </TextField>
                         </div>
                         <br />
-                        <div className="infoCredit_container">
-                            <Input
-                                label={"Monto en Dolares ($)"}
-                                value={newPayment?.amount}
-                                name={"birth_date"}
-                                width={350}
-                                required
-                                // onBlur={getEquivalent}
-                                onChange={(e) =>
-                                    setNewPayment((prev) => ({
-                                        ...prev,
-                                        amount: e.target.value,
-                                        amountBs: (
-                                            e.target.value * tasaDolar
-                                        ).toFixed(2),
-                                    }))
-                                }
-                            />
-                            <br />
-                            <br />
-                            {tasaDolar ? (
+                        <div className="d-flex2">
+                            <div>
                                 <Input
-                                    // shrink={true}
-                                    // type={"Código"}
-                                    label={"Monto en Bolívares (Bs)"}
-                                    value={newPayment?.amountBs}
+                                    label={"Monto en Dolares ($)"}
+                                    value={newPayment?.amount}
                                     name={"birth_date"}
-                                    width={350}
-                                    // onBlur={getLastAttended}
-                                    // shrink={newPayment.amount.length > 0 || newPayment.amountBs.length > 0}
+                                    width={300}
+                                    required
+                                    // onBlur={getEquivalent}
                                     onChange={(e) =>
                                         setNewPayment((prev) => ({
                                             ...prev,
-                                            amountBs: e.target.value,
-                                            amount: (
-                                                e.target.value / tasaDolar
+                                            amount: e.target.value,
+                                            amountBs: (
+                                                e.target.value * tasaDolar
                                             ).toFixed(2),
                                         }))
                                     }
                                 />
-                            ) : (
-                                <p
-                                    style={{
-                                        opacity: ".7",
-                                    }}
-                                >
-                                    Conectese a internet para ver el equivalente
-                                    en bolivares{" "}
-                                </p>
-                            )}
+                                <br />
+                                <br />
+                                {tasaDolar ? (
+                                    <Input
+                                        // shrink={true}
+                                        // type={"Código"}
+                                        label={"Monto en Bolívares (Bs)"}
+                                        value={newPayment?.amountBs}
+                                        name={"birth_date"}
+                                        width={300}
+                                        // onBlur={getLastAttended}
+                                        shrink={newPayment?.amount?.length > 0 || newPayment?.amountBs?.length > 0}
+                                        onChange={(e) =>
+                                            setNewPayment((prev) => ({
+                                                ...prev,
+                                                amountBs: e.target.value,
+                                                amount: (
+                                                    e.target.value / tasaDolar
+                                                ).toFixed(2),
+                                            }))
+                                        }
+                                    />
+                                ) : (
+                                    <p
+                                        style={{
+                                            opacity: ".7",
+                                        }}
+                                    >
+                                        Conectese a internet para ver el
+                                        equivalente en bolivares{" "}
+                                    </p>
+                                )}
+                            </div>
+
+                            <div className="infoCredit_container">
+                                        <p>precio semanal del area: {all_areas[0]?.price}$</p>
+                                        <p>Deuda del cliente: {Math.ceil(creditInfo?.delayed?.days_late/7)} semana ({all_areas?.price*Math.ceil(creditInfo?.delayed?.days_late/7)}$)</p>
+                                        <p>Abonado: {}</p>
+                            </div>
                         </div>
 
                         <div
