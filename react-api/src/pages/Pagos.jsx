@@ -444,8 +444,8 @@ export default function Pagos() {
 
                             <div className="infoCredit_container">
                                         <p>precio semanal del area: {all_areas[0]?.price}$</p>
-                                        <p>Deuda del cliente: {Math.ceil(creditInfo?.delayed?.days_late/7)} semana ({all_areas?.price*Math.ceil(creditInfo?.delayed?.days_late/7)}$)</p>
-                                        <p>Abonado: {}</p>
+                                        <p>Deuda del cliente: {Math.ceil(creditInfo?.delayed?.days_late/7)} semana ({all_areas[0]?.price*Math.ceil(creditInfo?.delayed?.days_late/7)}$)</p>
+                                        {/* <p>Abonado: {}</p> */}
                             </div>
                         </div>
 
