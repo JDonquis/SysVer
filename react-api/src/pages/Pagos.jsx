@@ -188,9 +188,10 @@ export default function Pagos() {
                     .put(`/dashboard/payments/${newPayment.id}`, newPayment)
                     .then((response) => {
                         const paymentUpdate = response.data.payment;
+                        console.log(paymentUpdate)
                         setPayments((prev) =>
                             prev.map((oldPayment) =>
-                                payment.id === newPayment.id ? paymentUpdate : oldPayment
+                                oldPayment.id === newPayment.id ? paymentUpdate : oldPayment
                             )
                         );
                     });
@@ -284,7 +285,7 @@ export default function Pagos() {
         );
     }, [payments]);
 
-    const getClientInfo = async () => {
+    const getUserData = async () => {
         try {
             await axios.get(`dashboard/clients/${newAttendance.code}/areas`).then((response) => {
                 console.log({response})
@@ -334,14 +335,13 @@ export default function Pagos() {
                                 value={newPayment?.code}
                                 name={"birth_date"}
                                 required
-                                // onBlur={getLastAttended}
+                                onBlur={getUserData}
                                 onChange={(e) =>
                                     setNewPayment((prev) => ({
                                         ...prev,
                                         code: e.target.value,
                                     }))
                                 }
-                                onBlur={getClientInfo}
                             />
                             <TextField
                                 id="outlined-select-currency"
