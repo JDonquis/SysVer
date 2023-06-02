@@ -54,6 +54,8 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth:sanctum']], functi
 
     // Payments
     Route::get('payments',[PaymentsController::class,'index']);
+    Route::post('payments',[PaymentsController::class,'store']);
+    Route::put('payments/{id}',[PaymentsController::class,'update']);
     Route::delete('payments/{id}',[PaymentsController::class,'destroy']);
 
     // External APIs  
