@@ -103,14 +103,14 @@ class PaymentsController extends Controller
                 throw new Exception('El cliente no esta inscrito a esta area');
 
             
-            $payment_id = DB::table('payments')->where('id',$id)->update(['client_area_charged_id' => $client_area->id, 'payment_method_id' => $request->payment_method_id, 'amount' => $request->amount ]);
+            DB::table('payments')->where('id',$id)->update(['client_area_charged_id' => $client_area->id, 'payment_method_id' => $request->payment_method_id, 'amount' => $request->amount ]);
 
 
-            $payment = Payment::where('id',$payment_id)->with('client_area.client','client_area.area')->first();
+            $payment = Payment::where('id',$id)->with('client_area.client','client_area.area')->first();
 
             DB::commit();
 
-            return response(["payment" => $payment], Response::HTTP_OK);
+            return response(["Message" => "Pago actualizado con exito", "payment" => $payment], Response::HTTP_OK);
 
         }catch(Exception $e) {
           

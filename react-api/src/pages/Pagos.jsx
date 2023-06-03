@@ -186,8 +186,11 @@ export default function Pagos() {
                 await axios
                     .put(`/dashboard/payments/${newPayment.id}`, newPayment)
                     .then((response) => {
+
+                        console.log("EL huevo pelao")
+                        console.log({response})
                         const paymentUpdate = response.data.payment;
-                        console.log(paymentUpdate);
+                        console.log({paymentUpdate});
                         setPayments((prev) =>
                             prev.map((oldPayment) =>
                                 oldPayment.id === newPayment.id
@@ -195,17 +198,16 @@ export default function Pagos() {
                                     : oldPayment
                             )
                         );
-                    });
+                        
                 setAlert({
                     open: true,
                     status: "Exito",
-                    message: `${newPayment.name} ha sido editado`,
+                    message: response.data.Message
                 });
-                setPayments((prev) =>
-                    prev.map((user) =>
-                        user.id === newPayment.id ? newPayment : user
-                    )
-                );
+
+            });
+
+               
             }
             setNewPayment({});
             setOpen(false);
@@ -236,7 +238,6 @@ export default function Pagos() {
                     onClick={() => {
                         const indx = selectedRows.data[0].dataIndex;
                         const asis = payments[indx];
-                        console.log(asis);
                         const asis_id = asis.id;
                         const code = asis.client_area.client.code;
                         const area_id = asis.client_area.area.id;
@@ -254,6 +255,7 @@ export default function Pagos() {
                         setOpen(true);
 
                         getUserData(code);
+                        getCreditsInfo(code, area_id)
                     }}
                 >
                     <EditIcon />
@@ -318,7 +320,6 @@ export default function Pagos() {
         }
     };
 
-    console.log({ newPayment });
 
     return (
         <>
@@ -443,7 +444,7 @@ export default function Pagos() {
                             </div>
 
                             <div className="infoCredit_container">
-                                        <p>precio semanal del area: {all_areas[0]?.price}$</p>
+                                        <p>Precio semanal del area: {all_areas[0]?.price}$</p>
                                         <p>Deuda del cliente: {Math.ceil(creditInfo?.delayed?.days_late/7)} semana ({all_areas[0]?.price*Math.ceil(creditInfo?.delayed?.days_late/7)}$)</p>
                                         {/* <p>Abonado: {}</p> */}
                             </div>
