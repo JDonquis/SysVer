@@ -12,6 +12,7 @@ export default {
       'white': 'whitesmoke',
       'black': '#000000',
       'dark': '#202020',
+      'red': '#8f0000',
 
     }
   }

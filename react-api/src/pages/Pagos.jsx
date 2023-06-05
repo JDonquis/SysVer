@@ -25,6 +25,7 @@ export default function Pagos() {
         message: "",
     });
     const [creditInfo, setCreditInfo] = useState({})
+    const [clientSelected, setClientSelected] = useState({})
     const [modalConfirm, setModalConfirm] = useState(false);
     const [all_areas, setAll_areas] = useState([]);
     const [payments, setPayments] = useState();
@@ -101,7 +102,6 @@ export default function Pagos() {
 
         await axios.get("dashboard/payments").then((response) => {
             const data = response.data;
-            console.log(data);
             setPayments(data.payments);
             setMethods(data.methods);
         });
@@ -160,7 +160,6 @@ export default function Pagos() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(newPayment);
 
         try {
             if (submitStatus === "Registrar") {
@@ -169,7 +168,6 @@ export default function Pagos() {
                 await axios
                     .post(`/dashboard/payments/`, newPayment)
                     .then((response) => {
-                        console.log({ response });
                         const payment = response.data.payment;
 
                         setPayments((prev) => [...prev, payment]);
@@ -187,8 +185,7 @@ export default function Pagos() {
                     .put(`/dashboard/payments/${newPayment.id}`, newPayment)
                     .then((response) => {
 
-                        console.log("EL huevo pelao")
-                        console.log({response})
+                        
                         const paymentUpdate = response.data.payment;
                         console.log({paymentUpdate});
                         setPayments((prev) =>
@@ -290,14 +287,16 @@ export default function Pagos() {
         );
     }, [payments]);
 
+
+
     const getUserData = async (code) => {
         try {
             await axios
                 .get(`dashboard/clients/${code}/areas`)
                 .then((response) => {
+                    console.log(response)
                     setAll_areas(response.data.client_areas.areas);
-                    console.log(response.data.client_areas.areas);
-
+                    setClientSelected(response.data)
                     //    const area_id = response.data.latest.schedule.area.id
                     //    const schedule_id = response.data.latest.schedule_id
                     //    setNewAttendance(prev => ({...prev, area_id, schedule_id}))
@@ -319,6 +318,9 @@ export default function Pagos() {
             console.log(error);
         }
     };
+    let delayedWeeks = Math.ceil(creditInfo?.delayed?.days_late/7)
+    let totalDebt = (all_areas[0]?.price*delayedWeeks) - creditInfo?.client?.credit[0].credit
+
 
 
     return (
@@ -368,18 +370,18 @@ export default function Pagos() {
                                 label="Area"
                                 value={newPayment?.area_id}
                                 defaultValue=""
-                                onBlur={() =>
-                                    getCreditsInfo(
-                                        newPayment.code,
-                                        newPayment.area_id
-                                    )
-                                }
+                                disabled={!newPayment.code}
                                 name="turno"
                                 onChange={(e) => {
+                                    
                                     setNewPayment((prev) => ({
                                         ...prev,
                                         area_id: e.target.value,
                                     }));
+                                    getCreditsInfo(
+                                        newPayment.code,
+                                        e.target.value
+                                    )
                                 }}
                             >
                                 {all_areas.map((option) => (
@@ -443,11 +445,15 @@ export default function Pagos() {
                                 )}
                             </div>
 
-                            <div className="infoCredit_container">
-                                        <p>Precio semanal del area: {all_areas[0]?.price}$</p>
-                                        <p>Deuda del cliente: {Math.ceil(creditInfo?.delayed?.days_late/7)} semana ({all_areas[0]?.price*Math.ceil(creditInfo?.delayed?.days_late/7)}$)</p>
-                                        {/* <p>Abonado: {}</p> */}
-                            </div>
+                            {newPayment.code && newPayment.area_id && (
+                                <ul className="infoCredit_container">
+                                    <li>Precio semanal del area: <b>{all_areas[0]?.price}</b>$</li>
+                                    <li>Cliente: <b> </b> </li>
+                                    <li>Semanas debidas: <b>{delayedWeeks}</b>  </li>
+                                    <li>Abonado: {creditInfo?.client?.credit[0].credit}$</li>
+                                    <li>Deuda total: <b  style={{color: totalDebt > 0 ? '#8f0000' : '#027353' }}>{totalDebt}$</b></li>
+                                </ul>
+                            )}
                         </div>
 
                         <div
