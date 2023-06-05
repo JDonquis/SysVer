@@ -15,8 +15,10 @@ class CreateCreditClientsTable extends Migration
     {
         Schema::create('credit_clients', function (Blueprint $table) {
             $table->id();
-            $table->foreignId("client_id")->constrained()->onDelete("restrict")->onUpdate("cascade");
+            $table->foreignId("client_area_charged_id")->constrained()->onDelete("cascade")->onUpdate("cascade");
             $table->integer('credit');
+            $table->integer('days_credit');
+            $table->timestamps();
             
         });
     }

@@ -63,7 +63,11 @@ class PaymentsController extends Controller
 
             DB::commit();
 
-            return response(["payment" => $payment], Response::HTTP_OK);
+            $p = new Payment;
+
+            $payResponse = $p->calculate($client_area->id,$request->amount,'payment');
+
+            return response(["payment" => $payment, "payResponse" => $payResponse], Response::HTTP_OK);
 
         }catch(Exception $e) {
           
@@ -72,10 +76,6 @@ class PaymentsController extends Controller
           return response(["error" => $e->getMessage()], Response::HTTP_BAD_REQUEST);
         }
     }
-
-    
-
-    
 
     /**
      * Update the specified resource in storage.
@@ -110,7 +110,11 @@ class PaymentsController extends Controller
 
             DB::commit();
 
-            return response(["Message" => "Pago actualizado con exito", "payment" => $payment], Response::HTTP_OK);
+            $p = new Payment;
+
+            $payResponse = $p->calculate($client_area->id,$request->amount,'payment');
+
+            return response(["Message" => "Pago actualizado con exito", "payment" => $payment, "payResponse" => $payResponse], Response::HTTP_OK);
 
         }catch(Exception $e) {
           
