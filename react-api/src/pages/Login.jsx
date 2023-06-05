@@ -101,33 +101,34 @@ export default function login() {
             <div className="viñeta" style={viñetaPosition}></div>
             {/* squares for large screen */}
             <div className="container_squares hidden md:grid relative left-14">
-              <div className="sqr18 deep" style={deep} ></div>
-              <div className="sqr19 deep" style={deep} ></div>
-              <div className="sqr20 deep" style={deep} ></div>
-              <div className="sqr21 deep" style={deep} ></div>
-              <div className="sqr27 deep" style={deep} ></div>
-              <div className="sqr24 deep" style={deep} ></div>
-              <div className="sqr1 sqrBack" style={backSquaredX}></div>
-              <div className="sqr3 sqrBack" style={backSquaredX}></div>
-              <div className="sqr4 sqrBack" style={backSquaredX}></div>
-              <div className="sqr5 sqrBack" style={backSquaredX}></div>
-              <div className="sqr6 sqrBack" style={backSquaredX}></div>
-              <div className="sqr8 sqrBack" style={backSquaredX}></div>
-              <div className="sqr12 sqrBack" style={backSquaredX}></div>
-              <div className="sqr13 sqrBack" style={backSquaredX}></div>
-              <div className="sqr22 sqrBack" style={backSquaredX}></div>
-              <div className="sqr17 front" style={frontSquaredX}></div>
-              <div className="sqr11 front" style={frontSquaredX} ></div>
-              <div className="sqr2 front" style={frontSquaredX}></div>
-              <div className="sqr9 front" style={frontSquaredX} ></div>
-              <div className="sqr7 front" style={frontSquaredX} ></div>
-              <div className="sqr10 front" style={frontSquaredX} ></div>
-              <div className="sqr14 front" style={frontSquaredX} ></div>
-              <div className="sqr15 front" style={frontSquaredX} ></div>
-              <div className="sqr16 front" style={frontSquaredX} ></div>
-              <div className="sqr23 front" style={frontSquaredX} ></div>
-              <div className="sqr25 front" style={frontSquaredX} ></div>
-              <div className="sqr26 front" style={frontSquaredX} ></div>
+                
+              <div className="box sqr18 deep" style={deep} ></div>
+              <div className="box sqr19 deep" style={deep} ></div>
+              <div className="box sqr20 deep" style={deep} ></div>
+              <div className="box sqr21 deep" style={deep} ></div>
+              <div className="box sqr27 deep" style={deep} ></div>
+              <div className="box sqr24 deep" style={deep} ></div>
+              <div className="box sqr1 sqrBack" style={backSquaredX}></div>
+              <div className="box sqr3 sqrBack" style={backSquaredX}></div>
+              <div className="box sqr4 sqrBack" style={backSquaredX}></div>
+              <div className="box sqr5 sqrBack" style={backSquaredX}></div>
+              <div className="box sqr6 sqrBack" style={backSquaredX}></div>
+              <div className="box sqr8 sqrBack" style={backSquaredX}></div>
+              <div className="box sqr12 sqrBack" style={backSquaredX}></div>
+              <div className="box sqr13 sqrBack" style={backSquaredX}></div>
+              <div className="box sqr22 sqrBack" style={backSquaredX}></div>
+              <div className="box sqr17 front" style={frontSquaredX}></div>
+              <div className="box sqr11 front" style={frontSquaredX} ></div>
+              <div className="box sqr2 front" style={frontSquaredX}></div>
+              <div className="box sqr9 front" style={frontSquaredX} ></div>
+              <div className="box sqr7 front" style={frontSquaredX} ></div>
+              <div className="box sqr10 front" style={frontSquaredX} ></div>
+              <div className="box sqr14 front" style={frontSquaredX} ></div>
+              <div className="box sqr15 front" style={frontSquaredX} ></div>
+              <div className="box sqr16 front" style={frontSquaredX} ></div>
+              <div className="box sqr23 front" style={frontSquaredX} ></div>
+              <div className="box sqr25 front" style={frontSquaredX} ></div>
+              <div className="box sqr26 front" style={frontSquaredX} ></div>
             </div>
 
             {/* squares for phone screen */} 

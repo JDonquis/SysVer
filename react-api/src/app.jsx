@@ -6,6 +6,7 @@ import Asistencia from "./pages/Asistencia";
 import Personal from "./pages/Personal";
 import Areas from "./pages/areas";
 import Pagos from "./pages/Pagos";
+import Historial_de_pagos from  "./pages/Historial_de_pagos"
 import Historial_de_asistencia from "./pages/Historial_de_asistencia"
 import { useState } from "react";
 
@@ -29,6 +30,7 @@ export default function app() {
                         <Route path="/areas" element={<Areas />}></Route>
                         <Route path="/asistencia" element={<Asistencia />}></Route>
                         <Route path="/historial_de_asistencia" element={<Historial_de_asistencia />}></Route>
+                        <Route path="/historial_de_pagos" element={<Historial_de_pagos />}></Route>
                         <Route path="/pagos" element={<Pagos />}></Route>
                     </Routes>
                     </div>

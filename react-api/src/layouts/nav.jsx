@@ -72,6 +72,12 @@ export default function nav(props) {
                         <span className="text_link"> Pagos</span>
                     </NavLink>
                 </li>
+                <li>
+                    <NavLink to="/dashboard/historial_de_pagos">
+                    <ListAltIcon />
+                        <span className="text_link"> Historial de pagos</span>
+                    </NavLink>
+                </li>
                 
             </ul>
             </div>
