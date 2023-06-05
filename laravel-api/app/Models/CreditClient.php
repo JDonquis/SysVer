@@ -12,7 +12,7 @@ class CreditClient extends Model
     protected $table = 'credit_clients';
 
         protected $fillable = [
-        'client_id',
+        'client_area_charged_id',
         'credit',
         
     ];

@@ -33,4 +33,9 @@ class ClientAreaCharged extends Model
     {
           return $this->hasOne(DelayedClient::class,'client_area_charged_id','id');
     }
+
+    public function credit()
+      {
+          return $this->hasOne(CreditClient::class,'client_area_charged_id','id');
+      }
 }
