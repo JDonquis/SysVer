@@ -31,6 +31,7 @@ class Payment extends Model
     {       
         $debt = DelayedClient::where('client_area_charged_id',$id_client_area)->first();
 
+
         if($action == 'payment')
         {
             if(isset($debt->amount))
@@ -79,6 +80,10 @@ class Payment extends Model
             }    
                 
         }
+        else if($action == 'destroy')
+        {
+
+        }
     }
 
     public function credit_to($id,$amount)
@@ -89,16 +94,33 @@ class Payment extends Model
        {
             $result = $client->credit + $amount;
             
+            $days = $this->calculate_days_credit($id,$result);
+
+            $days = $client->days_credit + $days;
+
             $client->credit = $result;
+
+            $client->days_credit = $days;
 
             return $client->update();
        }
 
-       $credit = CreditClient::create(['client_area_charged_id' => $id, 'credit' => $amount]);
+       $days = $this->calculate_days_credit($id,$amount);
+
+       $credit = CreditClient::create(['client_area_charged_id' => $id, 'credit' => $amount, 'days_credit' => $days]);
 
        return isset($credit->id);
     }
 
+    public function calculate_days_credit($id,$credit)
+    {
+        $area = ClientAreaCharged::where('id',$id)->with('area')->first();
 
+        $days = ($credit * 7) / $area->area->price;
+
+        $days = floor($days);
+
+        return $days;
+    }
 
 }

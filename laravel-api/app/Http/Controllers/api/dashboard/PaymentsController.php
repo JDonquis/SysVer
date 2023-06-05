@@ -110,7 +110,11 @@ class PaymentsController extends Controller
 
             DB::commit();
 
-            return response(["Message" => "Pago actualizado con exito", "payment" => $payment], Response::HTTP_OK);
+            $p = new Payment;
+
+            $payResponse = $p->calculate($client_area->id,$request->amount,'payment');
+
+            return response(["Message" => "Pago actualizado con exito", "payment" => $payment, "payResponse" => $payResponse], Response::HTTP_OK);
 
         }catch(Exception $e) {
           

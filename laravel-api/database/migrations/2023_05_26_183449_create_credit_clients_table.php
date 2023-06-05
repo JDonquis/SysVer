@@ -17,6 +17,7 @@ class CreateCreditClientsTable extends Migration
             $table->id();
             $table->foreignId("client_area_charged_id")->constrained()->onDelete("cascade")->onUpdate("cascade");
             $table->integer('credit');
+            $table->integer('days_credit');
             $table->timestamps();
             
         });

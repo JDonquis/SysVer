@@ -14,6 +14,7 @@ class CreditClient extends Model
         protected $fillable = [
         'client_area_charged_id',
         'credit',
+        'days_credit'
         
     ];
 
