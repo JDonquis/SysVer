@@ -161,7 +161,7 @@ class ClientController extends Controller
 
     public function get_areas_client($code)
     {
-        $client = Client::select('id')->where('code',$code)->with('areas')->first();
+        $client = Client::where('code',$code)->with('areas')->first();
 
         return response(["client_areas" => $client ], Response::HTTP_OK);
     }
