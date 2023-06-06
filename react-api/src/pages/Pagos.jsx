@@ -25,7 +25,7 @@ export default function Pagos() {
         message: "",
     });
     const [creditInfo, setCreditInfo] = useState({})
-    const [clientSelected, setClientSelected] = useState({})
+    const [clientSelected, setClientSelected] = useState('')
     const [modalConfirm, setModalConfirm] = useState(false);
     const [all_areas, setAll_areas] = useState([]);
     const [payments, setPayments] = useState();
@@ -294,8 +294,9 @@ export default function Pagos() {
                 .get(`dashboard/clients/${code}/areas`)
                 .then((response) => {
                     console.log(response)
-                    setAll_areas(response.data.client_areas.areas);
-                    setClientSelected(response.data)
+                    const client_area = response.data.client_areas;
+                    setAll_areas(client_area.areas);
+                    setClientSelected(client_area.name + ' '+ client_area.last_name)
                     //    const area_id = response.data.latest.schedule.area.id
                     //    const schedule_id = response.data.latest.schedule_id
                     //    setNewAttendance(prev => ({...prev, area_id, schedule_id}))
@@ -319,7 +320,7 @@ export default function Pagos() {
     };
     let delayedWeeks = Math.ceil(creditInfo?.delayed?.days_late/7)
     let totalDebt = creditInfo?.delayed?.amount
-
+    let weekspay = Math.ceil(creditInfo?.credit?.days_credit/7)
     console.log(creditInfo)
 
 
@@ -447,12 +448,21 @@ export default function Pagos() {
 
                             {newPayment.code && newPayment.area_id && (
                                 <ul className="infoCredit_container">
-                                    <li>Precio semanal del area: <b>{all_areas[0]?.price}</b>$</li>
-                                    <li>Cliente: <b> </b> </li>
-                                    <li>Semanas debidas: <b>{delayedWeeks}</b>  </li>
-                                    <li>Abonado: {creditInfo?.credit?.credit}$</li>
-                                    <li>Deuda total: <b  style={{color: totalDebt > 0 ? '#8f0000' : '#027353' }}>{totalDebt}$</b></li>
-                                    <li></li>
+                                    <li>Precio semanal del area: <b >{all_areas[0]?.price}</b>$</li>
+                                    <li>Cliente: <b> {clientSelected}</b> </li>
+                                    {delayedWeeks &&  (
+                                        <li>Semanas de deuda: <b style={{color: '#8f0000'}}>{delayedWeeks} </b>  </li>
+                                    ) }
+                                    {weekspay &&  (
+                                        <li>Semanas pagadas: <b style={{color: '#027353'}}>{weekspay} </b>  </li>
+                                    ) }
+                                    {creditInfo?.credit?.credit && (
+                                        <li>Abonado: {creditInfo?.credit?.credit}$</li>
+
+                                    )}
+                                    
+                                    <li>Deuda:   {totalDebt  ? <b style={{color:  '#8f0000' }}>{totalDebt}$</b> : <b style={{color: '#027353'}}>0$</b> }  </li>
+                                    
                                 </ul>
                             )}
                         </div>
