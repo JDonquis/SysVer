@@ -74,7 +74,7 @@ class PaymentsController extends Controller
           DB::rollback();  
 
           return response(["error" => $e->getMessage()], Response::HTTP_BAD_REQUEST);
-        }+
+        }
     }
 
     /**
