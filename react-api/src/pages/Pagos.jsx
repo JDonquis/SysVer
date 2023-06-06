@@ -134,7 +134,6 @@ export default function Pagos() {
         // copySchedule[i] = { ...copySchedule[i], [shift]: e.target.value };
         // setnewPayment((prev) => ({ ...prev, schedule: copySchedule }));
     }
-    console.log(creditInfo)
     const deleteData = async () => {
         try {
             const id = payments[dataForDelete.indx].id;
@@ -311,7 +310,7 @@ export default function Pagos() {
             await axios
                 .get(`dashboard/clients/${code}/${area_id}/delayed/credit`)
                 .then((response) => {
-                    console.log(response.data);
+                    console.log(response);
                     setCreditInfo(response.data)
                 });
         } catch (error) {
@@ -319,8 +318,9 @@ export default function Pagos() {
         }
     };
     let delayedWeeks = Math.ceil(creditInfo?.delayed?.days_late/7)
-    let totalDebt = (all_areas[0]?.price*delayedWeeks) - creditInfo?.client?.credit[0].credit
+    let totalDebt = creditInfo?.delayed?.amount
 
+    console.log(creditInfo)
 
 
     return (
@@ -450,8 +450,9 @@ export default function Pagos() {
                                     <li>Precio semanal del area: <b>{all_areas[0]?.price}</b>$</li>
                                     <li>Cliente: <b> </b> </li>
                                     <li>Semanas debidas: <b>{delayedWeeks}</b>  </li>
-                                    <li>Abonado: {creditInfo?.client?.credit[0].credit}$</li>
+                                    <li>Abonado: {creditInfo?.credit?.credit}$</li>
                                     <li>Deuda total: <b  style={{color: totalDebt > 0 ? '#8f0000' : '#027353' }}>{totalDebt}$</b></li>
+                                    <li></li>
                                 </ul>
                             )}
                         </div>
