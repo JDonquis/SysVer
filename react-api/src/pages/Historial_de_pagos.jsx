@@ -72,37 +72,37 @@ export default function Historial_de_pagos() {
             },
         },
         {
-            name: "client",
+            name: "client_area",
             label: "Código",
             options: {
                 filter: false,
                 customBodyRender: (value) => {
-                    return value.code;
+                    return value.client.code;
                 },
             },
         },
         {
-            name: "client",
+            name: "client_area",
             label: "Nombre",
             options: {
                 filter: false,
                 customBodyRender: (value) => {
-                    return value.name;
+                    return value.client.name;
                 },
             },
         },
         {
-            name: "client",
+            name: "client_area",
             label: "Apellido",
             options: {
                 filter: false,
                 customBodyRender: (value) => {
-                    return value.last_name;
+                    return value.client.last_name;
                 },
             },
         },
         {
-            name: "schedule",
+            name: "client_area",
             label: "Area",
             options: {
                 filter: true,
@@ -112,15 +112,11 @@ export default function Historial_de_pagos() {
             },
         },
         {
-            name: "schedule",
+            name: "amount",
             label: "Monto",
             options: {
                 filter: true,
-                customBodyRender: (value) => {
-                    return (
-                        value.shift_start.start + " - " + value.shift_end.end
-                    );
-                },
+                
             },
         },
     ]
