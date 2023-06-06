@@ -40,15 +40,6 @@ class AssistanceController extends Controller
        $s = new Schedule;
        $client_id = Client::where("code",$request->code)->first();
 
-       $debt = new DelayedClient;
-
-       $debt_client = $debt->hasDebt($client_id);
-       
-       if(!is_null($debt_client))
-       {
-            
-       }
-
        $ids = $s->get_areas_ids($request->area_id);
        
        if(!isset($client_id->id))
@@ -166,9 +157,19 @@ class AssistanceController extends Controller
 
     public function last_assistance($code)
     {
-        $client_id = Client::where("code",$code)->first();
-        $latest = HistorialAssistance::where('client_id',$client_id->id)->latest()->with('schedule.area','schedule.shift_start','schedule.shift_end')->first();
-        return response(["latest" => $latest], Response::HTTP_OK);
+       $client_id = Client::where("code",$code)->first();
+        
+       $latest = HistorialAssistance::where('client_id',$client_id->id)->latest()->with('schedule.area','schedule.shift_start','schedule.shift_end')->first();
+            
+       $debt = new DelayedClient;
+
+       $debt_client = $debt->hasDebt($client_id->id);
+       
+       $has_debt = !is_null($debt_client);
+
+       $message = $has_debt?'Este usuario tiene registrado una deuda.':''; 
+
+        return response(["latest" => $latest,'has_debt' => $has_debt,"Message" => $message], Response::HTTP_OK);
     }
 
     /**

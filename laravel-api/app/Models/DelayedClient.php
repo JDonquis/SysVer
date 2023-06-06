@@ -23,7 +23,7 @@ class DelayedClient extends Model
     {
         $client_area_charged = ClientAreaCharged::where('client_id',$id_client)->first();
 
-        $debt = DelayedClient::find($client_area_charged->id);
+        $debt = DelayedClient::where('client_area_charged_id',$client_area_charged->id)->first();
         
         return $debt;
     }
