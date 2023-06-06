@@ -10,4 +10,11 @@ class DelayedClient extends Model
     use HasFactory;
 
     protected $table = "delayed_clients";
+
+    protected $fillable = [
+
+        'client_area_charged_id',
+        'amount',
+        'days_late'
+    ];
 }

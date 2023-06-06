@@ -27,7 +27,7 @@ class Payment extends Model
         return $this->belongsTo(ClientAreaCharged::class,'client_area_charged_id','id');
     }
 
-    public function calculate($id_client_area,$amount,$action)
+    public function calculate($id_client_area,$amount,$action,$id_payment = 0)
     {       
         $debt = DelayedClient::where('client_area_charged_id',$id_client_area)->first();
 
@@ -82,6 +82,69 @@ class Payment extends Model
         }
         else if($action == 'destroy')
         {
+            $payment = Payment::where('id',$id_payment)->first();
+
+            $credit = CreditClient::where('client_area_charged_id',$id_client_area)->first();
+
+            $amountPay = $payment->amount;
+
+            if(isset($debt->amount))
+            {
+                $result = $debt->amount + $amountPay;
+                
+                $debt->amount = $result;
+                
+                $debt->update();
+
+                return 'Se ha establecido la deuda en '.$debt->amount.'$';
+                
+            }
+            else if(isset($credit->credit))
+            {
+                $result =  $credit->credit - $amountPay;
+
+                if($result < 0)
+                {
+                    $credit->delete();
+                    
+                    $result = abs($result);
+
+                    $days_late = $this->calculate_days($id_client_area,$result);
+
+                    $debt = DelayedClient::create(['client_area_charged_id' => $id_client_area, 'amount' => $result, 'days_late' => $days_late]);
+
+                    return 'Se ha establecido una deuda de '.$debt->amount.'$';
+
+                }
+
+                else if($result == 0)
+                {
+                    $credit->delete();
+                    return 'Se ha eliminado un credito de '.$amountPay.'$';
+
+                }
+                else if($result > 0)
+                {
+                    $result = abs($result);
+                    
+                    $credit->credit = $result;
+                    
+                    $credit->update();
+
+                    return 'Se ha reducido el credito a '.$credit->credit.'$';
+                }
+
+            }
+            else{
+
+                $days_late = $this->calculate_days($id_client_area,$amountPay);
+
+                $debt = DelayedClient::create(['client_area_charged_id' => $id_client_area, 'amount' => $amountPay, 'days_late' => $days_late]);
+
+                return 'Se ha establecido una deuda de '.$debt->amount.'$';
+
+            } 
+
 
         }
     }
@@ -105,22 +168,23 @@ class Payment extends Model
             return $client->update();
        }
 
-       $days = $this->calculate_days_credit($id,$amount);
+       $days = $this->calculate_days($id,$amount);
 
        $credit = CreditClient::create(['client_area_charged_id' => $id, 'credit' => $amount, 'days_credit' => $days]);
 
        return isset($credit->id);
     }
 
-    public function calculate_days_credit($id,$credit)
+    public function calculate_days($id,$amount)
     {
         $area = ClientAreaCharged::where('id',$id)->with('area')->first();
 
-        $days = ($credit * 7) / $area->area->price;
+        $days = ($amount * 7) / $area->area->price;
 
         $days = floor($days);
 
         return $days;
     }
+
 
 }
