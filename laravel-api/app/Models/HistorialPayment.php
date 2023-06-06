@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
+use DateTimeInterface;
 
 class HistorialPayment extends Model
 {
@@ -18,6 +20,15 @@ class HistorialPayment extends Model
         "created_at",
         "updated_at"
     ];
+
+    protected $dates = [ 'created_at' , 'updated_at'];
+
+    protected $dateFormat = 'Y-m-d';
+
+    protected function serializeDate(DateTimeInterface $date)
+    {
+        return $date->format('Y-m-d');
+    }
 
     public function client_area()
     {
