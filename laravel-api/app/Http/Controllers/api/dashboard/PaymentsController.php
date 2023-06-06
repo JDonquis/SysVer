@@ -74,7 +74,7 @@ class PaymentsController extends Controller
           DB::rollback();  
 
           return response(["error" => $e->getMessage()], Response::HTTP_BAD_REQUEST);
-        }
+        }+
     }
 
     /**
@@ -136,11 +136,17 @@ class PaymentsController extends Controller
 
         try {
 
-            DB::table('payments')->where('id', $id)->delete();
+            $payment = Payment::where('id',$id)->first();
+
+            $p = new Payment;
+
+            $payResponse = $p->calculate($payment->client_area_charged_id,$payment->amount,'destroy',$id); 
+
+            $payment->delete();
 
             DB::commit();
 
-            return response(["Message" => 'Pago eliminado correctamente'], Response::HTTP_OK);
+            return response(["Message" => 'Pago eliminado correctamente', "payResponse" => $payResponse], Response::HTTP_OK);
 
         }catch (Exception $e) {
             DB::rollback();
