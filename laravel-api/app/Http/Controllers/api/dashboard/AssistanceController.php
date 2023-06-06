@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Area;
 use App\Models\Assistance;
 use App\Models\Client;
+use App\Models\DelayedClient;
 use App\Models\HistorialAssistance;
 use App\Models\Schedule;
 use DB;
@@ -38,7 +39,16 @@ class AssistanceController extends Controller
     {
        $s = new Schedule;
        $client_id = Client::where("code",$request->code)->first();
+
+       $debt = new DelayedClient;
+
+       $debt_client = $debt->hasDebt($client_id);
        
+       if(!is_null($debt_client))
+       {
+            
+       }
+
        $ids = $s->get_areas_ids($request->area_id);
        
        if(!isset($client_id->id))

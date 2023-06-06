@@ -28,7 +28,8 @@ class Client extends Model
         'address',
         'phone_number',
         'collaboration',
-        'email'
+        'email',
+        
 
     ];
 
