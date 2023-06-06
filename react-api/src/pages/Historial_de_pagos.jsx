@@ -107,16 +107,16 @@ export default function Historial_de_pagos() {
             options: {
                 filter: true,
                 customBodyRender: (value) => {
-                    return value.area.name;
+                    return value.area.name ;
                 },
             },
         },
         {
             name: "amount",
-            label: "Monto",
+            label: "Monto ($)",
             options: {
                 filter: true,
-                
+            
             },
         },
     ]
