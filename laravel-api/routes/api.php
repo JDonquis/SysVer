@@ -60,6 +60,10 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth:sanctum']], functi
     Route::put('payments/{id}',[PaymentsController::class,'update']);
     Route::delete('payments/{id}',[PaymentsController::class,'destroy']);
 
+    // Historial of Payments
+    Route::get('historial/payments',[PaymentsController::class,'historial']);
+
     // External APIs  
     Route::get('dollar',[DollarController::class,'index']);
 });
+

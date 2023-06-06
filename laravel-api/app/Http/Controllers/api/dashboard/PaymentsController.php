@@ -7,6 +7,7 @@ use App\Models\Area;
 use App\Models\AreaCharged;
 use App\Models\Client;
 use App\Models\ClientAreaCharged;
+use App\Models\HistorialPayment;
 use App\Models\Payment;
 use App\Models\PaymentMethod;
 use DB;
@@ -155,6 +156,11 @@ class PaymentsController extends Controller
         }  
     }
 
-
+    public function historial()
+    {
+        $payments = HistorialPayment::with('client_area.client','client_area.area')->get();
+        
+        return response(['payments' => $payments], Response::HTTP_OK);    
+    }
 }
 
