@@ -9,8 +9,9 @@ export default function Historial_de_pagos() {
     const getData = async () => {
         try {
 
-            await axios.get("dashboard/historial/assistance").then((response) => {
-                const payments = response.data.assistances;
+            await axios.get("dashboard/historial/payments").then((response) => {
+                console.log({response})
+                const payments = response.data.payments;
                 setpagos(payments);
                 
     

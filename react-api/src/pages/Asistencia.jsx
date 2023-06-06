@@ -414,7 +414,7 @@ console.log(newAttendance)
 
                 <button
                     type="submit"
-                    className="bg-purple/30  px-5 rounded-md text-dark hover:bg-purple"
+                    className="bg-purple/50  px-5 rounded-md text-dark hover:bg-purple"
                 >
                     {statusSubmit}
                 </button>
