@@ -2,16 +2,16 @@ import React, { useState, useEffect } from "react";
 import MUIDataTable from "mui-datatables";
 import axios from "../api/axios";
 const months = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
-export default function Historial_de_asistencia() {
-    const [asistencias, setAsistencias] = useState([]);
+export default function Historial_de_pagos() {
+    const [pagos, setpagos] = useState([]);
     const [tabla, setTabla ] = useState()
 
     const getData = async () => {
         try {
 
             await axios.get("dashboard/historial/assistance").then((response) => {
-                const asis = response.data.assistances;
-                setAsistencias(asis);
+                const payments = response.data.assistances;
+                setpagos(payments);
                 
     
             });
@@ -23,7 +23,7 @@ export default function Historial_de_asistencia() {
 
     useEffect(() => {
         getData();
-        document.title = "Historial de asistencia";
+        document.title = "Historial de pagos";
     }, []);
     const options = {
         filterType: "checkbox",
@@ -127,14 +127,14 @@ export default function Historial_de_asistencia() {
     useEffect(() => {
         setTabla(<MUIDataTable
             isRowSelectable={false}
-            title={"Historial de asistencias"}
-            data={asistencias}
+            title={"Historial de pagos"}
+            data={pagos}
             columns={columns}
             options={options}
         />)
-    }, [asistencias]);
+    }, [pagos]);
 
-    console.log(asistencias)
+    console.log(pagos)
 
     return (
         <>

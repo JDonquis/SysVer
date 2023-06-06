@@ -178,9 +178,9 @@ export default function Asistencia() {
         try {
             await axios.get(`dashboard/assistance/${newAttendance.code}`).then((response) => {
                 console.log({response})
-               const area_id = response.data.latest.schedule.area.id
-               const schedule_id = response.data.latest.schedule_id
-               setNewAttendance(prev => ({...prev, area_id, schedule_id}))
+               const area_id = response.data.latest?.schedule.area.id
+               const schedule_id = response.data.latest?.schedule_id
+               setNewAttendance(prev => ({...prev, area_id, schedule_id , has_debt: response.data.has_debt, message: response.data.Message}))
             });
 
            
@@ -341,9 +341,14 @@ console.log(newAttendance)
     return (
         <>
             <form
-                className="flex glass p-3 gap-3 w-min rounded-md mb-5"
+                
                 onSubmit={handleSubmit}
+                className="glass p-3  w-min rounded-md mb-5"
             >
+                <div
+                className="flex gap-3 "
+                >
+
                 <CssTextField
                     // shrink={true}
                     // type={"Código"}
@@ -413,6 +418,10 @@ console.log(newAttendance)
                 >
                     {statusSubmit}
                 </button>
+                </div>
+                {newAttendance.has_debt && (
+                    <p className="pt-3">{newAttendance.message}</p>
+                )}
             </form>
 
             {tabla}
