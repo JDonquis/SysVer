@@ -206,6 +206,12 @@ export default function Asistencia() {
         selectableRows: "single",
         // rowsSelected:rowSelected,
         fixedHeader: true,
+        onRowSelectionChange: (a,rowSelected,c) => {
+            if (rowSelected.length === 0) {
+                setNewAttendance({code: '', schedule_id: '', area_id: ''})
+            }
+        },
+
         customToolbarSelect: (selectedRows, displayData, setSelectedRows) => (
             <div>
                 <IconButton
@@ -332,6 +338,7 @@ export default function Asistencia() {
                 isRowSelectable={true}
                 title={`Asistencia de hoy ${diaA}/${mesA}/${añoA}`}
                 data={asistencia}
+
                 columns={columns}
                 options={options}
             />
