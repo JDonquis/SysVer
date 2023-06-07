@@ -9,6 +9,9 @@ import SportsGymnasticsIcon from '@mui/icons-material/SportsGymnastics';
 import DoubleArrowIcon from '@mui/icons-material/DoubleArrow';
 import PointOfSaleIcon from '@mui/icons-material/PointOfSale';
 import ListAltIcon from '@mui/icons-material/ListAlt';
+import ReceiptIcon from '@mui/icons-material/Receipt';
+import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
+
 export default function nav(props) {
     const [menuStatus, setMenuStatus] = useState(true)
 
@@ -74,11 +77,18 @@ export default function nav(props) {
                 </li>
                 <li>
                     <NavLink to="/dashboard/historial_de_pagos">
-                    <ListAltIcon />
+                    <ReceiptIcon />
                         <span className="text_link"> Historial de pagos</span>
                     </NavLink>
                 </li>
                 
+                {/* for the director */}
+                <li>
+                    <NavLink to="/dashboard/estados_de_cuenta">
+                    <AccountBalanceIcon />
+                        <span className="text_link"> Estados de cuenta</span>
+                    </NavLink>
+                </li>
             </ul>
             </div>
         </nav>

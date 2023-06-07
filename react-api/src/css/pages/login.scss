@@ -123,7 +123,7 @@
 }
 @keyframes squaresAnimation {
     from {
-        top: -360px;
+        top: -388px; 
     }
 }
 .sqrBack {
@@ -283,7 +283,7 @@
     background: #a64684;
 }
 
-.deep {
+.box.deep {
     z-index: 1;
     opacity: 0.6;
     filter: blur(2px)
