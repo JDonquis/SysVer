@@ -3,7 +3,10 @@
 namespace App\Console\Commands;
 
 use App\Models\BalanceClient;
+use App\Models\ClientAreaCharged;
+use App\Models\Payment;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Log;
 
 class CollectClients extends Command
 {
@@ -37,14 +40,23 @@ class CollectClients extends Command
      * @return int
      */
     public function handle()
-    {
-        
-        $clients = ClientAreaCharged::all();
+    {   
 
-        foreach ($clients as $client) {
-            // code...
+        Log::info('Este es un mensaje de prueba aaaa');
+
+        $clients = ClientAreaCharged::with('area')->get();
+        $p = new Payment();
+        
+        Log::info('Este es un mensaje de prueba 2');
+
+        foreach ($clients as $client)
+        {   
+            $response = $p->calculate($client->id,$client->area->price,'collect'); 
         }
 
-        return 0;
+        Log::info('Este es un mensaje de prueba 3');
+
+        // $this->info('Clientes cobrados exitosamente.');
+        
     }
 }
