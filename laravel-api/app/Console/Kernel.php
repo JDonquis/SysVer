@@ -19,6 +19,8 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command('insert:history-assistance')->dailyAt('19:00');
+        // $schedule->command('insert:history-assistance')->everyMinute();
+        
     }
 
     /**

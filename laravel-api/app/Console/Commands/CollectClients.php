@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Models\BalanceClient;
 use Illuminate\Console\Command;
 
 class CollectClients extends Command
@@ -38,6 +39,11 @@ class CollectClients extends Command
     public function handle()
     {
         
+        $clients = ClientAreaCharged::all();
+
+        foreach ($clients as $client) {
+            // code...
+        }
 
         return 0;
     }
