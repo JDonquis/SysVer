@@ -18,13 +18,13 @@ class BalanceClient extends Model
         'days'
     ];
 
-    public function hasDebt($id_client)
-    {
-        $client_area_charged = ClientAreaCharged::where('client_id',$id_client)->first();
+    // public function hasDebt($id_client)
+    // {
+    //     $client_area_charged = ClientAreaCharged::where('client_id',$id_client)->first();
 
-        $status = BalanceClient::where('client_area_charged_id',$client_area_charged->id)->first();
+    //     $status = BalanceClient::where('client_area_charged_id',$client_area_charged->id)->first();
        
         
-        return $debt;
-    }
+    //     return $debt;
+    // }
 }

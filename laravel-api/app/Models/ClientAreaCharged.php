@@ -35,4 +35,8 @@ class ClientAreaCharged extends Model
           return $this->hasOne(BalanceClient::class,'client_area_charged_id','id');
     }
 
+    // public function collect_areas($client_id,$area_charged_id)
+    // {
+    //     AreaCharged::where('')
+    // }
 }

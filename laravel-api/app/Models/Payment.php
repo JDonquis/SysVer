@@ -64,7 +64,24 @@ class Payment extends Model
             $balance->update();
 
             return 'Saldo establecido en '.$balance->balance;   
+        }
 
+        else if($action == 'collect')
+        {   
+
+            $a = $amount;
+
+            $b = $balance->balance - $a;
+
+            $balance->balance = $b;
+
+            $balance->days = $this->calculate_days($id_client_area,$b);
+
+            $balance->status = $this->calculate_status($b);
+
+            $balance->update();
+
+            return true;   
         }
     }
 
