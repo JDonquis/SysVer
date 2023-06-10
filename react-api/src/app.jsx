@@ -33,7 +33,7 @@ export default function app() {
                         <Route path="/historial_de_asistencia" element={<Historial_de_asistencia />}></Route>
                         <Route path="/pagos" element={<Pagos />}></Route>
                         <Route path="/historial_de_pagos" element={<Historial_de_pagos />}></Route>
-                        <Route path="/pagos" element={<Estados_de_cuenta />}></Route>
+                        <Route path="/estados_de_cuenta" element={<Estados_de_cuenta />}></Route>
                     </Routes>
                     </div>
                 </main>

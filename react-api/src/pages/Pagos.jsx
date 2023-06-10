@@ -6,10 +6,10 @@ import EditIcon from "@mui/icons-material/Edit";
 import Add from "@mui/icons-material/Add";
 // import Chip from '@material-ui/core/Chip';
 import { IconButton, TextField, Autocomplete, MenuItem } from "@mui/material";
+import Input from "../components/Input";
 import { Modal, ModalDialog, Button } from "@mui/joy/";
 import ConfirmModal from "../components/ConfimModal";
 import Alert from "../components/Alert";
-import Input from "../components/Input";
 import TransparentButton from "../components/TransparentButton";
 import "../css/pages/pagos.css";
 
@@ -306,9 +306,10 @@ export default function Pagos() {
     };
 
     const getCreditsInfo = async (code, area_id) => {
+        // status 1 : saldo :0,  status 2: saldo positivo, status 3: saldo negativo
         try {
             await axios
-                .get(`dashboard/clients/${code}/${area_id}/delayed/credit`)
+                .get(`dashboard/clients/${code}/${area_id}/balance`)
                 .then((response) => {
                     console.log(response);
                     setCreditInfo(response.data)
