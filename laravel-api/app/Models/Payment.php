@@ -3,10 +3,9 @@
 namespace App\Models;
 
 use App\Models\AreaCharged;
+use App\Models\BalanceClient;
 use App\Models\Client;
 use App\Models\ClientAreaCharged;
-use App\Models\CreditClient;
-use App\Models\DelayedClient;
 use DB;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -29,151 +28,63 @@ class Payment extends Model
 
     public function calculate($id_client_area,$amount,$action,$id_payment = 0)
     {       
-        $debt = DelayedClient::where('client_area_charged_id',$id_client_area)->first();
+        $balance = BalanceClient::where('client_area_charged_id',$id_client_area)->first();
 
 
         if($action == 'payment')
-        {
-            if(isset($debt->amount))
-            {
-                $result = $debt->amount - $amount;
-                
-                if($result > 0)
-                {   
-                    $debt->amount = $result;
-                    
-                    $debt->update();
+        {   
+            $b = $balance->balance + $amount;
 
-                    return 'Sigue debiendo '.$debt->amount.'$';
-                }
-                else if($result == 0)
-                {
-                    $debt->delete();
+            $balance->balance = $b;
 
-                    return 'Se ha pagado la deuda exitosamente';
-                }
-                else if($result < 0)
-                {   
-                    $amountCredit = abs( $result );
-                            
-                    $response = $this->credit_to( $id_client_area, $amountCredit );
+            $balance->days = $this->calculate_days($id_client_area,$b);
 
-                    $responseTextTrue = 'Se pago la deuda y se ha acreditado el monto de '.$amountCredit.'$';
-                    
-                    $responseTextFalse = 'No se ha podido acreditar el resto, revise los datos'; 
+            $balance->status = $this->calculate_status($b);
 
-                    $debt->delete();
+            $balance->update();
 
-                    return $response ? $responseTextTrue : $responseTextFalse; 
-                }
-            }
-            else
-            {
-                            
-                $response = $this->credit_to( $id_client_area, $amount );
+            return 'Saldo establecido en '.$balance->balance;
 
-                $responseTextTrue = 'Se ha acreditado el monto de '.$amount.'$';
-                    
-                $responseTextFalse = 'No se ha podido acreditar el resto, revise los datos'; 
-
-                return $response ? $responseTextTrue : $responseTextFalse;   
-            }    
-                
-        }
+        }   
         else if($action == 'destroy')
-        {
+        {   
+
             $payment = Payment::where('id',$id_payment)->first();
 
-            $credit = CreditClient::where('client_area_charged_id',$id_client_area)->first();
+            $amount = $payment->amount;
 
-            $amountPay = $payment->amount;
+            $b = $balance->balance - $amount;
 
-            if(isset($debt->amount))
-            {
-                $result = $debt->amount + $amountPay;
-                
-                $debt->amount = $result;
-                
-                $debt->update();
+            $balance->balance = $b;
 
-                return 'Se ha establecido la deuda en '.$debt->amount.'$';
-                
-            }
-            else if(isset($credit->credit))
-            {
-                $result =  $credit->credit - $amountPay;
+            $balance->days = $this->calculate_days($id_client_area,$b);
 
-                if($result < 0)
-                {
-                    $credit->delete();
-                    
-                    $result = abs($result);
+            $balance->status = $this->calculate_status($b);
 
-                    $days_late = $this->calculate_days($id_client_area,$result);
+            $balance->update();
 
-                    $debt = DelayedClient::create(['client_area_charged_id' => $id_client_area, 'amount' => $result, 'days_late' => $days_late]);
+            return 'Saldo establecido en '.$balance->balance;   
+        }
 
-                    return 'Se ha establecido una deuda de '.$debt->amount.'$';
+        else if($action == 'collect')
+        {   
 
-                }
+            $a = $amount;
 
-                else if($result == 0)
-                {
-                    $credit->delete();
-                    return 'Se ha eliminado un credito de '.$amountPay.'$';
+            $b = $balance->balance - $a;
 
-                }
-                else if($result > 0)
-                {
-                    $result = abs($result);
-                    
-                    $credit->credit = $result;
-                    
-                    $credit->update();
+            $balance->balance = $b;
 
-                    return 'Se ha reducido el credito a '.$credit->credit.'$';
-                }
+            $balance->days = $this->calculate_days($id_client_area,$b);
 
-            }
-            else{
+            $balance->status = $this->calculate_status($b);
 
-                $days_late = $this->calculate_days($id_client_area,$amountPay);
+            $balance->update();
 
-                $debt = DelayedClient::create(['client_area_charged_id' => $id_client_area, 'amount' => $amountPay, 'days_late' => $days_late]);
-
-                return 'Se ha establecido una deuda de '.$debt->amount.'$';
-
-            } 
-
-
+            return true;   
         }
     }
 
-    public function credit_to($id,$amount)
-    {
-       $client = CreditClient::where('client_area_charged_id',$id)->first();
-       
-       if(isset($client->credit))
-       {
-            $result = $client->credit + $amount;
-            
-            $days = $this->calculate_days_credit($id,$result);
-
-            $days = $client->days_credit + $days;
-
-            $client->credit = $result;
-
-            $client->days_credit = $days;
-
-            return $client->update();
-       }
-
-       $days = $this->calculate_days($id,$amount);
-
-       $credit = CreditClient::create(['client_area_charged_id' => $id, 'credit' => $amount, 'days_credit' => $days]);
-
-       return isset($credit->id);
-    }
 
     public function calculate_days($id,$amount)
     {
@@ -185,6 +96,27 @@ class Payment extends Model
 
         return $days;
     }
+
+    public function calculate_status($amount)
+    {
+
+        if($amount >= 0)
+        {   
+            // Balance igual a 0
+            return 1;
+        }
+        else if($amount > 0)
+        {
+            // Balance mayor 0
+            return 2;
+        }
+        else if($amount < 0)
+        {
+            // Balance menor a 0
+            return 3;
+        }
+    }
+
 
 
 }

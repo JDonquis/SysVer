@@ -5,6 +5,7 @@ use App\Http\Controllers\api\dashboard\AreasController;
 use App\Http\Controllers\api\dashboard\AssistanceController;
 use App\Http\Controllers\api\dashboard\ClientController;
 use App\Http\Controllers\api\dashboard\PaymentsController;
+use App\Http\Controllers\api\dashboard\StatusAccount;
 use App\Http\Controllers\api\dashboard\UsersController;
 use App\Http\Controllers\api\external\DollarController;
 use Illuminate\Http\Request;
@@ -35,7 +36,7 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth:sanctum']], functi
     Route::put('clients/{id}',[ClientController::class,'update']);
     Route::delete('clients/{id}',[ClientController::class,'destroy']);
     Route::get('clients/{code}/areas',[ClientController::class,'get_areas_client']);
-    Route::get('clients/{code}/{area_id}/delayed/credit',[ClientController::class,'get_data_payment_client']);
+    Route::get('clients/{code}/{area_id}/balance',[ClientController::class,'get_data_payment_client']);
 
     // Assistances
     Route::get('assistance',[AssistanceController::class,'index']);
@@ -62,6 +63,9 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth:sanctum']], functi
 
     // Historial of Payments
     Route::get('historial/payments',[PaymentsController::class,'historial']);
+
+    // Status Account
+    Route::get('accounts',[StatusAccount::class,'index']);
 
     // External APIs  
     Route::get('dollar',[DollarController::class,'index']);

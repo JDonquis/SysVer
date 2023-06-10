@@ -41,6 +41,8 @@ class InsertHistory extends Command
      */
     public function handle()
     {   
+
+         // Log::info('Mi tarea se ejecutó correctamente.');
         $assistances = Assistance::all();
         
         if(count($assistances) != 0)
