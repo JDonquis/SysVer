@@ -152,9 +152,7 @@ class ClientController extends Controller
 
         $area = AreaCharged::where('area_id',$area_id)->first();
 
-
-
-        $client = ClientAreaCharged::where('client_id',$c->id)->where('area_charged_id',$area->id)->with('credit','delayed')->first();
+        $client = ClientAreaCharged::where('client_id',$c->id)->where('area_charged_id',$area->id)->with('balance')->first();
 
         return $client;
     }
