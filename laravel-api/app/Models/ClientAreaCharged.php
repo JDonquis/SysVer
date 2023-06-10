@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\AreaCharged;
+use App\Models\BalanceClient;
 use App\Models\Client;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -29,13 +30,9 @@ class ClientAreaCharged extends Model
         return $this->belongsTo(AreaCharged::class,'area_charged_id','id');
     }
 
-    public function delayed()
+    public function balance()
     {
-          return $this->hasOne(DelayedClient::class,'client_area_charged_id','id');
+          return $this->hasOne(BalanceClient::class,'client_area_charged_id','id');
     }
 
-    public function credit()
-      {
-          return $this->hasOne(CreditClient::class,'client_area_charged_id','id');
-      }
 }
