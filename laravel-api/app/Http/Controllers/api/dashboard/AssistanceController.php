@@ -161,15 +161,7 @@ class AssistanceController extends Controller
         
        $latest = HistorialAssistance::where('client_id',$client_id->id)->latest()->with('schedule.area','schedule.shift_start','schedule.shift_end')->first();
             
-       $debt = new DelayedClient;
-
-       $debt_client = $debt->hasDebt($client_id->id);
-       
-       $has_debt = !is_null($debt_client);
-
-       $message = $has_debt?'Este usuario tiene registrado una deuda.':''; 
-
-        return response(["latest" => $latest,'has_debt' => $has_debt,"Message" => $message], Response::HTTP_OK);
+        return response(["latest" => $latest], Response::HTTP_OK);
     }
 
     /**
