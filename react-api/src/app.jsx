@@ -8,6 +8,7 @@ import Areas from "./pages/areas";
 import Pagos from "./pages/Pagos";
 import Historial_de_pagos from  "./pages/Historial_de_pagos"
 import Historial_de_asistencia from "./pages/Historial_de_asistencia"
+import Estados_de_cuenta from "./pages/Estados_de_cuenta"
 import { useState } from "react";
 
 export default function app() {
@@ -30,8 +31,9 @@ export default function app() {
                         <Route path="/areas" element={<Areas />}></Route>
                         <Route path="/asistencia" element={<Asistencia />}></Route>
                         <Route path="/historial_de_asistencia" element={<Historial_de_asistencia />}></Route>
-                        <Route path="/historial_de_pagos" element={<Historial_de_pagos />}></Route>
                         <Route path="/pagos" element={<Pagos />}></Route>
+                        <Route path="/historial_de_pagos" element={<Historial_de_pagos />}></Route>
+                        <Route path="/pagos" element={<Estados_de_cuenta />}></Route>
                     </Routes>
                     </div>
                 </main>

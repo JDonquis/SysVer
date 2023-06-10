@@ -24,7 +24,7 @@ export default function Historial_de_pagos() {
 
     useEffect(() => {
         getData();
-        document.title = "Historial de pagos";
+        document.title = "Estados de cuenta";
     }, []);
     const options = {
         filterType: "checkbox",
@@ -33,44 +33,7 @@ export default function Historial_de_pagos() {
     };
 
     const columns = [
-        {
-            name: "created_at",
-            label: "Dia",
-            options: {
-                filter: true,
-                customBodyRender: (value) => {
-                    return (
-                        value.split('-')[2]
-
-                    );
-                },
-            },
-        },
-        {
-            name: "created_at",
-            label: "Mes",
-            options: {
-                filter: true,
-                customBodyRender: (value) => {
-                    return (
-                        months[value.split('-')[1].charAt(1)-1]
-
-                    );
-                },
-            },
-        },
-        {
-            name: "created_at",
-            label: "Año",
-            options: {
-                filter: true,
-                customBodyRender: (value) => {
-                    return (
-                        value.split('-')[0]
-                    );
-                },
-            },
-        },
+      
         {
             name: "client_area",
             label: "Código",
@@ -102,6 +65,14 @@ export default function Historial_de_pagos() {
             },
         },
         {
+            name: "amount",
+            label: "Estado",
+            options: {
+                filter: true,
+                
+            },
+        },
+        {
             name: "client_area",
             label: "Area",
             options: {
@@ -124,7 +95,7 @@ export default function Historial_de_pagos() {
     useEffect(() => {
         setTabla(<MUIDataTable
             isRowSelectable={false}
-            title={"Historial de pagos"}
+            title={"Estados de cuenta"}
             data={pagos}
             columns={columns}
             options={options}

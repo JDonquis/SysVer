@@ -118,7 +118,6 @@ export default function Pagos() {
             console.log(error);
         }
     };
-    // console.log(payments)
     const [dataForDelete, setDataForDelete] = useState({
         indx: "",
         setSelectedRows: () => {},
@@ -321,7 +320,7 @@ export default function Pagos() {
     let delayedWeeks = Math.ceil(creditInfo?.delayed?.days_late/7)
     let totalDebt = creditInfo?.delayed?.amount
     let weekspay = Math.ceil(creditInfo?.credit?.days_credit/7)
-    console.log(creditInfo)
+    console.log({newPayment})
 
 
     return (
@@ -423,7 +422,7 @@ export default function Pagos() {
                                         name={"birth_date"}
                                         width={300}
                                         // onBlur={getLastAttended}
-                                        shrink={newPayment?.amount?.length > 0 || newPayment?.amountBs?.length > 0}
+                                        shrink={newPayment?.amount?.length > 0 || newPayment?.amountBs?.length > 0 || submitStatus == "Editar"}
                                         onChange={(e) =>
                                             setNewPayment((prev) => ({
                                                 ...prev,
@@ -448,15 +447,15 @@ export default function Pagos() {
 
                             {newPayment.code && newPayment.area_id && (
                                 <ul className="infoCredit_container">
-                                    <li>Precio semanal del area: <b >{all_areas[0]?.price}</b>$</li>
+                                    <li>Precio semanal del area: <b >{all_areas?.find(obj => obj.id == newPayment.area_id).price}</b>$</li>
                                     <li>Cliente: <b> {clientSelected}</b> </li>
                                     {delayedWeeks &&  (
                                         <li>Semanas de deuda: <b style={{color: '#8f0000'}}>{delayedWeeks} </b>  </li>
                                     ) }
-                                    {weekspay &&  (
+                                    {weekspay  &&  (
                                         <li>Semanas pagadas: <b style={{color: '#027353'}}>{weekspay} </b>  </li>
                                     ) }
-                                    {creditInfo?.credit?.credit && (
+                                    {creditInfo?.credit?.credit  && (
                                         <li>Abonado: {creditInfo?.credit?.credit}$</li>
 
                                     )}
