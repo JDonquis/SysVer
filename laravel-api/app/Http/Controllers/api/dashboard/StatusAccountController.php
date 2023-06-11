@@ -14,9 +14,10 @@ class StatusAccountController extends Controller
 {
      public function index()
     {
-        $clients = Client::with('client_area.balance')->get();
+        $clients = Client::with('client_area.balance','client_area.area')->get();
+        $areas = AreaCharged::all();
     
-        return response(["clients" => $clients], Response::HTTP_OK);
+        return response(["clients" => $clients, "areas" => $areas], Response::HTTP_OK);
     }
 
     public function get_clients_balance_in_area($area_id)
