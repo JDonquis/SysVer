@@ -162,6 +162,10 @@ thead, .tss-gm6zfk-MUIDataTableHeadCell-fixedHeader {
   grid-template-columns: repeat(2, 1fr);
 }
 
+.text_white {
+  color: white impota !important;
+}
+
 .container_login {
   overflow: hidden;
   position: relative;

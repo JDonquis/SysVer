@@ -146,7 +146,7 @@ thead, .tss-gm6zfk-MUIDataTableHeadCell-fixedHeader {
     & * {
         color: white !important;
     }
-    // & *:focus {
+    // & *:focus { 
     //     outline: white !important;
     //     border-color: white !important;
     // }
@@ -157,4 +157,7 @@ thead, .tss-gm6zfk-MUIDataTableHeadCell-fixedHeader {
     gap: 0px 30px;
     grid-template-columns: repeat(2, 1fr);
     
+}
+.text_white {
+    color: white !important;
 }

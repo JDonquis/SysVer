@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import MUIDataTable from "mui-datatables";
 import axios from "../api/axios";
 import { IconButton, TextField, Autocomplete, MenuItem } from "@mui/material";
+import { styled } from "@mui/material/styles";
+
 import Input from "../components/Input";
 const months = [
     "Enero",
@@ -17,6 +19,25 @@ const months = [
     "Noviembre",
     "Diciembre",
 ];
+
+const CssTextField = styled(TextField)({
+    "& label.Mui-focused": {
+        color: "white",
+    },
+
+    "& .MuiOutlinedInput-root": {
+        // "& fieldset": {
+        //     borderColor: "whitesmoke",
+        // },
+        "& fieldset": {
+            borderColor: "rgba(255, 255, 255, 0.39)",
+        },
+
+        "&.Mui-focused fieldset": {
+            borderColor: "whitesmoke",
+        },
+    },
+});
 
 export default function Historial_de_pagos() {
     const [pagos, setpagos] = useState([]);
@@ -38,12 +59,12 @@ export default function Historial_de_pagos() {
         getData();
         document.title = "Estados de cuenta";
     }, []);
-    const options = {
+    const byAreasOptions = {
         filterType: "checkbox",
         selectableRows: "none",
     };
 
-    const columns = [
+    const byAreasColumns = [
         {
             name: "client_area",
             label: "Código",
@@ -105,50 +126,51 @@ export default function Historial_de_pagos() {
                 filter: false,
             },
         },
-        
     ];
 
     useEffect(() => {
         setTabla(
             <MUIDataTable
                 isRowSelectable={false}
-                title={"Estados de cuenta "}
+                title={
+                    <span className="text_white flex items-center"> 
+                        <h1 className="mr-6">
+
+                        Estados de cuenta
+                        </h1>
+                        <CssTextField
+                            sx={{ width: 290 }}
+                            select
+                            style={{color: 'white'}}
+                            label="Area"
+                            // value={newPayment?.area_id}
+                            defaultValue=""
+                            // disabled={!newPayment.code}
+                            name="turno"
+                            onChange={(e) => {
+                                // setNewPayment((prev) => ({
+                                //     ...prev,
+                                //     area_id: e.target.value,
+                                // }));
+                                // getCreditsInfo(newPayment.code, e.target.value);
+                            }}
+                        >
+                            {/* {all_areas.map((option) => (
+                    <MenuItem key={option.id} value={option.id}>
+                        {option.name}
+                    </MenuItem>
+                ))} */}
+                        </CssTextField>
+                    </span>
+                }
                 data={pagos}
-                columns={columns}
-                options={options}
+                columns={byAreasColumns}
+                options={byAreasOptions}
             />
         );
     }, [pagos]);
 
     console.log(pagos);
 
-    return (
-        <>
-            <TextField
-                id="outlined-select-currency"
-                select
-                required
-                label="Area"
-                // value={newPayment?.area_id}
-                defaultValue=""
-                // disabled={!newPayment.code}
-                name="turno"
-                onChange={(e) => {
-                    // setNewPayment((prev) => ({
-                    //     ...prev,
-                    //     area_id: e.target.value,
-                    // }));
-                    // getCreditsInfo(newPayment.code, e.target.value);
-                }}
-            >
-                {/* {all_areas.map((option) => (
-                    <MenuItem key={option.id} value={option.id}>
-                        {option.name}
-                    </MenuItem>
-                ))} */}
-            </TextField>
-
-            {tabla}
-        </>
-    );
+    return <>{tabla}</>;
 }

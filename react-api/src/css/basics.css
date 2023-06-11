@@ -159,4 +159,8 @@ thead, .tss-gm6zfk-MUIDataTableHeadCell-fixedHeader {
   justify-content: space-between;
   gap: 0px 30px;
   grid-template-columns: repeat(2, 1fr);
+}
+
+.text_white {
+  color: white !important;
 }/*# sourceMappingURL=basics.css.map */

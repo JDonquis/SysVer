@@ -10,7 +10,7 @@ import Alert from "../components/Alert";
 
 const CssTextField = styled(TextField)({
     "& label.Mui-focused": {
-        color: "white",
+        color: "red",
     },
 
     "& .MuiOutlinedInput-root": {
