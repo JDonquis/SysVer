@@ -40,15 +40,15 @@ const CssTextField = styled(TextField)({
 });
 
 export default function Historial_de_pagos() {
-    const [pagos, setpagos] = useState([]);
+    const [accountStatements, setAccountStatements] = useState([]);
     const [tabla, setTabla] = useState();
 
     const getData = async () => {
         try {
-            await axios.get("dashboard/accounts").then((response) => {
-                console.log({ response });
+            await axios.get("dashboard/accounts/1").then((response) => {
                 // const payments = response.data.payments;
                 // setpagos(payments);
+                setAccountStatements(response.data.clients)
             });
         } catch (error) {
             console.log(error);
@@ -63,7 +63,69 @@ export default function Historial_de_pagos() {
         filterType: "checkbox",
         selectableRows: "none",
     };
+    const byClientsOptions = {
+        filterType: "checkbox",
+        selectableRows: "none",
+    };
 
+    const byClientsColumns = [
+        {
+            name: "client_area",
+            label: "Código",
+            options: {
+                filter: false,
+                customBodyRender: (value) => {
+                    return value.client.code;
+                },
+            },
+        },
+        {
+            name: "client_area",
+            label: "Nombre",
+            options: {
+                filter: false,
+                customBodyRender: (value) => {
+                    return value.client.name;
+                },
+            },
+        },
+        {
+            name: "client_area",
+            label: "Apellido",
+            options: {
+                filter: false,
+                customBodyRender: (value) => {
+                    return value.client.last_name;
+                },
+            },
+        },
+        {
+            name: "status",
+            label: "Estado",
+            options: {
+                filter: true,
+                
+            },
+        },
+        {
+            name: "area",
+            label: "Area",
+            options: {
+                filter: false,
+                customBodyRender: (value) => {
+                    return value.client.code;
+                },
+            },
+        },
+        {
+            name: "balance",
+            label: "Saldo ($)",
+            options: {
+                filter: false,
+               
+            },
+        },
+    ]
     const byAreasColumns = [
         {
             name: "client_area",
@@ -163,14 +225,14 @@ export default function Historial_de_pagos() {
                         </CssTextField>
                     </span>
                 }
-                data={pagos}
-                columns={byAreasColumns}
-                options={byAreasOptions}
+                data={accountStatements}
+                columns={byClientsColumns}
+                options={byClientsOptions}
             />
         );
-    }, [pagos]);
+    }, [accountStatements]);
 
-    console.log(pagos);
+    console.log(accountStatements);
 
     return <>{tabla}</>;
 }
