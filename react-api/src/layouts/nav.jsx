@@ -20,7 +20,16 @@ export default function nav(props) {
         props.getNavStatus(menuStatus)
     
     }, [menuStatus])
+  
+    useEffect(() => {
+        window.addEventListener('resize', (e) => {
+            e.target.innerWidth < 1110 ? setMenuStatus(false)  : setMenuStatus(true) 
+        }
+        );
+     
+    }, [])
     
+
     return (
         <nav className={`left_nav ${menuStatus ? 'open' : 'closed'}`}>
             <div className="w-100 h-100 overflow-hidden nav_into_container">

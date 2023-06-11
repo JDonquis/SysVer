@@ -318,9 +318,9 @@ export default function Pagos() {
             console.log(error);
         }
     };
-    let delayedWeeks = Math.ceil(creditInfo?.delayed?.days_late/7)
-    let totalDebt = creditInfo?.delayed?.amount
-    let weekspay = Math.ceil(creditInfo?.credit?.days_credit/7)
+    // let delayedWeeks = Math.ceil(creditInfo?.delayed?.days_late/7)
+    // let totalDebt = creditInfo?.delayed?.amount
+    // let weekspay = Math.ceil(creditInfo?.credit?.days_credit/7)
     console.log({newPayment})
 
 
@@ -448,9 +448,9 @@ export default function Pagos() {
 
                             {newPayment.code && newPayment.area_id && (
                                 <ul className="infoCredit_container">
-                                    <li>Precio semanal del area: <b >{all_areas?.find(obj => obj.id == newPayment.area_id).price}</b>$</li>
+                                    <li>Precio semanal del area: <b >{ creditInfo.area?.price}</b>$</li>
                                     <li>Cliente: <b> {clientSelected}</b> </li>
-                                    {delayedWeeks &&  (
+                                    {/* {delayedWeeks &&  (
                                         <li>Semanas de deuda: <b style={{color: '#8f0000'}}>{delayedWeeks} </b>  </li>
                                     ) }
                                     {weekspay  &&  (
@@ -459,9 +459,9 @@ export default function Pagos() {
                                     {creditInfo?.credit?.credit  && (
                                         <li>Abonado: {creditInfo?.credit?.credit}$</li>
 
-                                    )}
+                                    )} */}
                                     
-                                    <li>Deuda:   {totalDebt  ? <b style={{color:  '#8f0000' }}>{totalDebt}$</b> : <b style={{color: '#027353'}}>0$</b> }  </li>
+                                    <li>Saldo: { <b style={{color: creditInfo.balance?.balance < 0  ? '#8f0000' :  '#027353'}}>{creditInfo.balance?.balance }$</b> } </li>
                                     
                                 </ul>
                             )}

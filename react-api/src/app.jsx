@@ -16,11 +16,12 @@ export default function app() {
 
     
     const [navStatus, setNavStatus] = useState(true)
+   
     return (    
         <> 
             
             <div className="dashboard_container">
-                <Nav getNavStatus={() => setNavStatus(prev => !prev)} />
+                <Nav getNavStatus={() => setNavStatus(prev => !prev)} status={navStatus} />
                 <main className="main_dashboard" >
                     <div className={`mainDashboard_container ${navStatus ? 'small' : 'large'}`}>
 
