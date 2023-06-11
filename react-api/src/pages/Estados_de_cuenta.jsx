@@ -45,7 +45,7 @@ export default function Historial_de_pagos() {
 
     const getData = async () => {
         try {
-            await axios.get("dashboard/accounts/1").then((response) => {
+            await axios.get("dashboard/accounts/").then((response) => {
                 // const payments = response.data.payments;
                 // setpagos(payments);
                 setAccountStatements(response.data.clients)
@@ -70,7 +70,7 @@ export default function Historial_de_pagos() {
 
     const byClientsColumns = [
         {
-            name: "client_area",
+            name: "code",
             label: "Código",
             options: {
                 filter: false,
@@ -80,7 +80,7 @@ export default function Historial_de_pagos() {
             },
         },
         {
-            name: "client_area",
+            name: "name",
             label: "Nombre",
             options: {
                 filter: false,
@@ -90,7 +90,7 @@ export default function Historial_de_pagos() {
             },
         },
         {
-            name: "client_area",
+            name: "last_name",
             label: "Apellido",
             options: {
                 filter: false,
