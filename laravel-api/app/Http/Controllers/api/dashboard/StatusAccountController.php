@@ -23,7 +23,10 @@ class StatusAccountController extends Controller
     {
         $areaCharged = AreaCharged::where('area_id',$area_id)->first();
         $clientAreaCharged = ClientAreaCharged::select('id')->where('area_charged_id',$areaCharged->id)->get();
-        return $clientAreaCharged;
+        $ids = $clientAreaCharged->pluck('id');
+        $clients = BalanceClient::whereIn('client_area_charged_id',$ids)->with('client_area.client')->get();
+
+        return response(["clients" => $clients], Response::HTTP_OK);
 
     }
 
