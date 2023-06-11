@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\BalanceClient;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -15,16 +16,9 @@ class BalanceClient extends Model
 
         'client_area_charged_id',
         'balance',
-        'days'
+        'days',
+        'status'
     ];
 
-    // public function hasDebt($id_client)
-    // {
-    //     $client_area_charged = ClientAreaCharged::where('client_id',$id_client)->first();
 
-    //     $status = BalanceClient::where('client_area_charged_id',$client_area_charged->id)->first();
-       
-        
-    //     return $debt;
-    // }
 }

@@ -90,9 +90,9 @@ class Payment extends Model
     {
         $area = ClientAreaCharged::where('id',$id)->with('area')->first();
 
-        $days = ($amount * 7) / $area->area->price;
+        $days = $amount / $area->area->price;
 
-        $days = floor($days);
+        $days = ceil($days);
 
         return $days;
     }
