@@ -193,10 +193,7 @@ export default function Asistencia() {
     const getStatus = async (code, area) => {
         try {
             await axios.get(`dashboard/accounts/${code}/${area}`).then((response) => {
-                console.log({response})
-            //    const area_id = response.data.latest?.schedule.area.id
-            //    const schedule_id = response.data.latest?.schedule_id
-            //    setNewAttendance(prev => ({...prev, area_id, schedule_id}))
+                setNewAttendance(prev => ({...prev, status: response.data.status.status}))
             });
 
            
@@ -404,7 +401,7 @@ export default function Asistencia() {
                             ...prev,
                             area_id: e.target.value,
                         }));
-                        getStatus(newAttendance.code. e.target.value)
+                        getStatus(newAttendance.code, e.target.value)
                     }}
                 >
                     {all_areas.map((option) => (
@@ -444,8 +441,8 @@ export default function Asistencia() {
                     {statusSubmit}
                 </button>
                 </div>
-                {newAttendance.has_debt && (
-                    <p className="pt-3">{newAttendance.message}</p>
+                {newAttendance.status == 3 && (
+                    <p className="pt-3">¡Este cliente tiene una deuda registrada en esta area!</p>
                 )}
             </form>
 
