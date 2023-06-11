@@ -52,7 +52,7 @@ class ClientController extends Controller
 
                     $client_area_charged_id = DB::table('client_area_chargeds')->insertGetId(['client_id' => $client_id, 'area_charged_id' => $area['id'] ] );
 
-DB::table('balance_clients')->insert(['client_area_charged_id' => $client_area_charged_id, 'balance' => 0, 'days' => 0, 'status' => 1, 'created_at' => Carbon::now(), 'updated_at' => Carbon::now() ]); 
+                    DB::table('balance_clients')->insert(['client_area_charged_id' => $client_area_charged_id, 'balance' => 0, 'days' => 0, 'status' => 1, 'created_at' => Carbon::now(), 'updated_at' => Carbon::now() ]); 
                     }
 
                 }
