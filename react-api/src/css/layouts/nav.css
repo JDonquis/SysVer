@@ -162,7 +162,11 @@ thead, .tss-gm6zfk-MUIDataTableHeadCell-fixedHeader {
 }
 
 .text_white {
-  color: white impota !important;
+  color: white !important;
+}
+
+.tss-1o8fckl-MUIDataTableFilterList-chip {
+  background-color: #d9831a;
 }
 
 .left_nav {

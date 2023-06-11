@@ -48,7 +48,21 @@ export default function Historial_de_pagos() {
             await axios.get("dashboard/accounts/").then((response) => {
                 // const payments = response.data.payments;
                 // setpagos(payments);
-                setAccountStatements(response.data.clients)
+                console.log(response);
+                setAccountStatements(response.data.clients);
+                setAll_areas(response.data.areas);
+            });
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const getDataByAreas = async (area) => {
+        try {
+            await axios.get(`dashboard/accounts/${area}`).then((response) => {
+                // const payments = response.data.payments;
+                console.log({ response });
+                setAccountStatements(response.data.clients);
             });
         } catch (error) {
             console.log(error);
@@ -59,10 +73,6 @@ export default function Historial_de_pagos() {
         getData();
         document.title = "Estados de cuenta";
     }, []);
-    const byAreasOptions = {
-        filterType: "checkbox",
-        selectableRows: "none",
-    };
     const byClientsOptions = {
         filterType: "checkbox",
         selectableRows: "none",
@@ -70,32 +80,46 @@ export default function Historial_de_pagos() {
 
     const byClientsColumns = [
         {
-            name: "code",
+            name: "client_area",
             label: "Código",
             options: {
                 filter: false,
+                sort: false,
                 customBodyRender: (value) => {
                     return value.client.code;
                 },
             },
         },
         {
-            name: "name",
+            name: "client_area",
             label: "Nombre",
             options: {
                 filter: false,
+                sort: false,
                 customBodyRender: (value) => {
                     return value.client.name;
                 },
             },
         },
         {
-            name: "last_name",
+            name: "client_area",
             label: "Apellido",
             options: {
                 filter: false,
+                sort: false,
                 customBodyRender: (value) => {
                     return value.client.last_name;
+                },
+            },
+        },
+        {
+            name: "client_area",
+            label: "Area",
+            options: {
+                filter: true,
+                sort: false,
+                customBodyRender: (value) => {
+                    return value.area.name;
                 },
             },
         },
@@ -104,16 +128,40 @@ export default function Historial_de_pagos() {
             label: "Estado",
             options: {
                 filter: true,
-                
-            },
-        },
-        {
-            name: "area",
-            label: "Area",
-            options: {
-                filter: false,
+                sort: false,
+                filterOptions: {
+                    names: ['Retrasado', 'Al día'],
+                    logic(status, filters) {
+                        if (filters.indexOf('Retrasado') >= 0 && status === 3) {
+                            return false;
+                        } else if (filters.indexOf('Al día') >= 0 && status !== 3) {
+                            return false;
+                        }
+                        return true;
+                    },
+                    display: (filterList, onChange, index, column) => {
+                        return (
+                            <Select
+                                value={filterList[index] || ''}
+                                onChange={event => {
+                                    filterList[index] = event.target.value;
+                                    onChange(filterList[index], index, column);
+                                }}
+                            >
+                                <MenuItem value="">All</MenuItem>
+                                <MenuItem value="Retrasado">Retrasado</MenuItem>
+                                <MenuItem value="Al día">Al día</MenuItem>
+                            </Select>
+                        );
+                    },
+                },
                 customBodyRender: (value) => {
-                    return value.client.code;
+                
+                    return value === 3 ? (
+                        <span className="text-red">Retrasado</span>
+                    ) : (
+                        <span className="text-green">Al dia</span>
+                    );
                 },
             },
         },
@@ -122,109 +170,38 @@ export default function Historial_de_pagos() {
             label: "Saldo ($)",
             options: {
                 filter: false,
-               
-            },
-        },
-    ]
-    const byAreasColumns = [
-        {
-            name: "client_area",
-            label: "Código",
-            options: {
-                filter: false,
                 customBodyRender: (value) => {
-                    return value.client.code;
+                    return value > 0 ? (
+                        <span className="text-green">{value}$</span>
+                    ) : (
+                        <span className="text-red">{value}$</span>
+                    );
                 },
             },
         },
         {
-            name: "client_area",
-            label: "Nombre",
-            options: {
-                filter: false,
-                customBodyRender: (value) => {
-                    return value.client.name;
-                },
-            },
-        },
-        {
-            name: "client_area",
-            label: "Apellido",
-            options: {
-                filter: false,
-                customBodyRender: (value) => {
-                    return value.client.last_name;
-                },
-            },
-        },
-        {
-            name: "amount",
-            label: "Estado",
-            options: {
-                filter: true,
-            },
-        },
-        // {
-        //     name: "client_area",
-        //     label: "Area",
-        //     options: {
-        //         filter: true,
-        //         customBodyRender: (value) => {
-        //             return value.area.name;
-        //         },
-        //     },
-        // },
-        {
-            name: "amount",
-            label: "Saldo ($)",
-            options: {
-                filter: false,
-            },
-        },
-        {
-            name: "amount",
+            name: "days",
             label: "Semanas",
             options: {
                 filter: false,
+                customBodyRender: (value) => {
+                    const weeks= Math.ceil(value/7)
+                    return weeks > 0 ? (
+                        <span className="text-green">{weeks}</span>
+                    ) : (
+                        <span className="text-red">{weeks}</span>
+                    );
+                }
             },
         },
     ];
+   
 
     useEffect(() => {
         setTabla(
             <MUIDataTable
                 isRowSelectable={false}
-                title={
-                    <span className="text_white flex items-center"> 
-                        <h1 className="mr-6">
-
-                        Estados de cuenta
-                        </h1>
-                        <CssTextField
-                            sx={{ width: 290 }}
-                            select
-                            style={{color: 'white'}}
-                            label="Area"
-                            // value={newPayment?.area_id}
-                            defaultValue=""
-                            // disabled={!newPayment.code}
-                            name="turno"
-                            onChange={(e) => {
-                                // setNewPayment((prev) => ({
-                                //     ...prev,
-                                //     area_id: e.target.value,
-                                // }));
-                                // getCreditsInfo(newPayment.code, e.target.value);
-                            }}
-                        >
-                            {/* {all_areas.map((option) => (
-                    <MenuItem key={option.id} value={option.id}>
-                        {option.name}
-                    </MenuItem>
-                ))} */}
-                        </CssTextField>
-                    </span>
-                }
+                title={"Estados de cuenta"}
                 data={accountStatements}
                 columns={byClientsColumns}
                 options={byClientsOptions}
@@ -232,7 +209,7 @@ export default function Historial_de_pagos() {
         );
     }, [accountStatements]);
 
-    console.log(accountStatements);
+    // console.log(accountStatements);
 
     return <>{tabla}</>;
 }
