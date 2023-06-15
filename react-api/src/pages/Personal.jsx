@@ -221,7 +221,7 @@ export default function Personal() {
             const data = response.data;
             // console.log(data);
             const personal = response.data.personal;
-            console.log(data);
+            console.log({data});
             // personal.forEach((user) => {
             //     user.array_areas = user.areas.map((a) => a.name);
             //     user.blood_name = user.blood_types.name;
@@ -367,13 +367,14 @@ export default function Personal() {
 
     console.log(all_areas_db);
 
-    function handleChangePermissions(i) {
-        const updatedPermissions = newPersonal.permissions.map((item, index) =>
-            index === i ? {status: !item} : {status:item}
-        );
+    function handleChangePermissions(id) {
+        const updatedPermissions = [...newPersonal.permissions];
+        const indexFind = updatedPermissions.findIndex((item, index) => item.id === id);
+        indexFind >= 0 ? updatedPermissions.splice(indexFind, 1) : updatedPermissions.push({id: id})
         setNewPersonal(prev => ({...prev, permissions: updatedPermissions}))
+        console.log(id)
     }
-
+console.log({newPersonal})
     console.log({ permissions });
     return (
         <>
@@ -499,10 +500,10 @@ export default function Personal() {
                                         <input
                                             type="checkbox"
                                             name=""
-                                            checked={newPersonal?.permissions?.[i]?.id === perm.id}
+                                            checked={newPersonal?.permissions?.some(v => v.id == perm.id)}
                                             className="mr_3"
                                             onChange={() => {
-                                                handleChangePermissions(i);
+                                                handleChangePermissions(perm.id);
                                             }}
                                         />
                                         {perm.name}
