@@ -19,7 +19,9 @@ class DatabaseSeeder extends Seeder
 
         'blood_types',
         'type_areas',
-        'users',
+        'personals',
+        'permissions',
+        'personal_permissions',
         'clients',
         'areas',
         'area_chargeds',
@@ -39,7 +41,9 @@ class DatabaseSeeder extends Seeder
 
             BloodTypesSeeder::class,
             TypeAreaSeeder::class,
-            UserSeeder::class,
+            PersonalSeeder::class,
+            PermissionSeeder::class,
+            PersonalPermissionSeeder::class,
             AreaSeeder::class,
             ClientSeeder::class,
             AreaChargedSeeder::class,
