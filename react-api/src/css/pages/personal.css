@@ -1,0 +1,8 @@
+.permisos label:hover {
+  cursor: pointer;
+  color: #069DBF !important;
+  font-weight: bold;
+}
+.permisos b {
+  margin-bottom: 35px !important;
+}/*# sourceMappingURL=personal.css.map */

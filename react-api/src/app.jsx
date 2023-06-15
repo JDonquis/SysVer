@@ -10,9 +10,10 @@ import Historial_de_pagos from  "./pages/Historial_de_pagos"
 import Historial_de_asistencia from "./pages/Historial_de_asistencia"
 import Estados_de_cuenta from "./pages/Estados_de_cuenta"
 import { useState } from "react";
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
-export default function app() {
-
+export default function app() { 
+  
 
     
     const [navStatus, setNavStatus] = useState(true)
@@ -22,9 +23,21 @@ export default function app() {
             
             <div className="dashboard_container">
                 <Nav getNavStatus={() => setNavStatus(prev => !prev)} status={navStatus} />
-                <main className="main_dashboard" >
-                    <div className={`mainDashboard_container ${navStatus ? 'small' : 'large'}`}>
+                <main className="top_nav_and_main" >
+                    <div className="topNabvar w-full bg-blue p-4  mb-3 flex justify-end items-center relative ">
+                        <div className="user_info cursor-pointer hover:underline ">
 
+                           <span  className="mr-2"> Juan Villasmil </span><AccountCircleIcon></AccountCircleIcon>
+
+                            <div className="user_actions absolute hidden rounded-md bg-white p-4 w-56 top-13 right-5 text-right"> 
+                                <ul>
+                                    <li className="mb-2"><a href="">Cambiar contraseña</a></li>
+                                    <li className=""><a href="">Cerrar sesión</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div className={`mainDashboard_container ${navStatus ? 'small' : 'large'}`}>
                     <Routes>
                         <Route path="/" element={<Dashboard />}></Route>
                         <Route path="/usuarios" element={<Usuarios />}></Route>

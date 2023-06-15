@@ -120,7 +120,7 @@ export default function Areas() {
                 customBodyRender: (value) => {
                     return (
                         <button
-                            className="relative pr-20"
+                            className="relative pr-20 cursor-pointer underline text-blue"
                             onMouseOver={() =>
                                 setShowSchedule({ show: true, data: value })
                             }

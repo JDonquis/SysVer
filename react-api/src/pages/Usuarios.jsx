@@ -34,7 +34,7 @@ const CssTextField = styled(TextField)({
 
 const divFlex = {
     display: "flex", 
-    gap: "5px",
+    gap: "10px",
     marginBottom: "15px",
     justifyContent: "space-between",
 };

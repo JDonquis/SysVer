@@ -149,8 +149,8 @@ export default function Historial_de_pagos() {
                                 }}
                             >
                                 <MenuItem value="">All</MenuItem>
-                                <MenuItem value="Retrasado">Retrasado</MenuItem>
-                                <MenuItem value="Al día">Al día</MenuItem>
+                                <MenuItem value="Retrasado"><b>Retrasado</b></MenuItem>
+                                <MenuItem value="Al día"><b>Al día</b></MenuItem>
                             </Select>
                         );
                     },
@@ -158,9 +158,9 @@ export default function Historial_de_pagos() {
                 customBodyRender: (value) => {
                 
                     return value === 3 ? (
-                        <span className="text-red">Retrasado</span>
+                        <b className="text-red">Retrasado</b>
                     ) : (
-                        <span className="text-green">Al dia</span>
+                        <b className="text-green">Al dia</b>
                     );
                 },
             },

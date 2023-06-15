@@ -1,18 +1,18 @@
 @import "../basics.scss"; 
 
-.left_nav { 
+.left_nav {   
     background: rgba(6, 157, 191, 0.089); 
     min-width: 250px; 
-    max-width: 250px;  
-    padding-top: 5px; 
-    position: relative;
+    max-width: 250px;        
+    padding-top: 5px;  
+    position: relative; 
     // overflow: hidden;
     transition: all .3s ease-in-out; 
     color: $blue;
     a.header {
         display: flex; 
         align-items: center;
-        margin-block: 30px;
+        margin-block: 30px; 
         padding-left: 32px;
         width: min-content;
         text-decoration: none;
@@ -38,7 +38,8 @@
         right: -5px;
         font-size: 35px !important;
         filter:drop-shadow(0px 2px 4px rgba(0, 0, 0, 0.45));
-        top: 9px; 
+        top: 9px;
+        z-index: 1;
         color: whitesmoke;
         transform: rotate(180deg); 
         &:hover {

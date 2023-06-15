@@ -70,29 +70,33 @@ ul.link_container {
     display: flex;
     min-height: 100vh;
     // gap: 20px;
-    .main_dashboard {  
+    .top_nav_and_main {  
         flex: auto; 
-        padding: 20px;
         background: rgb(255, 255, 255);
         background: linear-gradient(-50deg, hwb(320 94% 0%) 0%, #003b58 100%);
+        .mainDashboard_container {
+            padding: 14px;  
+            width: 100%;
+            float: right;
+            // transition: width .4s ease;
+            &.small {
+                max-width: calc(100vw - 255px);
+            }
+            &.large {
+                max-width: calc(100vw - 66px);
+            }
+        }
     }
 }
 
-.mainDashboard_container {
-    width: 100%;
-    float: right;
-    // transition: width .4s ease;
-    &.small {
-        max-width: calc(100vw - 295px);
-    }
-    &.large {
-        max-width: calc(100vw - 105px);
-    }
-}
 th {
     padding: 20px !important;
     margin: 20px;
     text-transform: uppercase !important;
+}
+thead th button{
+    text-transform: uppercase !important;
+
 }
 .MuiTableCell-footer {
     padding: 0 !important;
@@ -158,11 +162,28 @@ thead, .tss-gm6zfk-MUIDataTableHeadCell-fixedHeader {
     grid-template-columns: repeat(2, 1fr);
     
 } 
-.text_white {
-    color: white !important;
-}
+.text_white { 
+    color: white !important; 
+} 
 .tss-1o8fckl-MUIDataTableFilterList-chip {
-    background-color: #f8dbb6 !important;
+    background-color: $yellow !important;
+    color: white !important;
     margin-top: 0 !important;
     margin-bottom: 10px !important;
+}
+.d_block {
+    display: block !important; 
+}
+.mr_3 {
+    margin-right: 10px !important ; 
+}
+
+// color of buttons tabgle {
+.css-78trlr-MuiButtonBase-root-MuiIconButton-root:hover {
+    color: $blue !important;
+}
+      
+
+.user_info:hover .user_actions {
+    display: block !important;  
 }
