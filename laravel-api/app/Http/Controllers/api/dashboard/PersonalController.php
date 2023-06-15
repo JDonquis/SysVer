@@ -3,12 +3,13 @@
 namespace App\Http\Controllers\api\dashboard;
 
 use App\Http\Controllers\Controller;
-use App\Models\Area;
-use App\Models\User;
+use App\Models\Permission;
+use App\Models\Personal;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Symfony\Component\HttpFoundation\Response;
-
-class UsersController extends Controller
+use DB;
+class PersonalController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,9 +18,10 @@ class UsersController extends Controller
      */
     public function index()
     {
-        // $users = User::where('type_user_id',1)->with('blood_types','areas')->get();
+        $personal = Personal::with("permissions")->get();
+        $permissions = Permission::all();
 
-        // return response(["users" => $users], Response::HTTP_OK);
+        return response(["personal" => $personal, 'permissions' => $permissions], Response::HTTP_OK);
     }
 
     /**
@@ -27,11 +29,7 @@ class UsersController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        //
-    }
-
+    
     /**
      * Store a newly created resource in storage.
      *
@@ -39,8 +37,44 @@ class UsersController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
-        //
+    {   
+
+        $personal = new Personal;
+
+        DB::beginTransaction();
+
+        try {
+
+            $request->request->add(['password' => Hash::make($request->ci)]);
+            $personal->create($request->request->all());
+            $personal_id = $personal->latest('id')->first()->id;
+            
+            if(isset($request->permissions))
+            {   
+                
+                if(count($request->permissions) != 0 )
+                {
+                    foreach ($request->permissions as $permission){ 
+
+
+                    DB::table('personal_permissions')->insert(['personal_id' => $personal_id, 'permission_id' => $permission['id'] ] );
+
+                    }
+
+                }
+            }
+
+            $personal_created = Personal::where('id',$personal_id)->with('permissions')->first();
+                
+            DB::commit();
+
+            return response(["Message" => 'Cliente creado exitosamente', "personal" => $personal_created], Response::HTTP_OK);
+
+        } catch (Exception $e) {
+            DB::rollback();
+
+        }
+        
     }
 
     /**

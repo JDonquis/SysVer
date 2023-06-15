@@ -19,7 +19,7 @@ class CreateClientsTable extends Migration
             $table->string('name');
             $table->string('last_name');
             $table->string('ci')->unique();
-             $table->date('birth_date');
+            $table->date('birth_date');
             $table->integer('age');
             $table->string('sex');
             $table->foreignId("blood_type_id")->constrained()->onDelete("restrict")->onUpdate("cascade")->nullable();

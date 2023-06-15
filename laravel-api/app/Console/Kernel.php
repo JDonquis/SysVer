@@ -19,7 +19,9 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command('insert:history-assistance')->dailyAt('19:00');
-        $schedule->command('insert:collect-clients')->everyMinute();
+        $schedule->command('insert:history-payment')->dailyAt('19:00');
+        $schedule->command('insert:collect-clients')->weeklyOn(1, '7:00');
+
         
     }
 

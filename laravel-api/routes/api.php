@@ -5,6 +5,7 @@ use App\Http\Controllers\api\dashboard\AreasController;
 use App\Http\Controllers\api\dashboard\AssistanceController;
 use App\Http\Controllers\api\dashboard\ClientController;
 use App\Http\Controllers\api\dashboard\PaymentsController;
+use App\Http\Controllers\api\dashboard\PersonalController;
 use App\Http\Controllers\api\dashboard\StatusAccountController;
 use App\Http\Controllers\api\dashboard\UsersController;
 use App\Http\Controllers\api\external\DollarController;
@@ -68,6 +69,12 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth:sanctum']], functi
     Route::get('accounts',[StatusAccountController::class,'index']);
     Route::get('accounts/{area_id}',[StatusAccountController::class,'get_clients_balance_in_area']);
     Route::get('accounts/{code}/{area_id}',[StatusAccountController::class,'check_status']);
+
+    // Personal
+    Route::get('personal',[PersonalController::class,'index']);
+    Route::post('personal',[PersonalController::class,'store']);
+    Route::put('personal/{id}',[PersonalController::class,'update']);
+    Route::delete('personal/{id}',[PersonalController::class,'destroy']);
 
     // External APIs  
     Route::get('dollar',[DollarController::class,'index']);
