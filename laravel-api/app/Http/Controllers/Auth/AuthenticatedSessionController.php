@@ -24,6 +24,14 @@ class AuthenticatedSessionController extends Controller
         return response()->noContent();
     }
 
+    public function checkSession(Request $request)
+    {
+        return response()->json([
+            'status' => 'success',
+            'data' => $request->user()
+        ]);
+    }
+
     /**
      * Destroy an authenticated session.
      *

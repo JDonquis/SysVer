@@ -22,6 +22,9 @@ class CreatePersonalsTable extends Migration
             $table->date('birth_date');
             $table->string('email',100)->nullable();
             $table->string('phone_number',13)->nullable();
+            $table->string('address',100)->nullable();
+            $table->integer('age');
+            $table->string('sex');
             $table->timestamps();
             
         });

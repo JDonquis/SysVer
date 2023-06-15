@@ -19,7 +19,7 @@ class PersonalSeeder extends Seeder
             
             $fields = [
 
-            ['name' => 'Admin', 'last_name' => 'Admin', 'ci' => '12345678','password' => Hash::make('12345678'), 'birth_date' => $date, 'phone_number' => '04125800610', 'email' => "test@gmail.com", "created_at" => Carbon::now(), "updated_at" => Carbon::now()],
+            ['name' => 'Admin', 'last_name' => 'Admin', 'ci' => '12345678','password' => Hash::make('12345678'), 'birth_date' => $date, 'phone_number' => '04125800610', 'email' => "test@gmail.com", 'age' => 20, 'address' => "Hospital Coro Falcon", 'sex' => "M", "created_at" => Carbon::now(), "updated_at" => Carbon::now()],
 
 
          ];   

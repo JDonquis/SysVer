@@ -89,7 +89,52 @@ class PersonalController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        DB::beginTransaction();
+
+        try {
+
+                $personal = Personal::where('id',$id)->first();
+                $personal->update($request->all());
+                $personal->touch();
+                
+                $permission_ids = array();
+
+                if(count($request->permissions) == 0)
+                {
+                    DB::table('personal_permissions')->where('personal_id', '=', $id)->delete();                    
+                }
+                else{
+
+                    foreach ($request->permissions as $permission){
+
+                    array_push($permission_ids, $permission['id']);
+                    
+                     DB::table('personal_permissions')->updateOrInsert(
+
+                        ['personal_id' => $id, 'permission_id' => $permission['id']],
+                        ['permission_id' => $permission['id']]
+                    );
+
+
+                    $deleted = DB::table('personal_permissions')->where('personal_id', '=', $id)->whereNotIn('permission_id',$permission_ids)->delete();
+    
+                }
+
+                
+             }
+                    
+                DB::commit();
+
+                return response(["Message" => 'Personal actualizado exitosamente'], Response::HTTP_OK);
+
+        }catch (Exception $e) {
+            DB::rollback();
+
+            if($e->getCode() == '23000')
+                return response(["Message" => 'No se pudo actualizar el cliente, verifique los datos',"ErrorMessage" => $e->getMessage()], Response::HTTP_BAD_REQUEST);    
+            
+            return response(["Message" => 'No se pudo actualizar el cliente', "ErrorMessage" => $e->getMessage()], Response::HTTP_BAD_REQUEST);
+        }
     }
 
     /**
