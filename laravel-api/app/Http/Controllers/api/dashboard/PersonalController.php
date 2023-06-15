@@ -77,28 +77,9 @@ class PersonalController extends Controller
         
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
+    
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
+    
     /**
      * Update the specified resource in storage.
      *
@@ -119,6 +100,22 @@ class PersonalController extends Controller
      */
     public function destroy($id)
     {
-        //
+        DB::beginTransaction();
+
+        try {
+
+            DB::table('personal_permissions')->where('personal_id', $id)->delete();
+
+            DB::table('personals')->where('id', $id)->delete();
+
+            DB::commit();
+
+            return response(["Message" => 'Personal eliminado correctamente'], Response::HTTP_OK);
+
+        }catch (Exception $e) {
+            DB::rollback();
+            
+            return response(["Message" => 'Personal no encontrado'], Response::HTTP_BAD_REQUEST);
+        }
     }
 }
