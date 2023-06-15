@@ -171,7 +171,7 @@ export default function Historial_de_pagos() {
             options: {
                 filter: false,
                 customBodyRender: (value) => {
-                    return value > 0 ? (
+                    return value >= 0 ? (
                         <span className="text-green">{value}$</span>
                     ) : (
                         <span className="text-red">{value}$</span>
@@ -186,7 +186,7 @@ export default function Historial_de_pagos() {
                 filter: false,
                 customBodyRender: (value) => {
                     const weeks= Math.ceil(value/7)
-                    return weeks > 0 ? (
+                    return weeks >= 0 ? (
                         <span className="text-green">{weeks}</span>
                     ) : (
                         <span className="text-red">{weeks}</span>

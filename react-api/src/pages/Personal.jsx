@@ -17,7 +17,7 @@ import { Modal, ModalDialog, Button } from "@mui/joy/";
 import ConfirmModal from "../components/ConfimModal";
 import Alert from "../components/Alert";
 import Tooltip, { tooltipClasses } from "@mui/material/Tooltip";
-import "../css/pages/personal.css"
+import "../css/pages/personal.css";
 
 import Input from "../components/Input";
 
@@ -49,16 +49,9 @@ export default function Personal() {
     const [personal, setPersonal] = useState([]);
     const [all_areas_db, setAll_areas_db] = useState([]);
     const [all_blood_types, setAll_blood_types] = useState([]);
+    const [permissions, setPermissions] = useState([]);
     console.log(all_areas_db);
     const columns = [
-        {
-            name: "code",
-            label: "Código",
-            options: {
-                filter: false,
-            },
-        },
-
         {
             name: "name",
             label: "Nombres",
@@ -94,7 +87,7 @@ export default function Personal() {
                 filter: false,
             },
         },
-       
+
         {
             name: "address",
             label: "Dirección",
@@ -116,27 +109,26 @@ export default function Personal() {
                 filter: false,
             },
         },
-        {
-            name: "permissions",
-            label: "Permisos",
-            options: {
-                filter: false,
-            },
-            customBodyRender: (value) => {
-                return (
-                    <button
-                        className="relative pr-20 cursor-pointer underline text-blue"
-                        onMouseOver={() =>
-                            setShowSchedule({ show: true, data: value })
-                        }
-                        onMouseOut={() => setShowSchedule({ show: false })}
-                    >
-                        Ver
-                    </button>
-                );
-            },
-        },
-        
+        // {
+        //     name: "permissions",
+        //     label: "Permisos",
+        //     options: {
+        //         filter: false,
+        //     },
+        //     customBodyRender: (value) => {
+        //         return (
+        //             <button
+        //                 className="relative pr-20 cursor-pointer underline text-blue"
+        //                 onMouseOver={() =>
+        //                     setShowSchedule({ show: true, data: value })
+        //                 }
+        //                 onMouseOut={() => setShowSchedule({ show: false })}
+        //             >
+        //                 Ver
+        //             </button>
+        //         );
+        //     },
+        // },
     ];
 
     const [dataForDeleteUser, setDataForDeleteUser] = useState({
@@ -179,8 +171,9 @@ export default function Personal() {
                             indx: selectedRows.data[0].dataIndex,
                             setSelectedRows: setSelectedRows,
                         });
+                        
                     }}
-                >
+                    >
                     <DeleteIcon />
                 </IconButton>
             </div>
@@ -188,12 +181,11 @@ export default function Personal() {
         // expandableRowsOnClick: true,
         // onRowSelect: function(rowData, rowMeta) {console.log(rowData, rowMeta)},
     };
+    console.log(personal[dataForDeleteUser.indx])
 
     const deleteUser = async () => {
         try {
             const id_user = personal[dataForDeleteUser.indx].id;
-            const code = personal[dataForDeleteUser.indx].code;
-
             await axios.delete(`dashboard/personal/${id_user}`);
 
             // const arrIndxToDelete = Object.keys(selectedRows.lookup);
@@ -218,28 +210,28 @@ export default function Personal() {
         // console.log({displayData});
         const indx = selectedRows.data[0].dataIndex;
         // console.log(usuarios[indx]);
-        setNewUserData(personal[indx]);
+        setNewPersonal(personal[indx]);
         setOpen(true);
         setSubmitStatus("Editar");
-        // setNewUserData()
+        // setNewPersonal()
     }
 
-    const apiUrl = "dashboard/personal";
-
     const getData = async () => {
-        await axios.get(apiUrl).then((response) => {
+        await axios.get("dashboard/personal").then((response) => {
             const data = response.data;
             // console.log(data);
             const personal = response.data.personal;
-            personal.forEach((user) => {
-                user.array_areas = user.areas.map((a) => a.name);
-                user.blood_name = user.blood_types.name;
-            });
+            console.log(data);
+            // personal.forEach((user) => {
+            //     user.array_areas = user.areas.map((a) => a.name);
+            //     user.blood_name = user.blood_types.name;
+            // });
 
             setPersonal(personal);
+            setPermissions(response.data.permissions);
             // console.log(data)
-            setAll_areas_db(data.all_areas_db);
-            setAll_blood_types(data.blood_types);
+            // setAll_areas_db(data.all_areas_db);
+            // setAll_blood_types(data.blood_types);
         });
     };
 
@@ -250,7 +242,7 @@ export default function Personal() {
     // console.log({usuarios});
     const [open, setOpen] = useState(false);
     const [modalConfirm, setModalConfirm] = useState(false);
-    const [newPersonal, setNewUserData] = useState({
+    const [newPersonal, setNewPersonal] = useState({
         name: "",
         last_name: "",
         ci: "",
@@ -264,8 +256,7 @@ export default function Personal() {
         email: "",
         address: "",
         phone_number: "",
-        collaboration: "",
-        areas: [],
+        permissions: new Array(permissions.length).fill({id: false})
     });
 
     function calculateAge(date_bith) {
@@ -324,7 +315,7 @@ export default function Personal() {
                     )
                 );
             }
-            setNewUserData({});
+            setNewPersonal({});
             setOpen(false);
         } catch (error) {
             // console.log(error);
@@ -354,13 +345,13 @@ export default function Personal() {
         const { name, value } = e.target;
 
         if (name === "birth_date") {
-            setNewUserData((prev) => ({
+            setNewPersonal((prev) => ({
                 ...prev,
                 [name]: value,
                 age: calculateAge(value),
             }));
         }
-        setNewUserData((prev) => ({ ...prev, [name]: value }));
+        setNewPersonal((prev) => ({ ...prev, [name]: value }));
     }, []);
 
     const [alert, setAlert] = useState({
@@ -376,25 +367,21 @@ export default function Personal() {
 
     console.log(all_areas_db);
 
-    const MyTextInput = React.memo((props) => {
-        console.log(props.value);
-        return (
-            <TextField
-                variant={"outlined"}
-                label={props.label}
-                onChange={props.onChange}
-                value={props.value}
-            />
+    function handleChangePermissions(i) {
+        const updatedPermissions = newPersonal.permissions.map((item, index) =>
+            index === i ? {status: !item} : {status:item}
         );
-    });
+        setNewPersonal(prev => ({...prev, permissions: updatedPermissions}))
+    }
 
+    console.log({ permissions });
     return (
         <>
             <button
                 className="mb-7 border py-2 px-3 rounded-md glass duration-100 text-white hover:bg-purple"
                 onClick={() => {
                     if (submitStatus === "Editar") {
-                        setNewUserData({});
+                        setNewPersonal({});
                     }
                     setOpen(true);
                     setSubmitStatus("Crear");
@@ -490,7 +477,7 @@ export default function Personal() {
                                 name={"address"}
                                 onChange={handleChange}
                             />
-                             <Input
+                            <Input
                                 key={5}
                                 id={"outlined-textarea"}
                                 label={"Contraseña"}
@@ -503,92 +490,25 @@ export default function Personal() {
                         </div>
                         <div className="permisos">
                             <b>Permisos:</b>
-                            <Tooltip
-                                className="d_block"
-                                title="crear (inscribir), eliminar, editar y visualizar a
-                            los usuarios finales del gimnasio."
-                            >
-                                <label>
-                                    <input
-                                        type="checkbox"
-                                        name=""
-                                        className="mr_3"
-                                    />
-                                    Usuarios
-                                </label>
-                            </Tooltip>
-                            <Tooltip
-                                className="d_block"
-                                title="Personal: crear, eliminar, editar y visualizar las
-                            cuentas que podran ingresar a este sistema con sus
-                            respectivos permisos."
-                            >
-                                <label>
-                                    <input
-                                        type="checkbox"
-                                        name=""
-                                        className="mr_3"
-                                    />
-                                    Personal
-                                </label>
-                            </Tooltip>
-                            <Tooltip
-                                className="d_block"
-                                title="Asistencia: Crear, eliminar, editar y visualizar las
-                            asistencias de los usuarios del gimnasio"
-                            >
-                                <label>
-                                    <input
-                                        type="checkbox"
-                                        name=""
-                                        className="mr_3"
-                                    />
-                                    Asistenacia
-                                </label>
-                            </Tooltip>
-                            <Tooltip
-                                className="d_block"
-                                title="Areas: Crear, eliminar, editar y visualizar las
-                            areas del gimnasio."
-                            >
-                                <label>
-                                    <input
-                                        type="checkbox"
-                                        name=""
-                                        className="mr_3"
-                                    />
-                                    Areas
-                                </label>
-                            </Tooltip>
-                            <Tooltip
-                                className="d_block"
-                                title=" Pagos: Crear (registrar), eliminar, editar y
-                            visualizar los pagos realizados por los usuarios del
-                            gimnasio"
-                            >
-                                <label>
-                                    <input
-                                        type="checkbox"
-                                        name=""
-                                        className="mr_3"
-                                    />
-                                    Pagos
-                                </label>
-                            </Tooltip>
-                            <Tooltip
-                                className="d_block"
-                                title=" Estados de cuenta: Visualizar lista detallada de los
-                            estados de los usuarios del gimnasio."
-                            >
-                                <label>
-                                    <input
-                                        type="checkbox"
-                                        name=""
-                                        className="mr_3"
-                                    />
-                                    Estados de cuenta
-                                </label>
-                            </Tooltip>
+                            {permissions.map((perm, i) => (
+                                <Tooltip
+                                    className="d_block"
+                                    title={perm.description}
+                                >
+                                    <label>
+                                        <input
+                                            type="checkbox"
+                                            name=""
+                                            checked={newPersonal?.permissions?.[i]?.id === perm.id}
+                                            className="mr_3"
+                                            onChange={() => {
+                                                handleChangePermissions(i);
+                                            }}
+                                        />
+                                        {perm.name}
+                                    </label>
+                                </Tooltip>
+                            ))}
                         </div>
 
                         <button
