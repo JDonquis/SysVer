@@ -109,6 +109,10 @@ export default function Personal() {
                 filter: false,
             },
         },
+        {
+            name: "sex",
+            label: "Sexo",
+        },
         // {
         //     name: "permissions",
         //     label: "Permisos",
@@ -485,10 +489,23 @@ console.log({newPersonal})
                                 multiline
                                 readOnly
                                 value={newPersonal.ci}
-                                name={"address"}
+                                name={"pasword"}
                                 onChange={handleChange}
                             />
                         </div>
+                        <CssTextField
+                                id="outlined-select-currency"
+                                label="Sexo"
+                                defaultValue=""
+                                select
+                                value={newPersonal.sex}
+                                name="sex"
+                                onChange={handleChange}
+                                sx={{ width: 110 }}
+                            >
+                                <MenuItem value={"F"}>F</MenuItem>
+                                <MenuItem value={"M"}>M</MenuItem>
+                            </CssTextField>
                         <div className="permisos">
                             <b>Permisos:</b>
                             {permissions.map((perm, i) => (

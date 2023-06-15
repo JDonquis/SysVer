@@ -188,12 +188,8 @@ thead, .tss-gm6zfk-MUIDataTableHeadCell-fixedHeader {
   color: #069dbf !important;
 }
 
-.user_info .user_actions {
-  display: none;
-}
-
 .user_info:hover .user_actions {
-  display: block;
+  display: block !important;
 }
 
 .container_login {

@@ -11,11 +11,32 @@ import Historial_de_asistencia from "./pages/Historial_de_asistencia"
 import Estados_de_cuenta from "./pages/Estados_de_cuenta"
 import { useState } from "react";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import axios from "./api/axios";
+
 
 export default function app() { 
   
 
-    
+    const checkSession = async () => {
+        try {
+          const response = await axios.get('/auth', {
+            withCredentials: true
+          });
+      
+          if (response.data.status === 'success') {
+            console.log('Usuario con sesión activa:', response.data.data);
+          }
+        } catch (error) {
+          console.log('No hay sesión activa');
+        }
+      };const getData = async () => {
+        await axios.get("dashboard/areas").then((response) => {
+            const data = response.data;
+            setAreas(data.areas);
+            setShifts(data.shifts);
+        });
+    };
+
     const [navStatus, setNavStatus] = useState(true)
    
     return (    

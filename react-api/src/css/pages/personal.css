@@ -1,3 +1,6 @@
+.permisos {
+  margin-top: 20px;
+}
 .permisos label:hover {
   cursor: pointer;
   color: #069DBF !important;
