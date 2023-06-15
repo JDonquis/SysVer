@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\api\LoginController;
 use App\Http\Controllers\api\dashboard\AreasController;
 use App\Http\Controllers\api\dashboard\AssistanceController;
@@ -11,6 +12,7 @@ use App\Http\Controllers\api\dashboard\UsersController;
 use App\Http\Controllers\api\external\DollarController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -28,6 +30,10 @@ use Illuminate\Support\Facades\Route;
 // });
 
 Route::post('/login',[LoginController::class,'login']);
+
+Route::middleware('auth:sanctum')->get('/auth', [AuthenticatedSessionController::class, 'checkSession']);
+
+
 
 Route::group(['prefix' => 'dashboard', 'middleware' => ['auth:sanctum']], function(){
 
