@@ -161,6 +161,14 @@ thead, .tss-gm6zfk-MUIDataTableHeadCell-fixedHeader {
   grid-template-columns: repeat(2, 1fr);
 }
 
+.text_white {
+  color: white !important;
+}
+
+.tss-1o8fckl-MUIDataTableFilterList-chip {
+  background-color: #d9831a;
+}
+
 .left_nav {
   background: rgba(6, 157, 191, 0.089);
   min-width: 250px;

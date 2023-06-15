@@ -10,7 +10,7 @@ import Alert from "../components/Alert";
 
 const CssTextField = styled(TextField)({
     "& label.Mui-focused": {
-        color: "white",
+        color: "red",
     },
 
     "& .MuiOutlinedInput-root": {
@@ -180,7 +180,20 @@ export default function Asistencia() {
                 console.log({response})
                const area_id = response.data.latest?.schedule.area.id
                const schedule_id = response.data.latest?.schedule_id
-               setNewAttendance(prev => ({...prev, area_id, schedule_id , has_debt: response.data.has_debt, message: response.data.Message}))
+               setNewAttendance(prev => ({...prev, area_id, schedule_id}))
+            });
+
+           
+
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const getStatus = async (code, area) => {
+        try {
+            await axios.get(`dashboard/accounts/${code}/${area}`).then((response) => {
+                setNewAttendance(prev => ({...prev, status: response.data.status.status}))
             });
 
            
@@ -344,7 +357,8 @@ export default function Asistencia() {
             />
         );
     }, [asistencia]);
-console.log(newAttendance)
+    console.log(newAttendance)
+
     return (
         <>
             <form
@@ -387,6 +401,7 @@ console.log(newAttendance)
                             ...prev,
                             area_id: e.target.value,
                         }));
+                        getStatus(newAttendance.code, e.target.value)
                     }}
                 >
                     {all_areas.map((option) => (
@@ -426,8 +441,8 @@ console.log(newAttendance)
                     {statusSubmit}
                 </button>
                 </div>
-                {newAttendance.has_debt && (
-                    <p className="pt-3">{newAttendance.message}</p>
+                {newAttendance.status == 3 && (
+                    <p className="pt-3">¡Este cliente tiene una deuda registrada en esta area!</p>
                 )}
             </form>
 

@@ -162,6 +162,14 @@ thead, .tss-gm6zfk-MUIDataTableHeadCell-fixedHeader {
   grid-template-columns: repeat(2, 1fr);
 }
 
+.text_white {
+  color: white !important;
+}
+
+.tss-1o8fckl-MUIDataTableFilterList-chip {
+  background-color: #d9831a;
+}
+
 .container_login {
   overflow: hidden;
   position: relative;
@@ -522,7 +530,7 @@ input[type=file]):focus,
 
 @keyframes squaresAnimation {
   from {
-    top: -388px;
+    top: -790px;
   }
 }
 .sqrBack {
