@@ -9,27 +9,33 @@ import Pagos from "./pages/Pagos";
 import Historial_de_pagos from  "./pages/Historial_de_pagos"
 import Historial_de_asistencia from "./pages/Historial_de_asistencia"
 import Estados_de_cuenta from "./pages/Estados_de_cuenta"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import axios from "./api/axios";
 
+import {useNavigate} from 'react-router-dom'
 
 export default function app() { 
   
+    const navigate = useNavigate()
 
     const checkSession = async () => {
         try {
           const response = await axios.get('/auth', {
-            withCredentials: true
-          });
-      
-          if (response.data.status === 'success') {
-            console.log('Usuario con sesión activa:', response.data.data);
+        });
+        
+        if (response.data.status === 'success') {
+            console.log({response})
           }
         } catch (error) {
           console.log('No hay sesión activa');
+        //   navigate("../")
+
         }
-      };const getData = async () => {
+      };
+      
+      
+      const getData = async () => {
         await axios.get("dashboard/areas").then((response) => {
             const data = response.data;
             setAreas(data.areas);
@@ -37,6 +43,10 @@ export default function app() {
         });
     };
 
+    useEffect(() => {
+        checkSession()
+    }, [])
+    
     const [navStatus, setNavStatus] = useState(true)
    
     return (    
