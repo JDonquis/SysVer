@@ -68,10 +68,15 @@ class PersonalController extends Controller
                 
             DB::commit();
 
-            return response(["Message" => 'Cliente creado exitosamente', "personal" => $personal_created], Response::HTTP_OK);
+            return response(["Message" => 'Personal creado exitosamente', "personal" => $personal_created], Response::HTTP_OK);
 
         } catch (Exception $e) {
             DB::rollback();
+
+            if($e->getCode() == '23000')
+                return response(["Message" => 'No se pudo crear el personal, verifique los datos',"ErrorMessage" => $e->getMessage()], Response::HTTP_BAD_REQUEST);    
+            
+            return response(["Message" => 'No se pudo crear el personal', "ErrorMessage" => $e->getMessage()], Response::HTTP_BAD_REQUEST);
 
         }
         
