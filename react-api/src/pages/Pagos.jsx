@@ -86,6 +86,16 @@ export default function Pagos() {
                 filter: false,
             },
         },
+        {
+            name: "payment",
+            label: "Metodo de pago",
+            options: {
+                filter: false,
+                customBodyRender: (value) => {
+                    return value.name;
+                },
+            },
+        },
     ];
 
     function convert(from, to) {
@@ -102,6 +112,7 @@ export default function Pagos() {
 
         await axios.get("dashboard/payments").then((response) => {
             const data = response.data;
+            console.log()
             setPayments(data.payments);
             setMethods(data.methods);
         });
