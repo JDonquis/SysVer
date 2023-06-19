@@ -25,6 +25,9 @@ class Personal extends Model implements Authenticatable
         'birth_date',
         'phone_number',
         'email',
+        'age',
+        'sex',
+        'address',
     ];
 
     /**
