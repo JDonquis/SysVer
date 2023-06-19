@@ -17,6 +17,10 @@ class ClientAreaChargedSeeder extends Seeder
         $fields = [
 
             ['client_id' => 1, 'area_charged_id' => 1],
+            ['client_id' => 2, 'area_charged_id' => 1],
+            ['client_id' => 3, 'area_charged_id' => 1],
+            ['client_id' => 4, 'area_charged_id' => 1],
+            ['client_id' => 5, 'area_charged_id' => 1],
             
         
          ];   
