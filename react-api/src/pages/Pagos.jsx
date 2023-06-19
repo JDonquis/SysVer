@@ -87,8 +87,8 @@ export default function Pagos() {
             },
         },
         {
-            name: "payment_method",
-            label: "Monto ($)",
+            name: "payment",
+            label: "Metodo de pago",
             options: {
                 filter: false,
                 customBodyRender: (value) => {
