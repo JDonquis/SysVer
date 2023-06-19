@@ -37,6 +37,8 @@ Route::middleware('auth:sanctum')->get('/auth', [AuthenticatedSessionController:
 
 Route::group(['prefix' => 'dashboard', 'middleware' => ['auth:sanctum']], function(){
 
+    Route::get('/logout',[LoginController::class,'logout']);
+
     // Clients
     Route::get('clients',[ClientController::class,'index']);
     Route::post('clients',[ClientController::class,'store']);
