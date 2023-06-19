@@ -60,7 +60,7 @@ class PaymentsController extends Controller
             $payment_id = DB::table('payments')->insertGetId(['client_area_charged_id' => $client_area->id, 'payment_method_id' => $request->payment_method_id, 'amount' => $request->amount ]);
 
 
-            $payment = Payment::where('id',$payment_id)->with('client_area.client','client_area.area')->first();
+            $payment = Payment::where('id',$payment_id)->with('client_area.client','client_area.area','payment')->first();
 
             DB::commit();
 
