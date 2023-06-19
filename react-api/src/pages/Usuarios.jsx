@@ -144,7 +144,7 @@ export default function Usuarios() {
                     names: ["Nada"],
                 },
                 customBodyRender: (value) => {
-                    return value.trim() != 'none' ? (
+                    return value.trim() !== "none" ? (
                         value
                     ) : (
                         <div style={{ color: "#afafaf" }}>Nada</div>
