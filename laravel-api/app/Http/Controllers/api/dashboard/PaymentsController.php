@@ -24,7 +24,7 @@ class PaymentsController extends Controller
      */
     public function index()
     {
-        $payments = Payment::with('client_area.client','client_area.area')->get();
+        $payments = Payment::with('client_area.client','client_area.area','payment')->get();
         $methods = PaymentMethod::all();
         $areas = AreaCharged::all();
 
@@ -158,7 +158,7 @@ class PaymentsController extends Controller
 
     public function historial()
     {
-        $payments = HistorialPayment::with('client_area.client','client_area.area')->get();
+        $payments = HistorialPayment::with('client_area.client','client_area.area','payment')->get();
         
         return response(['payments' => $payments], Response::HTTP_OK);    
     }

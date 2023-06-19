@@ -6,6 +6,7 @@ use App\Models\AreaCharged;
 use App\Models\BalanceClient;
 use App\Models\Client;
 use App\Models\ClientAreaCharged;
+use App\Models\PaymentMethod;
 use DB;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -24,6 +25,11 @@ class Payment extends Model
     public function client_area()
     {
         return $this->belongsTo(ClientAreaCharged::class,'client_area_charged_id','id');
+    }
+
+    public function payment()
+    {
+        return $this->belongsTo(PaymentMethod::class,'payment_method_id','id');
     }
 
     public function calculate($id_client_area,$amount,$action,$id_payment = 0)
