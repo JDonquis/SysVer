@@ -55,7 +55,7 @@ export default function app() {
             <div className="dashboard_container">
                 <Nav getNavStatus={() => setNavStatus(prev => !prev)} status={navStatus} />
                 <main className="top_nav_and_main" >
-                    <div className="topNabvar w-full bg-blue p-4  mb-3 flex justify-end items-center relative ">
+                    <div className="topNabvar w-full p-4  mb-3 flex justify-end items-center relative ">
                         <div className="user_info cursor-pointer hover:underline ">
 
                            <span  className="mr-2"> Juan Villasmil </span><AccountCircleIcon></AccountCircleIcon>

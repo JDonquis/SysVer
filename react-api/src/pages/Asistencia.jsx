@@ -193,7 +193,7 @@ export default function Asistencia() {
     const getStatus = async (code, area) => {
         try {
             await axios.get(`dashboard/accounts/${code}/${area}`).then((response) => {
-                setNewAttendance(prev => ({...prev, status: response.data.status.status}))
+                setNewAttendance(prev => ({...prev, status: response.data.status?.status}))
             });
 
            

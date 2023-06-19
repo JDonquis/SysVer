@@ -290,10 +290,8 @@ export default function Personal() {
                     .post(`/dashboard/personal/`, newPersonal)
                     .then((response) => {
                         console.log({ response });
-                        const client = response.data.client;
-                        client.array_areas = client.areas.map((a) => a.name);
-                        client.blood_name = client.blood_types.name;
-                        setPersonal((prev) => [...prev, client]);
+                        const personal = response.data.personal;
+                        setPersonal((prev) => [...prev, personal]);
                     });
                 setAlert({
                     open: true,

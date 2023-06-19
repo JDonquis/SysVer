@@ -7,7 +7,7 @@ import "../css/basics.css"
 export default function app() {
   return (
    
-        <h1>dashboard</h1>
+        <h1></h1>
     
   )
 }
