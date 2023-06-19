@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
+use App\Models\PaymentMethod;
 use DateTimeInterface;
 
 class HistorialPayment extends Model
@@ -33,5 +34,10 @@ class HistorialPayment extends Model
     public function client_area()
     {
         return $this->belongsTo(ClientAreaCharged::class,'client_area_charged_id','id');
+    }
+
+    public function payment()
+    {
+        return $this->belongsTo(PaymentMethod::class,'payment_method_id','id');
     }
 }
