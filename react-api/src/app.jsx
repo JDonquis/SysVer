@@ -20,21 +20,43 @@ export default function app() {
 
     const [html, setHtml] =  useState('')
     const navigate = useNavigate()
-    
+    const [session, setSession] = useState(false)
     const checkSession = async () => {
         try {
           const response = await axios.get('/auth', {
         });
         
         if (response.data.status === 'success') {
-            setHtml(<div className="dashboard_container">
+            setSession(true)
+            console.log({response})
+          }
+        } catch (error) {
+          console.log('No hay sesión activa');
+          setSession(false)
+
+          window.location.href = "http://localhost:5173/";
+
+
+        }
+      };
+      
+      
+
+    useEffect(() => {
+        checkSession()
+    }, [])
+    
+   
+    return (    
+        session && (
+            <div className="dashboard_container">
             <Nav getNavStatus={() => setNavStatus(prev => !prev)} status={navStatus} />
             <main className="top_nav_and_main" >
                 <div className="topNabvar w-full p-4  mb-3 flex justify-end items-center relative ">
                     <div className="user_info cursor-pointer hover:underline ">
-
+    
                        <span  className="mr-2"> Juan Villasmil </span><AccountCircleIcon></AccountCircleIcon>
-
+    
                         <div className="user_actions absolute hidden rounded-md bg-white p-4 w-56 top-13 right-5 text-right"> 
                             <ul>
                                 <li className="mb-2"><a href="">Cambiar contraseña</a></li>
@@ -57,25 +79,8 @@ export default function app() {
                 </Routes>
                 </div>
             </main>
-        </div>)
-            console.log({response})
-          }
-        } catch (error) {
-          console.log('No hay sesión activa');
-          window.location.href = "http://localhost:5173/";
-
-
-        }
-      };
-      
-      
-
-    useEffect(() => {
-        checkSession()
-    }, [])
-    
-   
-    return (    
-       html
+        </div>
+        )
+        
     );
 }

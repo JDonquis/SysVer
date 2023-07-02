@@ -20,7 +20,7 @@ export default function login() {
             await axios.post('/login', {ci, password})
             setCI('')
             setPassword('')
-            navigate("/dashboard")
+            navigate("/dashboard/usuarios")
         } catch (error) {
             alert(error.response.data.message)
             console.log(error.response.data)
@@ -69,18 +69,18 @@ export default function login() {
     const windowWidth = window.innerWidth
     const halfX = windowWidth/2
     const halfY = window.innerHeight/2 + 90
-    useLayoutEffect(() => {
-        document.onmousemove = (e) => {
-            const cursorX = e.screenX
-            const cursorY = e.screenY
-            setViñetaPosition({top: `${cursorY - 1100}px`, left: `${cursorX - 3000}px`})
-            // const valueX = cursorX <= half ? -
-            // const valueY
-            setFrontSquaredX({boxShadow: `${(halfX - cursorX) / 25}px ${(halfY - cursorY) / 15}px 29px 4px rgba(0, 0, 0, 0.15)`, transform: `translate(-${cursorX/ 40}px, -${cursorY/40}px) perspective(1000px) rotateY(${(cursorX - halfX)/ 37}deg) rotateX(${(halfY - cursorY)/ 18}deg)`})
-            setBackSquaredX({boxShadow:`${(halfX - cursorX) / 35}px ${(halfY - cursorY) / 25}px 24px 4px rgba(0, 0, 0, 0.2)` , transform: `translate(-${cursorX/ 20}px, -${cursorY/20}px) perspective(1000px) rotateY(${(cursorX - halfX)/ 40}deg) rotateX(${(halfY - cursorY)/ 20}deg)`})
-            setDeep({boxShadow: `${(halfX - cursorX) / 40}px ${(halfY - cursorY) / 30}px 20px 1px rgba(0, 0, 0, 0.3)`, transform: `translate(-${cursorX/ 10}px, -${cursorY/ 10}px) perspective(1000px) rotateY(${(cursorX - halfX)/ 40}deg) rotateX(${(halfY - cursorY)/ 20}deg)`})
-        }
-    }, [])
+    // useLayoutEffect(() => {
+    //     document.onmousemove = (e) => {
+    //         const cursorX = e.screenX
+    //         const cursorY = e.screenY
+    //         setViñetaPosition({top: `${cursorY - 1100}px`, left: `${cursorX - 3000}px`})
+    //         // const valueX = cursorX <= half ? -
+    //         // const valueY
+    //         setFrontSquaredX({boxShadow: `${(halfX - cursorX) / 25}px ${(halfY - cursorY) / 15}px 29px 4px rgba(0, 0, 0, 0.15)`, transform: `translate(-${cursorX/ 40}px, -${cursorY/40}px) perspective(1000px) rotateY(${(cursorX - halfX)/ 37}deg) rotateX(${(halfY - cursorY)/ 18}deg)`})
+    //         setBackSquaredX({boxShadow:`${(halfX - cursorX) / 35}px ${(halfY - cursorY) / 25}px 24px 4px rgba(0, 0, 0, 0.2)` , transform: `translate(-${cursorX/ 20}px, -${cursorY/20}px) perspective(1000px) rotateY(${(cursorX - halfX)/ 40}deg) rotateX(${(halfY - cursorY)/ 20}deg)`})
+    //         setDeep({boxShadow: `${(halfX - cursorX) / 40}px ${(halfY - cursorY) / 30}px 20px 1px rgba(0, 0, 0, 0.3)`, transform: `translate(-${cursorX/ 10}px, -${cursorY/ 10}px) perspective(1000px) rotateY(${(cursorX - halfX)/ 40}deg) rotateX(${(halfY - cursorY)/ 20}deg)`})
+    //     }
+    // }, [])
     // useEffect(() => {
     //   if ()
     useEffect(() => {

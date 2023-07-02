@@ -98,9 +98,7 @@ export default function Pagos() {
         },
     ];
 
-    function convert(from, to) {
-        return;
-    }
+   
 
     useEffect(() => {
         setTimeout(() => {
@@ -118,7 +116,9 @@ export default function Pagos() {
         });
     };
 
-    const [tasaDolar, setTasaDolar] = useState(false);
+    // const [tasaDolar, setTasaDolar] = useState(false);
+    const [tasaDolar, setTasaDolar] = useState(27.27);
+
 
     const getEquivalent = async () => {
         try {
@@ -129,6 +129,7 @@ export default function Pagos() {
             console.log(error);
         }
     };
+    
     const [dataForDelete, setDataForDelete] = useState({
         indx: "",
         setSelectedRows: () => {},

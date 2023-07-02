@@ -119,6 +119,16 @@ export default function Historial_de_pagos() {
             
             },
         },
+        {
+            name: "payment",
+            label: "Metodo de pago",
+            options: {
+                filter: false,
+                customBodyRender: (value) => {
+                    return value.name;
+                },
+            },
+        },
     ]
 
     useEffect(() => {
