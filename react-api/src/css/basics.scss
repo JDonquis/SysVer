@@ -1,0 +1,189 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+ 
+//fonts: ****************************************************
+
+@font-face {
+    font-family: "Manjari";
+    src: url("../assets/fonts/Manjari-Bold.ttf");
+    font-weight: 700;
+}
+@font-face {
+    font-family: "Manjari";
+    src: url("../assets/fonts/Manjari-Regular.ttf");
+    font-weight: 400;
+}
+//colors: ******************************************************
+$blue: #069dbf;
+$yellow: #d9831a;
+$green: #027353;
+$purple: #a64684;
+* {
+    padding: 0;
+    margin: 0;
+    margin-bottom: 0;
+    box-sizing: border-box;
+    font-family: "Manjari", sans-serif !important;
+}
+p {
+    margin-bottom: 0;
+}
+.blue {
+    color: #069dbf;
+}
+.yellow {
+    color: #d9831a;
+}
+.purple {
+    color: #a64684;
+}
+.green {
+    color: #027353;
+}
+
+.bg_blue {
+    background-color: #069dbf;
+}
+.bg_yellow {
+    background-color: #d9831a;
+}
+.bg_purple {
+    background-color: #a64684;
+}
+.bg_green {
+    background-color: #027353;
+}
+input[type="submit"] {
+    border: none;
+}
+ul.link_container {
+    list-style: none;
+    a {
+        text-decoration: none;
+    }
+}
+
+/// general dashboard
+.dashboard_container {
+    overflow: hidden;
+    display: flex;
+    min-height: 100vh;
+    // gap: 20px;
+    .top_nav_and_main {  
+        flex: auto; 
+        background: rgb(255, 255, 255);
+        background: linear-gradient(-50deg, hwb(320 94% 0%) 0%, #003b58 100%);
+        .mainDashboard_container {
+            padding: 14px;  
+            width: 100%;
+            float: right;
+            // transition: width .4s ease;
+            &.small {
+                max-width: calc(100vw - 255px);
+            }
+            &.large {
+                max-width: calc(100vw - 66px);
+            }
+        }
+    }
+}
+
+th {
+    padding: 20px !important;
+    margin: 20px;
+    text-transform: uppercase !important;
+}
+thead th button{
+    text-transform: uppercase !important;
+
+}
+.MuiTableCell-footer {
+    padding: 0 !important;
+}
+.css-11mde6h-MuiPaper-root {
+    background: rgba(255, 255, 255, 0.25) !important;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37) !important;
+    backdrop-filter: blur(4px) !important;
+    -webkit-backdrop-filter: blur(4px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.18) !important;
+}
+.tss-1dqj55d-MUIDataTableToolbarSelect-root{
+    background: transparent !important;
+}
+h6.MuiTypography-root {
+    color: rgb(255, 255, 255) !important;
+}
+tbody.MuiTableBody-root.css-apqrd9-MuiTableBody-root {
+    background-color: rgb(255, 255, 255);
+}
+thead, .tss-gm6zfk-MUIDataTableHeadCell-fixedHeader {
+    background-color: rgb(255, 255, 255) !important;
+    // color: white !important
+}
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #003b58;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+.glass {
+    background: rgba(255, 255, 255, 0.25);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    border: 1px solid rgba(255, 255, 255, 0.18); 
+    & * {
+        color: white !important;
+    }
+    // & *:focus { 
+    //     outline: white !important;
+    //     border-color: white !important;
+    // }
+}
+.d-flex2 {
+    display: grid;
+    justify-content: space-between;
+    gap: 0px 30px;
+    grid-template-columns: repeat(2, 1fr);
+    
+} 
+.text_white { 
+    color: white !important; 
+} 
+.tss-1o8fckl-MUIDataTableFilterList-chip {
+    background-color: $yellow !important;
+    color: white !important;
+    margin-top: 0 !important;
+    margin-bottom: 10px !important;
+}
+.d_block {
+    display: block !important; 
+}
+.mr_3 {
+    margin-right: 10px !important ; 
+}
+
+// color of buttons tabgle {
+.css-78trlr-MuiButtonBase-root-MuiIconButton-root:hover {
+    color: $blue !important;
+}
+      
+
+.user_info:hover .user_actions {
+    display: block !important;  
+}

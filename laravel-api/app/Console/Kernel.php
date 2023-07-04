@@ -7,6 +7,9 @@ use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
 class Kernel extends ConsoleKernel
 {
+    
+    protected $commands = [ Commands\InsertHistory::class, ];
+
     /**
      * Define the application's command schedule.
      *
@@ -15,7 +18,11 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
+        $schedule->command('insert:history-assistance')->dailyAt('19:00');
+        $schedule->command('insert:history-payment')->dailyAt('19:00');
+        $schedule->command('insert:collect-clients')->weeklyOn(1, '7:00');
+
+        
     }
 
     /**
