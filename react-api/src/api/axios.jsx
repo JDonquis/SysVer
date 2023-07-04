@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export default axios.create({
-  baseURL: "http://localhost:8000/api",
+  baseURL: "http://sysver.local/api",
   withCredentials: true,
   browserBaseURL: 'http://'
 })
