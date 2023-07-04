@@ -185,7 +185,15 @@ export default function Historial_de_pagos() {
             options: {
                 filter: false,
                 customBodyRender: (value) => {
-                    const weeks= Math.ceil(value/7)
+                    let weeks = ''
+                    if (value >= 0) {
+                    
+                        weeks= Math.ceil(value/7)
+
+                    } else {
+                        weeks= Math.floor(value/7)
+
+                    }
                     return weeks >= 0 ? (
                         <span className="text-green">{weeks}</span>
                     ) : (
