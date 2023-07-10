@@ -318,7 +318,7 @@ export default function Usuarios() {
                 setSubmitStatus("cargando...");
 
                 await axios
-                    .post(`/dashboard/clients/`, newUserData)
+                    .post(`/dashboard/clients`, newUserData)
                     .then((response) => {
                         console.log({ response });
                         const client = response.data.client;

@@ -26,6 +26,7 @@ class AuthenticatedSessionController extends Controller
 
     public function checkSession(Request $request)
     {
+        
         return response()->json([
             'status' => 'success',
             'data' => $request->user()

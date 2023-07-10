@@ -287,7 +287,7 @@ export default function Personal() {
                 setSubmitStatus("cargando...");
 
                 await axios
-                    .post(`/dashboard/personal/`, newPersonal)
+                    .post(`/dashboard/personal`, newPersonal)
                     .then((response) => {
                         console.log({ response });
                         const personal = response.data.personal;

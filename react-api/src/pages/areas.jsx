@@ -51,7 +51,7 @@ export default function Areas() {
                 setSubmitStatus("Creando area...");
 
                 await axios
-                    .post(`/dashboard/areas/`, newArea)
+                    .post(`/dashboard/areas`, newArea)
                     .then((response) => {
                         const area = response.data.area;
                         setAreas((prev) => [...prev, area]);

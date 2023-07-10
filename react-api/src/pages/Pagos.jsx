@@ -176,7 +176,7 @@ export default function Pagos() {
                 setSubmitStatus("cargando...");
 
                 await axios
-                    .post(`/dashboard/payments/`, newPayment)
+                    .post(`/dashboard/payments`, newPayment)
                     .then((response) => {
                         const payment = response.data.payment;
 

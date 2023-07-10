@@ -1,5 +1,6 @@
 
 import React, { useEffect, useLayoutEffect, useState, useRef } from "react";
+import Cookies from 'js-cookie';
 import "../css/pages/login.css";
 import circleLogo from "../assets/img/circleLogo.png";
 import {Link, useNavigate} from 'react-router-dom'
@@ -16,16 +17,29 @@ export default function login() {
 
     const handleLogin = async (e) => {
         e.preventDefault()
-        try {
-            await axios.post('/login', {ci, password})
-            setCI('')
-            setPassword('')
-            navigate("/dashboard/usuarios")
-        } catch (error) {
-            alert(error.response.data.message)
-            console.log(error.response.data)
+        
+            await axios.post('/login', {ci, password}).then( response => {
 
-        }
+                console.log(response);
+                const token = response.data.token;
+
+                axios.interceptors.request.use((config) => {
+                  
+                  config.headers.Authorization = `Bearer ${token}`; // Agrega el token como encabezado de autorización
+                  return config;
+                });
+
+                console.log('OK'); 
+                setCI('')
+                setPassword('')
+                navigate("/dashboard/usuarios")
+            }).catch( error => {
+
+              alert(error.response.data.message)
+              console.log(error.response.data)
+                
+            });
+
     }
 
     useEffect(() => {

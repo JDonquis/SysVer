@@ -25,17 +25,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
-//     return $request->user();
-// });
-
 Route::post('/login',[LoginController::class,'login']);
 
 Route::middleware('auth:sanctum')->get('/auth', [AuthenticatedSessionController::class, 'checkSession']);
 
 
 
-Route::group(['prefix' => 'dashboard', 'middleware' => ['auth:sanctum']], function(){
+Route::group(['prefix' => 'dashboard', 'middleware' => ['cors','auth:sanctum']], function(){
 
     Route::get('/logout',[LoginController::class,'logout']);
 

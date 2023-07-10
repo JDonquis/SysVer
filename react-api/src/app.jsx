@@ -29,12 +29,15 @@ export default function app() {
         if (response.data.status === 'success') {
             setSession(true)
             console.log({response})
+            console.log("Logueado")
           }
         } catch (error) {
           console.log('No hay sesión activa');
           setSession(false)
+          console.log(error)
+          console.log("Ha fallado algo")
 
-          window.location.href = "http://localhost:5173/";
+          
 
 
         }
