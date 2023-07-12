@@ -4,14 +4,17 @@ namespace App\Http\Controllers\api\dashboard;
 
 use App\Http\Controllers\Controller;
 use App\Models\Area;
+use App\Models\AreaCharged;
 use App\Models\Assistance;
 use App\Models\Client;
 use App\Models\DelayedClient;
 use App\Models\HistorialAssistance;
 use App\Models\Schedule;
+use Carbon\Carbon;
 use DB;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Exception;
 
 
 class AssistanceController extends Controller
@@ -43,7 +46,19 @@ class AssistanceController extends Controller
        $ids = $s->get_areas_ids($request->area_id);
        
        if(!isset($client_id->id))
-             return response(["Message" => 'Codigo no valido'], Response::HTTP_CONFLICT);       
+             return response(["Message" => 'Codigo no valido'], Response::HTTP_CONFLICT);     
+
+
+        $area = AreaCharged::where('area_id',$request->area_id)->first();
+        if(isset($area->id))
+        {
+            $client_area = ClientAreaCharged::where('area_charged_id',$area->area_id)->where('client_id',$client->id)->first();
+            if(!isset($client_area->id))
+                return response(["Message" => 'El cliente no esta inscrito a esta area'], Response::HTTP_CONFLICT);
+      
+        }
+
+        
 
        $assistances = Assistance::where('client_id',$client_id->id)->whereIn('schedule_id',$ids)->first();
 
@@ -177,4 +192,36 @@ class AssistanceController extends Controller
         return response(['assistances' => $assistances], Response::HTTP_OK);    
     }
 
+    public function new_area(Request $request)
+    {
+        DB::beginTransaction();
+
+        try {
+            
+            $client = Client::where('code',$request->code)->first();
+            if(!$client)
+                throw new Exception('No se encontró ningún cliente con el código proporcionado');
+
+            $area = AreaCharged::where('area_id',$request->area_id)->first();
+            if(!$area)
+                throw new Exception('No se encontró ningún area');
+
+
+            $client_area_charged_id = DB::table('client_area_chargeds')->insertGetId(['client_id' => $client->id, 'area_charged_id' => $area->id ] );
+
+            DB::table('balance_clients')->insert(['client_area_charged_id' => $client_area_charged_id, 'balance' => 0, 'days' => 0, 'status' => 1, 'created_at' => Carbon::now(), 'updated_at' => Carbon::now() ]); 
+
+            DB::commit();
+
+            return response(["Message" => 'Usuario inscrito exitosamente'], Response::HTTP_OK);
+
+          }catch (Exception $e) {
+            DB::rollback();
+
+            if($e->getCode() == '23000')
+                return response(["Message" => 'No se pudo inscribir el usuario, verifique los datos', 'ErrorMessage' => $e->getMessage()], Response::HTTP_BAD_REQUEST);    
+            
+            return response(["Message" => 'No se pudo inscribir el usuario','ErrorMessage' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
+        }   
+    }
 }

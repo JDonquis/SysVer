@@ -51,6 +51,7 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth:sanctum']], functi
     Route::get('assistance',[AssistanceController::class,'index']);
     Route::get('assistance/{code}',[AssistanceController::class,'last_assistance']);
     Route::post('assistance',[AssistanceController::class,'store']);
+    Route::post('assistance/area',[AssistanceController::class,'new_area']);
     Route::put('assistance/{id}',[AssistanceController::class,'update']);
     Route::delete('assistance/{id}',[AssistanceController::class,'destroy']);
 
