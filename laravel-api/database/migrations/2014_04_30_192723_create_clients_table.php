@@ -28,7 +28,8 @@ class CreateClientsTable extends Migration
             $table->string('address',100)->nullable();
             $table->string('phone_number',13)->nullable();
             $table->string('collaboration',100)->nullable();
-            $table->string('email',100)->nullable();           
+            $table->string('email',100)->nullable();
+            $table->string('status')->default('active');           
             $table->rememberToken();
             $table->timestamps();
         });

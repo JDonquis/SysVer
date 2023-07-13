@@ -209,7 +209,7 @@ class AssistanceController extends Controller
 
             $client_area_charged_id = DB::table('client_area_chargeds')->insertGetId(['client_id' => $client->id, 'area_charged_id' => $area->id ] );
 
-            DB::table('balance_clients')->insert(['client_area_charged_id' => $client_area_charged_id, 'balance' => 0, 'days' => 0, 'status' => 1, 'created_at' => Carbon::now(), 'updated_at' => Carbon::now() ]); 
+            DB::table('balance_clients')->insert(['client_area_charged_id' => $client_area_charged_id, 'balance' => 0, 'days' => 7, 'status' => 1, 'created_at' => Carbon::now(), 'updated_at' => Carbon::now(), 'end' => Carbon::now()->addWeek() ]); 
 
             DB::commit();
 

@@ -18,7 +18,8 @@ class BalanceClient extends Model
         'client_area_charged_id',
         'balance',
         'days',
-        'status'
+        'status',
+        'end'
     ];
 
     public function client_area()

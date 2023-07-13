@@ -8,6 +8,7 @@ use App\Models\Client;
 use App\Models\ClientAreaCharged;
 use App\Models\PaymentMethod;
 use DB;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -43,9 +44,13 @@ class Payment extends Model
 
             $balance->balance = $b;
 
-            $balance->days = $this->calculate_days($id_client_area,$b);
+            $daysCurrent = $balance->days;
+
+            $balance->days =  $daysCurrent + $this->calculate_days($id_client_area,$amount);
 
             $balance->status = $this->calculate_status($b);
+
+            $balance->end = Carbon::now()->addDays($balance->days);
 
             $balance->update();
 
@@ -63,7 +68,11 @@ class Payment extends Model
 
             $balance->balance = $b;
 
-            $balance->days = $this->calculate_days($id_client_area,$b);
+            $daysCurrent = $balance->days;
+
+            $balance->days =  $daysCurrent - $this->calculate_days($id_client_area,$amount);
+
+            $balance->end = Carbon::now()->addDays($balance->days);
 
             $balance->status = $this->calculate_status($b);
 
@@ -81,7 +90,11 @@ class Payment extends Model
 
             $balance->balance = $b;
 
-            $balance->days = $this->calculate_days($id_client_area,$b);
+            $daysCurrent = $balance->days;
+
+            $balance->days =  $daysCurrent + $this->calculate_days($id_client_area,$a);
+
+            $balance->end = Carbon::now()->addDays($balance->days);
 
             $balance->status = $this->calculate_status($b);
 
@@ -98,10 +111,13 @@ class Payment extends Model
 
         $days = $amount / $area->area->price;
 
-        $days = ceil($days);
+        $days = $amount < 0 ? ceil($days) : floor($days);
+
+        $days = $days * 7;
 
         return $days;
     }
+
 
     public function calculate_status($amount)
     {

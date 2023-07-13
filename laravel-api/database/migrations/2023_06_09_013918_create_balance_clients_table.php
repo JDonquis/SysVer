@@ -19,6 +19,7 @@ class CreateBalanceClientsTable extends Migration
             $table->integer('balance');
             $table->integer('days');
             $table->integer('status');
+            $table->date('end');
             $table->timestamps();
         });
     }
